@@ -64,12 +64,13 @@ export default {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
     if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
-    if (!env.GEMINI_API_KEY) return json(500, { error: 'no_key', detail: 'Add the secret GEMINI_API_KEY to this Worker.' });
-
     if (url.pathname === '/api/test') {
+      // always 200 so the result can be read in a browser
+      if (!env.GEMINI_API_KEY) return json(200, { ok: false, error: 'no_key', vars: Object.keys(env).filter(k => k !== 'ASSETS') });
       const r = await ask(env, 'Reply with only this JSON: {"ok":true}', false);
-      return json(r.result ? 200 : 502, r.result ? { ok: true, model: r.model } : r);
+      return json(200, r.result ? { ok: true, model: r.model } : { ok: false, ...r });
     }
+    if (!env.GEMINI_API_KEY) return json(500, { error: 'no_key', detail: 'Add the secret GEMINI_API_KEY to this Worker.' });
     if (url.pathname !== '/api/analyze' || request.method !== 'POST') return json(404, { error: 'not_found' });
 
     const ip = request.headers.get('CF-Connecting-IP') || 'x';
