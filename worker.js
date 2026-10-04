@@ -45,7 +45,10 @@ async function ask(env, prompt, search) {
   for (const model of list) {
     for (const s of search ? [true, false] : [false]) {
       const r = await gemini(env, model, prompt, s);
-      if (r.status === 429) return { error: 'rate_limited', status: 429 };
+      if (r.status === 429) { // quota hit: try without search, then the next model
+        last = { error: 'rate_limited', status: 429, model, searched: s, detail: (r.data?.error?.message || '').slice(0, 300) };
+        continue;
+      }
       if (r.status === 400 || r.status === 403) {
         const msg = r.data?.error?.message || '';
         if (/api key|API_KEY|permission/i.test(msg)) return { error: 'bad_key', status: r.status, detail: msg.slice(0, 200) };
@@ -80,9 +83,10 @@ async function handle(request, env) {
     if (url.pathname === '/api/test') {
       // always 200 so the result can be read in a browser
       if (!env.GEMINI_API_KEY) return json(200, { ok: false, error: 'no_key', vars: Object.keys(env).filter(k => k !== 'ASSETS') });
-      const r = await ask(env, 'Reply with only this JSON: {"ok":true}', false);
+      const search = url.searchParams.get('search') === '1';
+      const r = await ask(env, search ? 'Use Google Search: what was the result of the most recent Fenerbahce match? Reply with only JSON: {"ok":true,"answer":"..."}' : 'Reply with only this JSON: {"ok":true}', search);
       const k = String(env.GEMINI_API_KEY).replace(/\s+/g, '');
-      return json(200, r.result ? { ok: true, model: r.model } : { ok: false, ...r, keyStartsWith: k.slice(0, 3), keyLength: k.length });
+      return json(200, r.result ? { ok: true, model: r.model, searched: r.searched, answer: r.result.answer } : { ok: false, ...r, keyStartsWith: k.slice(0, 3), keyLength: k.length });
     }
     if (!env.GEMINI_API_KEY) return json(500, { error: 'no_key', detail: 'Add the secret GEMINI_API_KEY to this Worker.' });
     if (url.pathname !== '/api/analyze' || request.method !== 'POST') return json(404, { error: 'not_found' });
