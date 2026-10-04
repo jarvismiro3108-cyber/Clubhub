@@ -15,9 +15,13 @@ async function gemini(env, model, prompt, search) {
   const body = { contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { temperature: 0.9 } };
   if (search) body.tools = [{ google_search: {} }];
   else body.generationConfig.responseMimeType = 'application/json';
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY }, body: JSON.stringify(body),
-  });
+  const key = String(env.GEMINI_API_KEY).replace(/\s+/g, '');
+  const base = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  let r = await fetch(base, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) });
+  if (r.status === 400 || r.status === 401) { // some newer keys (AQ.) work better as ?key=
+    const r2 = await fetch(`${base}?key=${encodeURIComponent(key)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (r2.ok || r2.status !== 400) r = r2;
+  }
   const text = await r.text();
   let data = null; try { data = JSON.parse(text); } catch {}
   return { status: r.status, ok: r.ok, data, raw: text };
@@ -77,7 +81,8 @@ async function handle(request, env) {
       // always 200 so the result can be read in a browser
       if (!env.GEMINI_API_KEY) return json(200, { ok: false, error: 'no_key', vars: Object.keys(env).filter(k => k !== 'ASSETS') });
       const r = await ask(env, 'Reply with only this JSON: {"ok":true}', false);
-      return json(200, r.result ? { ok: true, model: r.model } : { ok: false, ...r });
+      const k = String(env.GEMINI_API_KEY).replace(/\s+/g, '');
+      return json(200, r.result ? { ok: true, model: r.model } : { ok: false, ...r, keyStartsWith: k.slice(0, 3), keyLength: k.length });
     }
     if (!env.GEMINI_API_KEY) return json(500, { error: 'no_key', detail: 'Add the secret GEMINI_API_KEY to this Worker.' });
     if (url.pathname !== '/api/analyze' || request.method !== 'POST') return json(404, { error: 'not_found' });
