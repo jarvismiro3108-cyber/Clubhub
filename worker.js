@@ -68,6 +68,8 @@ export default {
 
 async function handle(request, env) {
   {
+    // accept the key under any name containing "gemini" (e.g. GEMINI-API-KEY-), so a small typo in the setting still works
+    if (!env.GEMINI_API_KEY) { const k = Object.keys(env).find(k => /gemini/i.test(k) && typeof env[k] === 'string'); if (k) env = { ...env, GEMINI_API_KEY: env[k].trim() }; }
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
     if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
