@@ -176,7 +176,7 @@ select,input[type=text]{background:var(--surface);color:var(--fg);border:1px sol
 .score{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:14px;background:var(--c-deep);color:#fff;border-radius:10px;padding:16px 14px;text-align:center}
 .score .big{font-family:var(--display);font-weight:800;font-size:clamp(40px,9vw,60px);line-height:1;white-space:nowrap;background:rgba(0,0,0,.25);padding:6px 14px;border-radius:8px}
 .score .teams{font-family:var(--display);font-size:clamp(14px,3.6vw,24px);font-weight:700;text-transform:uppercase;line-height:1.1;overflow-wrap:break-word;min-width:0}
-@media (max-width:480px){.score{gap:8px;padding:14px 10px}.score .big{font-size:38px;padding:4px 10px}}
+@media (max-width:480px){.score{gap:8px;padding:14px 10px}.score .big{font-size:38px;padding:4px 10px}.score .teams{font-size:13px;letter-spacing:0}}
 .score .teams small{display:block;font-family:var(--body);font-size:11px;letter-spacing:.12em;opacity:.7;font-weight:600;margin-top:4px}
 .score .cap{grid-column:1/-1;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;font-weight:600}
 .oppwrap{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start;margin-top:4px}
@@ -193,6 +193,17 @@ select,input[type=text]{background:var(--surface);color:var(--fg);border:1px sol
 .good h3{color:var(--win)} .bad h3{color:var(--loss)}
 .cols h3{font-size:19px;text-transform:uppercase;margin-bottom:8px}
 .subs{display:grid;gap:8px}
+.timeline{display:grid;gap:6px}
+.tl-row{display:grid;grid-template-columns:52px 26px 1fr auto;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:var(--surface2)}
+.tl-row.ko,.tl-row.ht{grid-template-columns:52px 1fr;background:none;padding:4px 12px;color:var(--muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.tl-row.goal.h{border-left:4px solid var(--c-hi)}.tl-row.goal.a{border-left:4px solid var(--muted)}
+.tl-min{font-family:var(--display);font-weight:800;font-size:20px}
+.tl-who b{display:block;line-height:1.2}.tl-who small{color:var(--muted);font-size:12px}
+.tl-how{display:block;font-size:13px;color:var(--fg2);margin-top:2px}
+.formbox{background:var(--surface2);border-radius:8px;padding:10px 12px}.formbox p{margin:6px 0 0;font-size:14px}
+.last5{display:flex;gap:4px;margin-top:6px}.last5 span{width:24px;height:24px;border-radius:5px;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff}
+.last5 .fW{background:var(--win)}.last5 .fD{background:var(--draw)}.last5 .fL{background:var(--loss)}
+.tl-sc{font-family:var(--display);font-weight:800;font-size:20px;color:var(--fg2)}
 .sub{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:start;background:var(--surface2);border-radius:8px;padding:10px 12px}
 .sub .min{font-family:var(--display);font-weight:800;font-size:26px;line-height:1;color:var(--strong)}
 .sub .sw{font-weight:700}
@@ -291,12 +302,12 @@ select,input[type=text]{background:var(--surface);color:var(--fg);border:1px sol
 <section class="panel" id="p-match" role="tabpanel" aria-labelledby="t-match" hidden>
   <div class="card">
     <h2>Analyze a Match</h2>
-    <p class="lede">Choose the opponent and venue. The analysis uses the starting XI and bench from the Squad Picker.</p>
+    <p class="lede">Choose the opponent and venue, then play the match. It uses your starting XI and bench from the Squad Picker and shows the score, the chances and who scores in which minute.</p>
     <div class="matchbar" style="margin-top:14px">
       <div class="field"><label for="opp">Opponent</label><select id="opp"></select></div>
       <div class="field" id="oppOtherWrap" hidden><label for="oppOther">Team name</label><input type="text" id="oppOther" placeholder="e.g. Real Madrid"></div>
       <div class="field"><label for="venue">Venue</label><select id="venue"></select></div>
-      <button class="btn primary" id="analyze">Analyze</button>
+      <button class="btn primary" id="analyze">Play the match</button>
       <button class="btn" id="stop" hidden>Stop</button>
     </div>
     <div class="xi-summary" id="xiSummary"></div>
@@ -307,7 +318,7 @@ select,input[type=text]{background:var(--surface);color:var(--fg);border:1px sol
     <div class="controls" style="margin-top:12px">
       <div class="field"><label for="oppFormation">Their formation</label><select id="oppFormation"></select></div>
       <button class="btn" id="oppUsual">Usual XI</button>
-      <button class="btn" id="oppSuggest">Suggest likely XI (AI)</button>
+      <button class="btn" id="oppSuggest" hidden>Suggest likely XI (AI)</button>
       <button class="btn" id="oppClear">Clear</button>
     </div>
     <div class="oppwrap">
@@ -776,20 +787,20 @@ $('#autofill').onclick=()=>{
 // MATCH ANALYSIS
 // =====================================================================
 // ---- AI: Claude when opened inside Claude, otherwise the Club Hub server (Gemini) ----
-const AI_SERVER='https://clubhub-ai.jarvismiro3108.workers.dev';
+const AI_SERVER=/clubhub/.test(location.hostname)&&location.protocol.startsWith('http')?'/api/analyze':'https://clubhub.jarvismiro3108.workers.dev/api/analyze';
 let sampleFn=null,sampleReady=false,ctl=null;
 (async()=>{try{sampleFn=window.claude?await claude.use('sample'):null}catch{sampleFn=null}sampleReady=true;sampleNotice()})();
-async function askAI(prompt,{signal,tier}={}){
-  if(sampleFn)return sampleFn.json(prompt,{signal,modelTier:tier||'default'});
+async function askAI(prompt,{signal,tier,search}={}){
+  if(sampleFn)return {result:await sampleFn.json(prompt,{signal,modelTier:tier||'default'}),sources:[],searched:false};
   let r;
-  try{r=await fetch(AI_SERVER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt}),signal})}
+  try{r=await fetch(AI_SERVER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,search:!!search}),signal})}
   catch(e){throw {code:e&&e.name==='AbortError'?'cancelled':'offline'}}
   let j={};try{j=await r.json()}catch{}
   if(r.status===429)throw {code:'rate_limited'};
-  if(!r.ok||!j.result)throw {code:j.error==='invalid_json'?'invalid_json':'server'};
-  return j.result;
+  if(!r.ok||!j.result)throw {code:{invalid_json:'invalid_json',no_key:'no_key',bad_key:'bad_key'}[j.error]||'server',detail:j.detail||''};
+  return j;
 }
-const AI_ERR={cancelled:'Analysis stopped.',not_granted:'AI analysis was not allowed for this page. You can change this in the page permissions.',rate_limited:'The AI is busy (free limit reached). Wait a minute and try again.',invalid_json:'The AI answer came back in the wrong format. Press Analyze to try again.',refused:'The AI declined this request. Try a different opponent name.',offline:'Could not reach the AI server. Check your internet connection.',server:'The AI server had a problem.'};
+const AI_ERR={cancelled:'Analysis stopped.',not_granted:'AI analysis was not allowed for this page. You can change this in the page permissions.',rate_limited:'The AI is busy (free limit reached). Wait a minute and try again.',invalid_json:'The AI answer came back in the wrong format. Press Analyze to try again.',refused:'The AI declined this request. Try a different opponent name.',offline:'Could not reach the AI server. Check your internet connection.',server:'The AI server had a problem.',no_key:'The AI server has no Gemini key yet.',bad_key:'The Gemini key was not accepted.'};
 
 // ---- prediction model: team strength from recent seasons, Poisson scorelines ----
 const LEAGUE_LEVEL={eng:0,esp:-.1,ita:-.15,ger:-.2,fra:-.35,tur:-.85};
@@ -812,18 +823,18 @@ function xiPenalty(club,ids,roleAt){ // weaker than usual XI, players out of pos
 }
 const pois=(k,l)=>{let f=1;for(let i=2;i<=k;i++)f*=i;return Math.exp(-l)*l**k/f};
 function modelPredict(home){
-  const oc=oppClub();if(!oc)return null;
+  const oc=oppClub();
   const myIds=FORMATIONS[state.formation].map((s,i)=>state.xi[i]).filter(Boolean);
   const opIds=FORMATIONS[ost.formation].map((s,i)=>ost.xi[i]);
   const rMe=teamRating(C)-xiPenalty(C,myIds,i=>FORMATIONS[state.formation][i]?.[0]);
-  const rOp=teamRating(oc)-(opIds.some(Boolean)?xiPenalty(oc,opIds.filter(v=>oc.squad.some(p=>p.id===v)),i=>FORMATIONS[ost.formation][i]?.[0]):0);
+  const rOp=!oc?(LEAGUE_LEVEL[C.league]??-.5):teamRating(oc)-(opIds.some(Boolean)?xiPenalty(oc,opIds.filter(v=>oc.squad.some(p=>p.id===v)),i=>FORMATIONS[ost.formation][i]?.[0]):0);
   const D=rMe-rOp+(home?.3:-.3), T=2.6+.3*Math.abs(D);
   const lf=Math.max(.15,(T+D)/2), la=Math.max(.15,(T-D)/2);
   let w=0,d=0,l=0;const scores=[];
   for(let a=0;a<=9;a++)for(let b=0;b<=9;b++){const p=pois(a,lf)*pois(b,la);if(a>b)w+=p;else if(a===b)d+=p;else l+=p;scores.push([a,b,p])}
   scores.sort((x,y)=>y[2]-x[2]);
   const big=scores.filter(([a,b])=>a-b>=3).reduce((t,x)=>t+x[2],0), bigL=scores.filter(([a,b])=>b-a>=3).reduce((t,x)=>t+x[2],0);
-  return {xgF:lf,xgA:la,win:w*100,draw:d*100,loss:l*100,top:scores.slice(0,6),big:big*100,bigL:bigL*100};
+  return {xgF:lf,xgA:la,win:w*100,draw:d*100,loss:l*100,top:scores.slice(0,6),all:scores,big:big*100,bigL:bigL*100};
 }
 
 // ---- opponent lineup ----
@@ -902,7 +913,7 @@ The positions, in this exact order, are: ${slots.join(', ')}.
 Reply with only a JSON array of 11 player names in that order, e.g. ["Name", "Name", ...].`;
   oppCtl=new AbortController();const btn=$('#oppSuggest');btn.disabled=true;$('#oppStatus').textContent='Asking the AI for their likely XI…';
   const keyAtStart=oppKey;
-  try{const arr=await askAI(prompt,{signal:oppCtl.signal,tier:'quick'});
+  try{const arr=(await askAI(prompt,{signal:oppCtl.signal,tier:'quick'})).result;
     if(oppKey!==keyAtStart)return;
     if(!Array.isArray(arr))throw {code:'invalid_json'};
     const xi={};arr.slice(0,11).forEach((v,i)=>{const name=String(v||'').trim();if(!name)return;const p=oc&&oc.squad.find(p=>p.name.toLowerCase()===name.toLowerCase());xi[i]=p?p.id:name});
@@ -939,78 +950,138 @@ function renderXISummary(){
   if(state.bench.length)box.append(el('span',{class:'chip',text:`Bench: ${state.bench.length}`}));
 }
 function sampleNotice(){if(sampleReady)$('#analyze').disabled=false}
+// ---- match simulation: score, chances and goalscorers with minutes (no AI needed) ----
+const GOAL_W={ST:1,RW:.55,LW:.55,AM:.5,CM:.2,RWB:.12,LWB:.12,DM:.08,RB:.08,LB:.08,CB:.1,GK:0};
+function pickWeighted(items){const t=items.reduce((a,x)=>a+x.w,0);let r=Math.random()*t;for(const x of items){if((r-=x.w)<=0)return x}return items[items.length-1]}
+function sampleScore(M){let r=Math.random()*M.all.reduce((a,x)=>a+x[2],0);for(const x of M.all){if((r-=x[2])<=0)return x}return M.all[0]}
+function goalMinutes(n){const out=[];for(let i=0;i<n;i++){let m=Math.ceil(Math.pow(Math.random(),.9)*90);if(m<1)m=1;
+  out.push(m===90&&Math.random()<.6?'90+'+(1+Math.floor(Math.random()*5)):m===45&&Math.random()<.3?'45+'+(1+Math.floor(Math.random()*3)):String(m))}
+  const v=x=>{const [a,b]=x.split('+');return +a+(b?+b/10:0)};return out.sort((a,b)=>v(a)-v(b))}
+function scorerFor(lineup,bench,minute){
+  // lineup: [{name,role}], bench: [{name,roles}]
+  const mm=parseInt(minute);
+  if(Math.random()<.025)return {name:'Own goal',og:true};
+  if(bench.length&&mm>=62&&Math.random()<.22){const b=pickWeighted(bench.map(p=>({p,w:GOAL_W[p.roles[0]]??.2})));return {name:b.p.name,sub:true}}
+  const x=pickWeighted(lineup.map(p=>({p,w:GOAL_W[p.role]??.2})));
+  return {name:x.p.name,pen:Math.random()<.1};
+}
+let lastSim=null;
+function simulate(home){
+  const M=modelPredict(home);
+  const [gf,ga]=sampleScore(M);
+  const myXI=FORMATIONS[state.formation].map((s,i)=>{const p=byId(state.xi[i]);return p&&{name:p.name,role:s[0]}}).filter(Boolean);
+  const myBench=state.bench.map(byId).filter(Boolean);
+  const oc=oppClub();
+  let opXI=FORMATIONS[ost.formation].map((s,i)=>{const p=oppPlayer(i);return p&&{name:p.name,role:s[0]}}).filter(Boolean);
+  if(!opXI.length&&oc){const u=usualXI(oc);opXI=u.map(n=>oc.squad.find(p=>p.id===n)).filter(Boolean).map(p=>({name:p.name,role:p.roles[0]}))}
+  const opBench=oc?oc.squad.filter(p=>!opXI.some(x=>x.name===p.name)&&p.grp!=='GK').slice(0,12):[];
+  return {M,gf,ga,myXI,myBench,opXI,opBench};
+}
+function simEvents(S,gf,ga,opp){
+  const ev=[];
+  goalMinutes(gf).forEach(m=>ev.push({m,mine:true,...scorerFor(S.myXI,S.myBench,m)}));
+  goalMinutes(ga).forEach(m=>ev.push({m,mine:false,...(S.opXI.length?scorerFor(S.opXI,S.opBench,m):{name:opp+' goal'})}));
+  return sortEv(ev);
+}
+const minV=x=>{const [a,b]=String(x).split('+');return (parseInt(a)||0)+(b?parseInt(b)/10:0)};
+const sortEv=ev=>ev.sort((a,b)=>minV(a.m)-minV(b.m));
 $('#analyze').onclick=async()=>{
   const {xi,bench,filled}=lineupText();
   if(filled<11)return renderXISummary();
+  const oppSel=$('#opp').value;const opp=oppSel==='__other'?($('#oppOther').value.trim()||'Opponent'):oppSel;
+  const venue=$('#venue').value;const home=venue==='home';
+  const S=simulate(home);const M=S.M;
   const L=LEAGUES.find(l=>l.id===C.league);
-  const oppSel=$('#opp').value;const opp=oppSel==='__other'?($('#oppOther').value.trim()||'an unnamed opponent'):oppSel;
-  const venue=$('#venue').value;
-  const oppText=()=>{const f=FORMATIONS[ost.formation].map((s,i)=>[s[0],oppPlayer(i)]).filter(x=>x[1]);
-    return f.length?`${ost.formation}. ${f.map(([r,p])=>r+': '+p.name).join(', ')}${f.length<11?' (other positions not given; assume their usual players)':''}. Compare our players directly against these opponents.`:'not given; assume their usual strongest XI for 2026/27.'};
-  const M=modelPredict(venue==='home');
-  const f1=x=>x.toFixed(1), sc=([a,b])=>`${a}-${b}`;
-  const modelText=M?`Our statistical model (team strength from recent league seasons, league level, home advantage and how strong these XIs are) expects ${C.name} ${f1(M.xgF)} goals and ${opp} ${f1(M.xgA)} goals.
-Model chances: ${C.name} win ${Math.round(M.win)}%, draw ${Math.round(M.draw)}%, ${opp} win ${Math.round(M.loss)}%. Most likely scores (${C.name} first): ${M.top.slice(0,5).map(x=>sc(x)+' '+Math.round(x[2]*100)+'%').join(', ')}. Chance ${C.name} win by 3+ goals: ${Math.round(M.big)}%.
-Stay close to the model (within about one goal) unless these lineups give a clear reason not to.`:'';
-  const prompt=`You are a football analyst. Analyze a match for ${C.name} (${L.name}, season 2026/27, head coach ${C.coach}).
-Opponent: ${opp}. Venue: ${venue==='home'?C.name+' at home ('+C.stadium+')':C.name+' away at '+opp}.
-Formation: ${state.formation}
-Starting XI:
+  const sc=([a,b])=>`${a}-${b}`;
+  const prompt=`You are a football analyst. Today is ${new Date().toDateString()}. Season 2026/27.
+Match: ${home?C.name+' (home) vs '+opp+' (away)':opp+' (home) vs '+C.name+' (away)'}. ${C.name} play in the ${L.name}; head coach ${C.coach}.
+
+${C.name} line-up (${state.formation}):
 ${xi.join('\n')}
-Bench: ${bench.length?bench.join('; '):'none chosen. Suggest substitutes only from this squad list: '+C.squad.filter(p=>!Object.values(state.xi).includes(p.id)).map(p=>p.name).join(', ')}
+${C.name} bench: ${bench.length?bench.join('; '):'none chosen'}
 
-${opp} lineup: ${oppText()}
+${opp} line-up${S.opXI.length?'':' (not given, use their usual players)'}:
+${S.opXI.map(p=>p.role+': '+p.name).join('\n')}
 
-${modelText}
+Step 1. Check the CURRENT form of both teams (their last 5 matches in all competitions this season) and of the players above: who is scoring, who is injured or out of form. Use Google Search for this if you can.
+Step 2. Our statistical model expects ${C.name} ${M.xgF.toFixed(1)} goals and ${opp} ${M.xgA.toFixed(1)} goals (chances: ${C.name} win ${Math.round(M.win)}%, draw ${Math.round(M.draw)}%, ${opp} win ${Math.round(M.loss)}%). It simulated this match once and the result was ${C.name} ${S.gf}-${S.ga} ${opp}.
+Use that simulated result as the final score unless the current form gives a strong reason to change it, and then change each team's goals by at most 1. Do not shrink big wins: 4-0 or 5-1 results are normal when one team is much stronger.
+Step 3. For every goal give the minute, the scorer, the assister and how it was scored in one short sentence (for example "header from a corner", "counter-attack finished low into the corner", "penalty after a foul on the winger"). ${C.name} scorers must come from their line-up or bench above. ${opp} scorers should come from their line-up above when given. Players in good form should be more likely to score. Substitutes only score after the 60th minute.
 
-Use what you know about these players and the opponent's typical strength and style. Be realistic, not a fan.
-Scorelines: do not play it safe. When one team is much stronger (for example a top Premier League side against a weak Turkish side, or a Süper Lig giant against a relegation side), wins by 3, 4 or 5 goals are normal, so predict them. Close games should stay close. Not every game is 1-0, 2-1 or 2-0. If a player is out of position, say so.
-Substitutes must come from the bench list (or the squad list if no bench). Players coming off must be in the starting XI.
-Write in simple, clear English that a teenager can follow. Keep each point to one or two sentences.
-
-Reply with only this JSON:
-{"win":number,"draw":number,"loss":number,"goalsFor":number,"goalsAgainst":number,"summary":"2-3 sentences",
-"strengths":["3-5 points about why this XI works"],"weaknesses":["3-5 risks of this XI"],
-"keyBattles":["2-3 key matchups by player name"],
-"subs":[{"minute":number,"off":"name","on":"name","why":"reason"}],
-"tactics":["3-4 tips for how ${C.name} should play this match"]}
-win+draw+loss must equal 100. goalsFor is ${C.name}'s predicted goals and goalsAgainst is ${opp}'s, as whole numbers. Give 3 to 5 subs in time order.`;
+Write in simple English. Reply with only this JSON:
+{"form":{"us":{"last5":"like WWDLW, newest first","note":"one sentence on ${C.name}'s current form"},"them":{"last5":"","note":"one sentence on ${opp}'s current form"}},
+"keyPlayers":["2-4 short notes about in-form or missing players from either team"],
+"win":number,"draw":number,"loss":number,"goalsFor":number,"goalsAgainst":number,
+"goals":[{"minute":"23","team":"us or them","scorer":"name","assist":"name or empty","how":"one short sentence"}],
+"summary":"2 sentences about how the match goes"}
+"us" means ${C.name}. win+draw+loss = 100. The goals list must have exactly goalsFor goals for "us" and goalsAgainst goals for "them", in time order.`;
   ctl=new AbortController();
   $('#analyze').disabled=true;$('#stop').hidden=false;
-  const out=$('#out');out.replaceChildren(el('div',{class:'card status'},el('span',{class:'dot'}),el('span',{text:`Analyzing ${C.name} vs ${opp}… this can take up to a minute.`})));
+  const out=$('#out');out.replaceChildren(el('div',{class:'card status'},el('span',{class:'dot'}),el('span',{text:`Checking current form and playing ${C.name} vs ${opp}… this can take up to a minute.`})));
   const clubAtStart=CID;
-  try{const r=await askAI(prompt,{signal:ctl.signal});if(CID===clubAtStart)renderAnalysis(r,opp,venue,M)}
-  catch(e){const msg=AI_ERR[e&&e.code]||'Something went wrong with the AI.';
-    if(M&&e.code!=='cancelled'){renderAnalysis({win:M.win,draw:M.draw,loss:M.loss,goalsFor:Math.round(M.xgF),goalsAgainst:Math.round(M.xgA),summary:'',modelOnly:true},opp,venue,M);
-      out.prepend(el('div',{class:'card warn',text:msg+' Showing the statistical prediction only. Press Analyze again for the full written analysis.'}))}
-    else out.replaceChildren(el('div',{class:'card warn',text:msg+' Press Analyze to try again.'}))}
-  finally{$('#analyze').disabled=false;$('#stop').hidden=true}
+  try{
+    const j=await askAI(prompt,{signal:ctl.signal,search:true});if(CID!==clubAtStart)return;
+    const r=j.result||{};
+    const myNames=[...S.myXI.map(p=>p.name),...S.myBench.map(p=>p.name)];
+    const opNames=[...S.opXI.map(p=>p.name),...S.opBench.map(p=>p.name)];
+    const fix=(name,mine,m)=>{const pool=mine?myNames:opNames;const hit=pool.find(n=>n.toLowerCase()===String(name||'').toLowerCase())||pool.find(n=>String(name||'').toLowerCase().includes(n.split(' ').slice(-1)[0].toLowerCase()));
+      if(hit||(!mine&&!pool.length))return hit||name||opp+' goal';return scorerFor(mine?S.myXI:S.opXI,mine?S.myBench:S.opBench,m).name};
+    let ev=(Array.isArray(r.goals)?r.goals:[]).map(g=>{const mine=String(g.team).toLowerCase()!=='them';const m=String(g.minute??'').replace(/[^0-9+]/g,'')||String(1+Math.floor(Math.random()*90));
+      return {m,mine,name:fix(g.scorer,mine,m),assist:g.assist&&g.assist!=='empty'?String(g.assist):'',how:String(g.how||''),pen:/penalt/i.test(g.how||'')}});
+    sortEv(ev);
+    const gf=ev.filter(e=>e.mine).length,ga=ev.length-gf;
+    const blend=(a,b)=>Number.isFinite(+a)?(+a+b)/2:b;
+    const Mx={...M,win:blend(r.win,M.win),draw:blend(r.draw,M.draw),loss:blend(r.loss,M.loss)};
+    const t=Mx.win+Mx.draw+Mx.loss;Mx.win*=100/t;Mx.draw*=100/t;Mx.loss*=100/t;
+    renderSim(Mx,gf,ga,ev,opp,home,{form:r.form,keyPlayers:r.keyPlayers,summary:r.summary,sources:j.sources||[],searched:j.searched});
+  }catch(e){
+    if(CID!==clubAtStart)return;
+    const ev=simEvents(S,S.gf,S.ga,opp);
+    renderSim(M,S.gf,S.ga,ev,opp,home,null);
+    if(e&&e.code!=='cancelled')out.prepend(el('div',{class:'card warn',text:(AI_ERR[e&&e.code]||'The AI had a problem.')+' Showing the simulation without the form check.'}));
+  }finally{$('#analyze').disabled=false;$('#stop').hidden=true}
 };
 $('#stop').onclick=()=>ctl?.abort();
-function renderAnalysis(r,opp,venue,M){
-  let w=+r.win||0,d=+r.draw||0,l=+r.loss||0;const t=w+d+l||1;w=Math.round(w/t*100);d=Math.round(d/t*100);l=100-w-d;
-  let fs=Number.isFinite(+r.goalsFor)&&r.goalsFor!==''?Math.round(+r.goalsFor):null, os=Number.isFinite(+r.goalsAgainst)&&r.goalsAgainst!==''?Math.round(+r.goalsAgainst):null;
-  if(fs==null||os==null){const m=String(r.score||'').match(/(\d+)\D+(\d+)/);fs=m?+m[1]:'?';os=m?+m[2]:'?'}
-  const home=venue==='home';
-  const f1x=x=>x.toFixed(1);const list=arr=>el('ul',{class:'bul'},...(Array.isArray(arr)?arr:[]).map(x=>el('li',{text:String(x)})));
+function renderSim(M,fs,os,events,opp,home,ai){
+  const w=Math.round(M.win),d=Math.round(M.draw),l=100-w-d;
+  const f1=x=>x.toFixed(1);
+  const homeName=home?C.name:opp,awayName=home?opp:C.name;
+  let hs=0,as=0;
+  const tl=el('div',{class:'timeline'},
+    el('div',{class:'tl-row ko'},el('span',{class:'tl-min',text:"0'"}),el('span',{text:'Kick-off'})),
+    ...events.flatMap((e,i)=>{const isHome=e.mine===home;if(isHome)hs++;else as++;
+      const rows=[];
+      const prev=events[i-1];if(parseInt(e.m)>45&&(!prev||parseInt(prev.m)<=45))rows.push(el('div',{class:'tl-row ht'},el('span',{class:'tl-min',text:'HT'}),el('span',{text:'Half-time'})));
+      rows.push(el('div',{class:'tl-row goal '+(isHome?'h':'a')},
+        el('span',{class:'tl-min num',text:e.m+"'"}),
+        el('span',{class:'tl-ball',text:'⚽'}),
+        el('span',{class:'tl-who'},el('b',{text:e.name}),el('small',{text:(e.mine?C.name:opp)+(e.assist?' · assist '+e.assist:'')+(e.pen&&!e.how?' · penalty':'')+(e.sub?' · off the bench':'')+(e.og?' · '+(e.mine?opp:C.name)+' defender':'')}),e.how?el('span',{class:'tl-how',text:e.how}):null),
+        el('span',{class:'tl-sc num',text:`${hs}–${as}`})));
+      return rows}),
+    ...(events.every(e=>parseInt(e.m)<=45)?[el('div',{class:'tl-row ht'},el('span',{class:'tl-min',text:'HT'}),el('span',{text:'Half-time'}))]:[]),
+    el('div',{class:'tl-row ko'},el('span',{class:'tl-min',text:'FT'}),el('span',{text:`Full-time · ${homeName} ${home?fs:os}–${home?os:fs} ${awayName}`})));
   $('#out').replaceChildren(el('div',{class:'card result'},
-    el('div',{class:'score'},el('div',{class:'cap',text:'Predicted score'}),
-      el('div',{class:'teams'},home?C.name:opp,el('small',{text:'Home'})),
+    el('div',{class:'score'},el('div',{class:'cap',text:ai?'Predicted result':'Simulated result'}),
+      el('div',{class:'teams'},homeName,el('small',{text:'Home'})),
       el('div',{class:'big num',text:home?`${fs} – ${os}`:`${os} – ${fs}`}),
-      el('div',{class:'teams'},home?opp:C.name,el('small',{text:'Away'}))),
+      el('div',{class:'teams'},awayName,el('small',{text:'Away'}))),
     el('div',{},
       el('div',{class:'prob',role:'img','aria-label':`Win ${w}%, draw ${d}%, loss ${l}%`},
         el('div',{style:`flex-basis:${w}%;background:var(--win)`,text:w>=10?w+'%':''}),el('div',{style:`flex-basis:${d}%;background:var(--draw)`,text:d>=10?d+'%':''}),el('div',{style:`flex-basis:${l}%;background:var(--loss)`,text:l>=10?l+'%':''})),
       el('div',{class:'probkey'},el('span',{text:`${C.name} win ${w}%`}),el('span',{text:`Draw ${d}%`}),el('span',{text:`${opp} win ${l}%`}))),
-    M?el('div',{},el('div',{class:'cap',style:'margin-bottom:6px',text:'Most likely scores (model)'}),el('div',{class:'chips'},...M.top.slice(0,6).map(([a,b,p])=>el('span',{class:'chip',text:`${home?a+'–'+b:b+'–'+a} · ${Math.round(p*100)}%`}))),
-      el('p',{class:'note',style:'margin:6px 0 0',text:`Expected goals ${home?f1x(M.xgF)+' – '+f1x(M.xgA):f1x(M.xgA)+' – '+f1x(M.xgF)}. Chance of a 3+ goal ${C.name} win: ${Math.round(M.big)}%.`})):null,
-    r.modelOnly?null:el('p',{style:'margin:0;max-width:70ch',text:r.summary||''}),
-    ...(r.modelOnly?[]:[el('div',{class:'cols'},el('div',{class:'good'},el('h3',{text:'What works'}),list(r.strengths)),el('div',{class:'bad'},el('h3',{text:'Risks'}),list(r.weaknesses))),
-    el('div',{class:'cols'},el('div',{},el('h3',{text:'Key battles'}),list(r.keyBattles)),el('div',{},el('h3',{text:'How to play it'}),list(r.tactics))),
-    el('div',{},el('h3',{style:'font-size:19px;text-transform:uppercase;margin-bottom:8px',text:'Substitution plan'}),
-      el('div',{class:'subs'},...(Array.isArray(r.subs)?r.subs:[]).sort((a,b)=>(+a.minute)-(+b.minute)).map(s=>
-        el('div',{class:'sub'},el('div',{class:'min num',text:(s.minute??'?')+"'"}),el('div',{},el('div',{class:'sw'},el('span',{class:'on',text:'▲ '+(s.on||'')}),'  ',el('span',{class:'off',text:'▼ '+(s.off||'')})),el('p',{text:s.why||''}))))))]),
-    el('p',{class:'disclaim',text:'This is an AI estimate for fun, based on general knowledge of the players and teams. It does not know about current injuries or form.'})));
+    ai&&ai.summary?el('p',{style:'margin:0;max-width:70ch',text:ai.summary}):null,
+    ai&&ai.form?el('div',{},el('h3',{style:'font-size:19px;text-transform:uppercase;margin-bottom:8px',text:'Current form'}),
+      el('div',{class:'cols'},...[[C.name,ai.form.us],[opp,ai.form.them]].map(([n,f])=>el('div',{class:'formbox'},el('b',{text:n}),
+        el('div',{class:'last5'},...String(f&&f.last5||'').toUpperCase().replace(/[^WDL]/g,'').slice(0,5).split('').filter(Boolean).map(c=>el('span',{class:'f'+c,text:c}))),
+        el('p',{text:f&&f.note||''})))),
+      Array.isArray(ai.keyPlayers)&&ai.keyPlayers.length?el('ul',{class:'bul',style:'margin-top:8px'},...ai.keyPlayers.map(x=>el('li',{text:String(x)}))):null):null,
+    el('div',{},el('h3',{style:'font-size:19px;text-transform:uppercase;margin-bottom:8px',text:'Goals'}),events.length?tl:el('p',{class:'note',style:'margin:0',text:'No goals. A 0–0 draw.'})),
+    el('div',{},el('div',{class:'cap',style:'margin-bottom:6px',text:'Most likely scores'}),el('div',{class:'chips'},...M.top.slice(0,6).map(([a,b,p])=>el('span',{class:'chip',text:`${home?a+'–'+b:b+'–'+a} · ${Math.round(p*100)}%`}))),
+      el('p',{class:'note',style:'margin:6px 0 0',text:`Expected goals ${home?f1(M.xgF)+' – '+f1(M.xgA):f1(M.xgA)+' – '+f1(M.xgF)}. Chance of ${C.name} winning by 3 or more: ${Math.round(M.big)}%.`})),
+    el('div',{class:'row'},el('button',{class:'btn primary',text:'Simulate again',onclick:()=>$('#analyze').click()})),
+    ai&&ai.sources&&ai.sources.length?el('p',{class:'note',style:'margin:0'},'Form checked with Google Search: ',...ai.sources.slice(0,4).flatMap((x,i)=>[i?', ':'',el('a',{href:x.uri,target:'_blank',rel:'noopener',text:x.title||'source'})])):
+      ai?el('p',{class:'note',style:'margin:0',text:ai.searched===false?'Form is based on what the AI already knows, so it may be a little out of date.':''}):null,
+    el('p',{class:'disclaim',text:'Each press plays the match once, using team strength from recent seasons, home advantage and how strong both line-ups are. Big wins come up about as often as they do in real life. Just for fun.'})));
 }
 
 // boot

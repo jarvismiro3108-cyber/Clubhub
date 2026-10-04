@@ -1,0 +1,8 @@
+{
+  // Club Hub: website in ./public, AI endpoint in worker.js (/api/analyze, /api/test)
+  "name": "clubhub",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  "keep_vars": true
+}
