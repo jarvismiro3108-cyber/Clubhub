@@ -61,6 +61,13 @@ async function ask(env, prompt, search) {
 
 export default {
   async fetch(request, env) {
+    try { return await handle(request, env); }
+    catch (e) { return json(200, { ok: false, error: 'crash', detail: String(e && (e.stack || e.message) || e).slice(0, 400) }); }
+  },
+};
+
+async function handle(request, env) {
+  {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
     if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
@@ -86,5 +93,5 @@ export default {
     const r = await ask(env, prompt, !!body.search);
     if (!r.result) return json(r.status === 429 ? 429 : 502, r);
     return json(200, r);
-  },
-};
+  }
+}
