@@ -132,10 +132,30 @@ export default {
   },
 };
 
+// ---------- private site: every page needs the password (only its SHA-256 fingerprint is stored here)
+const PW_HASH = '6724344cbdf84636f8e823a1c4274363bfd461482efa1193db7c34020ce22636';
+async function sha256hex(t) { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+async function authorized(request, env) {
+  if (env.PUBLIC_SITE === 'yes') return true; // set this text variable in Cloudflare to open the site to everyone again
+  const h = request.headers.get('Authorization') || '';
+  if (!h.startsWith('Basic ')) return false;
+  let decoded = ''; try { decoded = atob(h.slice(6)); } catch { return false; }
+  const pw = decoded.slice(decoded.indexOf(':') + 1);
+  return (await sha256hex('clubhub:' + pw)) === PW_HASH;
+}
+const LOCKED = () => new Response('Club Hub is private. Enter the password to continue.', { status: 401,
+  headers: { 'WWW-Authenticate': 'Basic realm="Club Hub (private)", charset="UTF-8"', 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' } });
+
 async function handle(request, env) {
+  if (!(await authorized(request, env))) return LOCKED();
   if (!env.GEMINI_API_KEY) { const k = Object.keys(env).find(k => /gemini/i.test(k) && typeof env[k] === 'string'); if (k) env = { ...env, GEMINI_API_KEY: env[k].trim() }; }
   const url = new URL(request.url);
-  if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
+  if (!url.pathname.startsWith('/api/')) {
+    const res = await env.ASSETS.fetch(request);
+    const out = new Response(res.body, res);
+    out.headers.set('X-Robots-Tag', 'noindex, nofollow'); out.headers.set('Cache-Control', 'private, no-store');
+    return out;
+  }
 
   const origin = allowedOrigin(request.headers.get('Origin'), url.origin);
   if (request.method === 'OPTIONS') return origin ? new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': origin, 'Vary': 'Origin', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } }) : new Response(null, { status: 403 });
