@@ -188,7 +188,7 @@ function parseEvent(ev, fallbackComp) {
   }));
   let comp = ev.league?.name || c.league?.name || ev.seasonType?.name || '';
   if (!comp || /regular|season/i.test(comp)) comp = fallbackComp || '';
-  return { id: String(ev.id || ''), date: String(ev.date || c.date || ''), done: !!st.completed, state: str(st.state, 10), detail: str(st.shortDetail || st.detail, 20),
+  return { id: String(ev.id || ''), date: String(ev.date || c.date || ''), stage: str(ev.season?.slug, 40), done: !!st.completed, state: str(st.state, 10), detail: str(st.shortDetail || st.detail, 20),
     comp: str(comp, 50), home: side(h), away: side(a), goals };
 }
 async function leagueEvents(lg) {
@@ -260,6 +260,57 @@ async function liveClub(lg, id) {
   players.forEach(p => delete p._any);
   return { team: str(ros.value?.team?.displayName || '', 50), results, next, players, statsFrom, updated: new Date().toISOString() };
 }
+// ---------- European cups: league-phase table, knockout ties, recent results and next fixtures
+const CUP = { ucl: 'uefa.champions', uel: 'uefa.europa' };
+const KO_ORDER = ['knockout-round-playoffs', 'round-of-16', 'quarterfinals', 'semifinals', 'final'];
+const stageName = s => ({ 'knockout-round-playoffs': 'Knockout play-offs', 'round-of-16': 'Round of 16', quarterfinals: 'Quarter-finals', semifinals: 'Semi-finals', final: 'Final' }[s]
+  || s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()));
+function koRounds(events) {
+  const lp = events.filter(e => e.stage === 'league-phase').map(e => e.date).sort();
+  const after = lp.length ? lp[lp.length - 1] : '2027-01-29';
+  const ko = events.filter(e => e.stage && e.stage !== 'league-phase' && e.date > after);
+  const stages = [...new Set(ko.map(e => e.stage))].sort((a, b) => {
+    const ia = KO_ORDER.indexOf(a), ib = KO_ORDER.indexOf(b);
+    if (ia >= 0 || ib >= 0) return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    return ko.find(e => e.stage === a).date.localeCompare(ko.find(e => e.stage === b).date);
+  });
+  return stages.map(stage => {
+    const ties = new Map();
+    for (const e of ko.filter(e => e.stage === stage).sort((a, b) => a.date.localeCompare(b.date))) {
+      const k = [e.home.id || e.home.name, e.away.id || e.away.name].sort().join('|');
+      if (!ties.has(k)) ties.set(k, { a: { id: e.home.id, name: e.home.name }, b: { id: e.away.id, name: e.away.name }, legs: [] });
+      ties.get(k).legs.push({ date: e.date, done: e.done, state: e.state, detail: e.detail, home: e.home.id || e.home.name, hs: e.home.score, as: e.away.score, hp: e.home.pens, ap: e.away.pens });
+    }
+    const out = [...ties.values()].map(t => {
+      let aggA = 0, aggB = 0, any = false;
+      for (const l of t.legs) if (l.hs != null && l.as != null && (l.done || l.state === 'in')) { any = true; const aHome = l.home === (t.a.id || t.a.name); aggA += aHome ? l.hs : l.as; aggB += aHome ? l.as : l.hs; }
+      let winner = '';
+      if (t.legs.length && t.legs.every(l => l.done)) {
+        const last = t.legs[t.legs.length - 1], aHome = last.home === (t.a.id || t.a.name);
+        if (aggA !== aggB) winner = aggA > aggB ? 'a' : 'b';
+        else if (last.hp != null && last.ap != null) winner = (aHome ? last.hp > last.ap : last.ap > last.hp) ? 'a' : 'b';
+      }
+      return { ...t, aggA: any ? aggA : null, aggB: any ? aggB : null, winner };
+    });
+    return { stage, name: stageName(stage), ties: out };
+  });
+}
+async function liveCup(comp) {
+  const base = `https://site.api.espn.com/apis/site/v2/sports/soccer/${CUP[comp]}`;
+  const [st, sb] = await Promise.allSettled([
+    getJSON(`https://site.api.espn.com/apis/v2/sports/soccer/${CUP[comp]}/standings`, 600),
+    getJSON(`${base}/scoreboard?dates=${SEASON_START}-20270701&limit=1000`, 600)]);
+  if (st.status !== 'fulfilled' && sb.status !== 'fulfilled') throw st.reason;
+  const events = sb.status === 'fulfilled' ? (sb.value?.events || []).map(e => parseEvent(e, '')).filter(Boolean) : [];
+  const table = st.status === 'fulfilled' ? parseStandings(st.value) : null;
+  const lp = events.filter(e => e.stage === 'league-phase');
+  if (table) for (const r of table.rows) r.form = formOf(lp, r.id);
+  const now = new Date().toISOString();
+  const recent = events.filter(e => e.done).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 18).map(({ goals, ...e }) => e);
+  const next = events.filter(e => !e.done && e.state === 'pre' && e.date >= now.slice(0, 10)).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 18).map(({ goals, ...e }) => e);
+  if (!table && !events.length) throw new Error('no cup data');
+  return { comp, table, rounds: koRounds(events), recent, next, updated: now };
+}
 function liveJson(status, obj) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': status === 200 ? 'private, max-age=300' : 'no-store', 'X-Content-Type-Options': 'nosniff' } });
 }
@@ -304,6 +355,14 @@ async function handle(request, env) {
     if (!env.GEMINI_API_KEY) return json(200, { ok: false, error: 'no_key' });
     const r = await ask(env, 'Reply with only this JSON: {"ok":true}', false);
     return json(200, r.result ? { ok: true } : { ok: false, error: r.error });
+  }
+  if (url.pathname === '/api/live/cup') {
+    if (request.method !== 'GET') return liveJson(405, { error: 'method' });
+    if (request.headers.get('Origin') && !origin) return liveJson(403, { error: 'forbidden' });
+    const comp = url.searchParams.get('comp') || '';
+    if (!CUP[comp]) return liveJson(400, { error: 'bad_request' });
+    try { return liveJson(200, await liveCup(comp)); }
+    catch (e) { console.log('cup', comp, e && e.message); return liveJson(502, { error: 'live_unavailable' }); }
   }
   if (url.pathname === '/api/live/table' || url.pathname === '/api/live/club') {
     if (request.method !== 'GET') return liveJson(405, { error: 'method' });
