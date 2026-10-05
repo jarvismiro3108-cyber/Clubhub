@@ -48,11 +48,17 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
   `/api/live/cup?league=ucl|uel` (knockout legs Jan–Jun 2027 grouped into ties by round; round from ESPN notes or the
   UEFA date windows). No real ties yet → projected bracket from the table. European team names are matched against all
   114 clubs with `matchGlobal()` (confident matches only; foreign clubs stay unlinked).
-- Bracket Simulator: 16 picked clubs (localStorage `clubhub-bracket`), two-legged ties + one-match final via `simTie()`
-  (Poisson on `teamRating()`, extra time, penalties).
-- Fantasy Draft (Süper Lig, modelled on FPL Draft): 15-man squads 2/5/5/3, snake draft vs bots, unique ownership,
-  H2H over 34 simulated gameweeks (`fzSimRound()` → FPL scoring + 3/2/1 bonus, auto-subs). State in localStorage
-  `clubhub-fantasy-tur`. "Pts" = estimated FPL points from real stats via `/api/live/players?league=tur` (all rosters).
+- Brackets (`bracketTree()`): mirrored tree (R16 both sides → final + SVG trophy in the middle), connector lines are CSS
+  borders on `.bpair`; below 760px it turns into a round-by-round list. Europe shows play-off ties in `tieGrid()` above it.
+- Bracket Simulator: clubs are picked straight on the bracket (localStorage `clubhub-bracket`), `simTie()` plays two-legged
+  ties + a one-match final (Poisson on `teamRating()`, extra time, penalties), rounds reveal with an animation.
+- Fantasy Draft (Süper Lig): snake draft vs bots onto a pitch: 15 players = 2 GK, 5 DEF, 4 MID, 4 FWD (`FZ_Q`), i.e. a 4-3-3
+  XI + one sub per position (`FZ_SLOTS`); each player owned once. After the draft the user swaps starters/subs, then a
+  double round-robin league of simulated matches (`fzMatch()`: score, scorers, assists, cards, subs). No fantasy points:
+  league table + leaders (goals, assists, clean sheets, yellow, red) and end-of-season awards. State: localStorage
+  `clubhub-fantasy-tur` (v2). Real 2026/27 goals/assists from `/api/live/players?league=tur` are shown while drafting.
+- Club "This Season" player stats: spotlight cards, goal-contributions chart (goals `--s-g` / assists `--s-a`, validated
+  palette pair), player cards with a position filter, full sortable table folded in a `<details>`.
 
 
 `teamRating()` (goal difference per game over the last 3 seasons + league level), `xiPenalty()`,

@@ -221,30 +221,70 @@ select,input[type=text]{background:var(--surface);color:var(--fg);border:1px sol
 .sitenav a{color:#fff;text-decoration:none;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:8px;background:color-mix(in srgb,#fff 10%,transparent)}
 .sitenav a:hover{background:color-mix(in srgb,#fff 20%,transparent)}
 .sitenav a span{color:#ffd200}
-.bracket{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,1fr);gap:14px;overflow-x:auto;padding-bottom:8px}
+.panel>*,#xMain>*{min-width:0}
+.sech{font-size:24px;font-weight:700;text-transform:uppercase;margin:0}
+/* knockout bracket: mirrored tree on a night-stadium panel */
+.bwrap{--gap:22px;--ln:rgba(150,175,255,.4);position:relative;color:#fff;border-radius:14px;padding:18px 16px 20px;overflow-x:auto;
+  background:radial-gradient(90% 55% at 50% -5%,rgba(90,130,255,.38),transparent 60%),radial-gradient(45% 35% at 50% 100%,rgba(255,200,40,.16),transparent 70%),
+  repeating-linear-gradient(90deg,transparent 0 70px,rgba(255,255,255,.025) 70px 140px),linear-gradient(180deg,#0c1640,#050a1e)}
+.btree{display:grid;grid-template-columns:repeat(3,minmax(126px,1fr)) minmax(160px,1.1fr) repeat(3,minmax(126px,1fr));column-gap:var(--gap);min-width:1050px;min-height:600px}
 .bcol{display:flex;flex-direction:column;min-width:0}
-.bcol h4{margin:0 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.bties{display:flex;flex-direction:column;justify-content:space-around;gap:10px;flex:1}
-.tie{background:var(--surface2);border-radius:8px;padding:7px 9px;display:grid;gap:3px;border-left:3px solid var(--line)}
-.tie.done{border-left-color:var(--c-hi)}
-.tie .tm{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:13.5px}
-.tie .tm .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
-.tie .tm .nm a{color:inherit;text-decoration:none}.tie .tm .nm a:hover{text-decoration:underline}
-.tie .tm .nm small{color:var(--muted);font-weight:500;margin-left:4px}
-.tie .tm.win .nm{font-weight:800}.tie .tm.lose{color:var(--muted)}
-.tie .sc{font-family:var(--display);font-weight:800;font-size:18px;min-width:18px;text-align:right}
-.tie .nt{font-size:11.5px;color:var(--muted);line-height:1.3}
-.champ-card{background:var(--c-deep);color:#fff;border-radius:10px;padding:18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.champ-card .crest{width:64px;height:64px;font-size:22px}
-.champ-card h2{font-size:clamp(28px,6vw,44px);text-transform:uppercase;line-height:1}
+.bcol h4,.bgh{margin:0 0 10px;text-align:center;font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#a5b6ef}
+.bgh{text-align:left}
+.bbody{flex:1;display:flex;flex-direction:column}
+.bpair{flex:1;display:flex;flex-direction:column;position:relative}
+.bcell{flex:1;display:flex;align-items:center;padding:5px 0;position:relative;z-index:1}
+.bcell>.btie{width:100%}
+.lt .bpair:not(.single)::after,.rt .bpair:not(.single)::after{content:"";position:absolute;top:25%;bottom:25%;width:calc(var(--gap)/2);border:2px solid var(--ln)}
+.lt .bpair:not(.single)::after{right:calc(var(--gap)/-2);border-left:0;border-radius:0 8px 8px 0}
+.rt .bpair:not(.single)::after{left:calc(var(--gap)/-2);border-right:0;border-radius:8px 0 0 8px}
+.lt .bpair::before,.rt .bpair::before{content:"";position:absolute;top:50%;width:calc(var(--gap)/2);border-top:2px solid var(--ln)}
+.lt .bpair::before{right:calc(var(--gap)*-1)}.rt .bpair::before{left:calc(var(--gap)*-1)}
+.lt .bpair.single::before,.rt .bpair.single::before{width:var(--gap)}
+.btie{background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.15);border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.btie.ph{opacity:.5;border-style:dashed;box-shadow:none}
+.bt{display:grid;grid-template-columns:6px minmax(0,1fr) auto;align-items:center;gap:9px;width:100%;padding:7px 10px 7px 0;font:inherit;font-size:13.5px;font-weight:600;color:#e9edfb;background:none;border:0;text-align:left;min-height:34px}
+.bt+.bt{border-top:1px solid rgba(255,255,255,.08)}
+.bt .sw{align-self:stretch;background:linear-gradient(180deg,var(--t1,#4a5580) 0 50%,var(--t2,#2c3458) 50%)}
+.bt .bn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt .bn a{color:inherit;text-decoration:none}.bt .bn a:hover{text-decoration:underline}
+.bt .bn small{margin-left:6px;color:#8d9bd0;font-weight:500;font-size:11px}
+.bt .bs{font-family:var(--display);font-weight:800;font-size:19px;min-width:20px;text-align:center;color:#c9d2f3}
+.bt.w{background:linear-gradient(90deg,rgba(255,210,0,.18),transparent 75%);color:#fff}.bt.w .bn{font-weight:800}.bt.w .bs{color:#ffd200}
+.bt.l{color:#8189ad}.bt.l .bs{color:#6e779c}
+.bt.empty{color:#a7b3e3;font-weight:500}
+button.bt{cursor:pointer}button.bt:hover{background:rgba(255,255,255,.09)}button.bt:focus-visible{outline:2px solid #ffd200;outline-offset:-2px}
+.bnote{font-size:11px;color:#97a3d3;padding:4px 10px 6px;border-top:1px solid rgba(255,255,255,.07);line-height:1.3}
+.fin .bbody{justify-content:center}
+.bfinal{display:grid;grid-template-rows:110px auto 110px;align-items:center;justify-items:stretch}
+.bfinal .bcell{padding:0}
+.bfinal .btie{border:1px solid rgba(255,210,0,.6);box-shadow:0 0 0 1px rgba(255,210,0,.15),0 10px 34px rgba(255,190,0,.22)}
+.bfinal .bt{font-size:14.5px;min-height:40px}.bfinal .bt .bs{font-size:22px}
+.trophy{height:110px;display:grid;place-items:end center;filter:drop-shadow(0 0 18px rgba(255,200,40,.45))}
+.trophy svg{height:96px;width:auto}
+.bchamp{align-self:start;justify-self:center;text-align:center;margin-top:12px;font-family:var(--display);font-weight:800;font-size:24px;text-transform:uppercase;line-height:1.05;color:#ffd200;text-shadow:0 0 18px rgba(255,200,40,.55)}
+.bchamp small{display:block;font-family:var(--body);font-size:11px;letter-spacing:.16em;color:#a5b6ef;font-weight:600;text-shadow:none;margin-bottom:4px}
+.bwrap.anim .btie,.bwrap.anim .bchamp{animation:bIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
+.bwrap.anim .trophy{animation:shine 1.4s ease-out 2.2s both}
+@keyframes bIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes shine{0%{filter:drop-shadow(0 0 0 rgba(255,200,40,0))}55%{filter:drop-shadow(0 0 34px rgba(255,215,70,.95))}100%{filter:drop-shadow(0 0 18px rgba(255,200,40,.45))}}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px}
+@media (max-width:760px){
+  .btree{display:flex;flex-direction:column;min-width:0;min-height:0;gap:4px}
+  .bcol{order:var(--o)}.bcol.rt h4{display:none}.bcol h4{text-align:left;margin:10px 0 8px}
+  .bpair{display:contents}.bpair::before,.bpair::after{display:none!important}
+  .bbody{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px}
+  .bcell{padding:0}
+  .fin .bbody{display:block}.bfinal{grid-template-rows:auto auto auto;margin-top:6px}.bchamp{margin-top:10px}
+  .bcol.rt .bbody{margin-top:8px}
+}
+.champ-card{border-radius:14px;padding:18px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;color:#fff;position:relative;overflow:hidden;
+  background:radial-gradient(80% 120% at 0% 0%,color-mix(in srgb,var(--k2,#1d2a57) 55%,transparent),transparent 70%),linear-gradient(135deg,var(--k1,#0b1640),#050a1e)}
+.champ-card .trophy{height:90px}.champ-card .trophy svg{height:84px}
+.champ-card h2{font-size:clamp(30px,6vw,48px);text-transform:uppercase;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
 .champ-card .eyebrow{color:#ffd200}
-.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:10px}
-.slotpair{background:var(--surface2);border-radius:10px;padding:8px;display:grid;gap:6px}
-.slotpair .lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 4px}
-.pickbtn{display:grid;grid-template-columns:20px minmax(0,1fr);gap:9px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;cursor:pointer;color:var(--fg);font-weight:600;min-width:0}
-.pickbtn span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pickbtn.empty{border-style:dashed;color:var(--muted);font-weight:500}
-.pickbtn:hover{border-color:var(--fg2)}
+.champ-card.anim{animation:bIn .6s cubic-bezier(.2,.8,.2,1) 2.3s both}
+@media (prefers-reduced-motion:reduce){.bwrap.anim .btie,.bwrap.anim .bchamp,.bwrap.anim .trophy,.champ-card.anim{animation:none}}
 .opt[disabled]{opacity:.4;cursor:not-allowed}
 .opt .mini{margin-left:8px}
 /* fantasy */
@@ -280,9 +320,105 @@ select,input[type=text]{background:var(--surface);color:var(--fg);border:1px sol
 details.sq{border-top:1px solid var(--line);padding:8px 0}
 details.sq summary{cursor:pointer;font-weight:700}
 .rules{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
-.ptsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:4px 16px;font-size:13.5px;margin-top:8px}
-.ptsgrid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:3px 0}
 @media (max-width:520px){.prow{grid-template-columns:20px minmax(0,1fr) 34px 38px auto;gap:7px;padding:8px}}
+
+/* fantasy: pitch draft, broadcast banner, match reports, awards */
+.fzwrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.fzwrap{grid-template-columns:1fr}}
+.fzfield{display:grid;gap:10px}
+.pitch.fz{box-shadow:inset 0 0 70px rgba(0,0,0,.35);background:radial-gradient(70% 50% at 50% 50%,rgba(255,255,255,.07),transparent 70%),repeating-linear-gradient(180deg,var(--pitch) 0 10%,var(--pitch2) 10% 20%)}
+.fzone .fzfield{max-width:520px;margin:0 auto}
+.pitch.fz .slot{width:76px}
+@media (max-width:520px){.pitch.fz .slot{width:62px;gap:2px}.pitch.fz .shirt{width:34px;height:34px;font-size:15px}.pitch.fz .slot .nm{font-size:10px;max-width:62px;padding:1px 4px}.pitch.fz .slot .rl{display:none}
+  .dugout .shirt{width:34px;height:34px;font-size:15px}.dugout .slot .nm{font-size:10px;padding:1px 4px}.dugout .slot .rl{font-size:9px}}
+.slot .badge{font-size:10.5px;font-weight:800;background:#ffd200;color:#13235b;border-radius:999px;padding:0 6px;white-space:nowrap}
+.slot.sel .shirt{box-shadow:0 0 0 3px #ffd200,0 0 18px #ffd200}
+.slot.swap .shirt{box-shadow:0 0 0 2px #fff,0 0 12px rgba(255,255,255,.8)}
+.slot.open .shirt{animation:pulseRing 1.2s infinite;border-color:#ffd200}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(255,210,0,.75)}100%{box-shadow:0 0 0 12px rgba(255,210,0,0)}}
+@media (prefers-reduced-motion:reduce){.slot.open .shirt{animation:none}}
+.dugout{background:linear-gradient(180deg,#1b2552,#0d1330);border-radius:12px;padding:10px 8px 12px;display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr));gap:4px;align-items:center;color:#fff;box-shadow:inset 0 2px 0 rgba(255,255,255,.08)}
+.dugout .dlbl{font-family:var(--display);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:#ffd200;writing-mode:vertical-rl;transform:rotate(180deg);padding:0 4px}
+.dugout .slot{position:relative;left:auto;top:auto;transform:none;width:auto;min-width:0}
+.dugout .slot .nm{max-width:100%}
+.clock{border-radius:14px;padding:16px 18px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(135deg,#0d1847,#1b3190 60%,#0d1847)}
+.clock::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 26px,rgba(255,255,255,.04) 26px 52px);pointer-events:none}
+.clock.me{background:linear-gradient(135deg,#0b3a22,#1f9d55 65%,#0b3a22)}
+.clock.gold{background:linear-gradient(135deg,#4a3500,#b8860b 55%,#4a3500)}
+.clock>*{position:relative;z-index:1}
+.clock .k{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:#ffd200;display:flex;align-items:center;gap:8px}
+.clock.gold .k{color:#fff}
+.clock .who{font-family:var(--display);font-weight:800;font-size:clamp(26px,5vw,36px);text-transform:uppercase;line-height:1;margin-top:6px}
+.clock .meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:13px;opacity:.9}
+.clock .bar{height:6px;border-radius:3px;background:rgba(255,255,255,.18);margin-top:12px;overflow:hidden}.clock .bar i{display:block;height:100%;background:#ffd200;border-radius:3px;transition:width .3s}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#ff4d4d;animation:pulse 1s infinite alternate}
+.fzhero{border-radius:14px;padding:22px;color:#fff;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:22px;align-items:center;background:radial-gradient(70% 90% at 100% 0%,rgba(255,210,0,.18),transparent 60%),linear-gradient(135deg,#0d1847,#050a1e)}
+.fzhero .k{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:#ffd200}
+.fzhero h2{font-size:clamp(30px,6vw,52px);text-transform:uppercase;line-height:.95;margin-top:8px}
+.fzhero p{color:color-mix(in srgb,#fff 80%,transparent);margin:10px 0 0;max-width:46ch}
+.fzhero-pitch .slot{pointer-events:none}
+@media (max-width:700px){.fzhero{grid-template-columns:1fr}.fzhero-pitch{max-width:300px;width:100%;margin:0 auto}}
+.tl-row.cardev,.tl-row.subev{background:none;border:1px solid var(--line)}
+.tl-row.subev{color:var(--fg2)}.tl-row.subev .tl-who b{font-weight:600}
+.tl-card{width:13px;height:18px;border-radius:2px;justify-self:center}.tl-card.y{background:#f2c200}.tl-card.r{background:#d63030}
+.tl-sub{justify-self:center;font-weight:800;color:var(--win)}
+.subh{font-size:19px;text-transform:uppercase;margin:18px 0 8px}
+.mres{display:grid;gap:6px}
+.mres>div{background:var(--surface2);border-radius:8px;padding:8px 12px}
+.mres .ln,.mres .sc{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:center}
+.mres .ln span:first-child,.mres .sc span:first-child{text-align:right}
+.mres .ln span{font-weight:600}.mres .ln b{font-family:var(--display);font-size:20px}
+.mres .sc{font-size:12px;color:var(--muted);margin-top:2px}.mres .sc span:nth-child(2){min-width:40px}
+.lbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px;margin-top:10px}
+.lb h3{font-size:20px;text-transform:uppercase;margin-bottom:6px}
+.lb ol.rank li.mine .n{color:var(--win)}
+.awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px}
+.award{border-radius:14px;padding:14px 16px;color:#fff;background:linear-gradient(150deg,#1b2552,#0b1029);display:grid;gap:2px;align-content:start;box-shadow:0 8px 22px rgba(10,20,50,.18)}
+.award .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#ffd200}
+.award .v{font-family:var(--display);font-weight:800;font-size:48px;line-height:1;margin-top:4px}.award .v small{font-size:14px;margin-left:6px;opacity:.8}
+.award b{font-size:16px;margin-top:4px}.award span{font-size:12.5px;opacity:.8}
+.award.winner{background:linear-gradient(150deg,#6b4e0c,#d4a017 55%,#6b4e0c);grid-column:1/-1;grid-template-columns:auto 1fr;column-gap:16px;align-items:center}
+.award.winner .trophy{grid-row:span 3;height:84px}.award.winner .trophy svg{height:78px}.award.winner .k{color:#fff}.award.winner b{font-family:var(--display);font-size:clamp(26px,5vw,40px);text-transform:uppercase;line-height:1}
+ol.rules{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+
+/* club player stats: spotlights, contributions chart, player cards */
+:root{--s-g:#2a78d6;--s-a:#eb6834}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s-g:#3987e5;--s-a:#d95926}}
+:root[data-theme="dark"]{--s-g:#3987e5;--s-a:#d95926}
+.spots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px;margin-bottom:18px}
+.spot{position:relative;overflow:hidden;border-radius:14px;padding:16px;color:#fff;min-height:150px;background:linear-gradient(135deg,var(--c-deep),color-mix(in srgb,var(--c-s1) 32%,var(--c-deep)))}
+.spot::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.05) 22px 44px)}
+.spot>*{position:relative}
+.spot .sno{position:absolute;right:10px;bottom:-16px;font-family:var(--display);font-weight:800;font-size:110px;line-height:1;opacity:.16}
+.spot .sk{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#ffd200}
+.spot .sv{font-family:var(--display);font-weight:800;font-size:60px;line-height:1;margin-top:6px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.spot .sv small{font-size:16px;margin-left:6px;opacity:.85;letter-spacing:.04em}
+.spot .sn{font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;line-height:1.1;margin-top:6px}
+.spot .ss{font-size:12.5px;opacity:.85}
+.contrib{margin:4px 0 18px}
+.contrib h3,.pgrid-h{font-size:19px;text-transform:uppercase;margin:0 0 8px}
+.vlegend{display:flex;gap:14px;font-size:12.5px;color:var(--fg2);margin-bottom:8px}
+.vlegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.crow{display:grid;grid-template-columns:minmax(90px,30%) minmax(0,1fr) 28px;gap:10px;align-items:center;padding:4px 0}
+.crow .cn{font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+.crow .ctrack{display:flex;gap:2px;height:16px;align-items:stretch}
+.crow .cg{background:var(--s-g)}.crow .ca{background:var(--s-a)}
+.crow .ctrack>span:last-child{border-radius:0 4px 4px 0}
+.crow .ct{font-weight:800;font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--fg)}
+.pfilter{margin-bottom:10px}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,158px),1fr));gap:10px}
+.pc{position:relative;border-radius:12px;padding:12px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(160deg,color-mix(in srgb,var(--c-s1) 18%,var(--surface)),var(--surface) 62%)}
+.pc .pno{position:absolute;right:8px;top:-8px;font-family:var(--display);font-weight:800;font-size:58px;line-height:1;opacity:.14}
+.pc .pp{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:4px;color:#fff;background:var(--pcol)}
+.pc .pnm{display:block;margin:8px 0 10px;font-size:14.5px;line-height:1.2;font-weight:700;position:relative}
+.pc .pst{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:center}
+.pc .pst div{background:var(--surface2);border-radius:6px;padding:4px 0}
+.pc .pst strong{display:block;font-family:var(--display);font-size:21px;line-height:1.05}
+.pc .pst span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pc.idle{opacity:.55}
+.pc .hot{position:absolute;right:8px;bottom:8px;font-size:10.5px;font-weight:800;color:#fff;background:linear-gradient(90deg,#e8590c,#d6336c);border-radius:999px;padding:1px 7px}
+.pc .pst{margin-bottom:0}
+details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-weight:700;color:var(--fg2)}
 
 /* live data: league table, results, player stats */
 .seg{display:inline-flex;background:var(--surface2);border-radius:999px;padding:3px;gap:2px}
@@ -984,20 +1120,51 @@ function playersCard(d){
   const P=(d.players||[]).filter(p=>p.name);
   const card=el('div',{class:'card'},el('h2',{text:'Player Stats'}));
   if(!P.length||d.statsFrom==='none'){card.append(el('p',{class:'lede',text:'Player stats are not available right now. Please check back later.'}));return card}
+  const n=v=>v??0,ga=p=>n(p.goals)+n(p.assists),idle=p=>p.apps===0||(p.apps==null&&!p.goals);
   const top=(list,k)=>list.filter(p=>p[k]>0).sort((a,b)=>b[k]-a[k]||(a.apps??99)-(b.apps??99))[0];
-  const gks=P.filter(p=>p.pos==='GK'),out=P.filter(p=>p.pos!=='GK');
-  const lead=[['goals','Top scorer','goal'],['assists','Most assists','assist']].map(([k,l,u])=>{const p=top(P,k);return p?[p[k],`${l}: ${p.name}`,u]:null}).filter(Boolean);
-  const sv=top(gks,'saves');if(sv)lead.push([sv.saves,`Most saves: ${sv.name}`]);
-  if(lead.length)card.append(el('div',{class:'leaders'},...lead.map(([n,s])=>el('div',{class:'leader'},el('b',{class:'num',text:n}),el('span',{text:s})))));
-  card.append(el('p',{class:'lede',style:'margin:0 0 10px',text:d.statsFrom==='matches'
-    ?'Goals are counted from this season’s league matches. Assists and saves are not available right now.'
-    :'This season’s stats. Tap a column to sort.'}));
-  const POSN={DEF:'Defender',MID:'Midfielder',FWD:'Forward',GK:'Goalkeeper'};
-  card.append(statTable(out,[['no','#'],['name','Player'],['pos','Pos'],['apps','Apps'],['goals','Goals'],['assists','Assists']],'goals',POSN,'outfield players'));
-  if(gks.length){
-    const cols=[['no','#'],['name','Player'],['apps','Apps'],['saves','Saves'],['conceded','Conceded'],['cs','Clean sheets']].filter(([k])=>['no','name','apps','saves'].includes(k)||gks.some(p=>p[k]!=null));
-    card.append(el('h3',{style:'font-size:19px;text-transform:uppercase;margin:18px 0 8px',text:'Goalkeepers'}),statTable(gks,cols,'apps',POSN,'goalkeepers'));
+  const gks=P.filter(p=>p.pos==='GK'),spots=[];
+  const sc=top(P,'goals');if(sc)spots.push(['Top scorer',sc,sc.goals,sc.goals===1?'goal':'goals']);
+  const as=top(P,'assists');if(as)spots.push(['Chief creator',as,as.assists,as.assists===1?'assist':'assists']);
+  const cs=top(gks,'cs'),sv=top(gks,'saves');
+  if(cs)spots.push(['Clean sheet king',cs,cs.cs,cs.cs===1?'clean sheet':'clean sheets']);else if(sv)spots.push(['Shot stopper',sv,sv.saves,'saves']);
+  if(spots.length)card.append(el('div',{class:'spots'},...spots.map(([k,p,v,u])=>el('div',{class:'spot'},el('div',{class:'sno','aria-hidden':'true',text:p.no??''}),
+    el('div',{class:'sk',text:k}),el('div',{class:'sv num',text:v},el('small',{text:u})),el('div',{class:'sn',text:p.name}),el('div',{class:'ss',text:p.apps!=null?`${p.apps} appearance${p.apps===1?'':'s'}`:''})))));
+  // goal contributions: goals + assists stacked, top 8
+  const contrib=P.filter(p=>ga(p)>0).sort((a,b)=>ga(b)-ga(a)||n(b.goals)-n(a.goals)).slice(0,8);
+  if(contrib.length&&d.statsFrom==='roster'){
+    const max=Math.max(...contrib.map(ga)),tip=$('#tip');
+    const seg=(cls,v,p,label)=>{if(!v)return null;const s=el('span',{class:cls,style:`flex:0 0 calc(${(v/max*100).toFixed(2)}% - 2px)`});
+      const show=e=>{const pt=e.touches?e.touches[0]:e;tip.hidden=false;tip.textContent=`${p.name}: ${v} ${label}${v===1?'':'s'}`;tip.style.left=Math.min(pt.clientX+12,innerWidth-200)+'px';tip.style.top=(pt.clientY-40)+'px'};
+      s.addEventListener('mousemove',show);s.addEventListener('touchstart',show,{passive:true});s.addEventListener('mouseleave',()=>{tip.hidden=true});return s};
+    card.append(el('div',{class:'contrib'},el('h3',{text:'Goal Contributions'}),
+      el('div',{class:'vlegend'},el('span',{},el('i',{style:'background:var(--s-g)'}),'Goals'),el('span',{},el('i',{style:'background:var(--s-a)'}),'Assists')),
+      el('div',{role:'img','aria-label':'Goals and assists per player: '+contrib.map(p=>`${p.name} ${n(p.goals)} goals ${n(p.assists)} assists`).join(', ')},
+        ...contrib.map(p=>el('div',{class:'crow'},el('span',{class:'cn',text:p.name}),el('span',{class:'ctrack'},seg('cg',n(p.goals),p,'goal'),seg('ca',n(p.assists),p,'assist')),el('span',{class:'ct',text:ga(p)}))))));
   }
+  // player cards with a position filter
+  const PCOL={GK:'#b7791f',DEF:'#2b6cb0',MID:'#2f855a',FWD:'#c53030'},PN={GK:'Goalkeeper',DEF:'Defender',MID:'Midfielder',FWD:'Forward'};
+  let pos='',all=false;const grid=el('div',{class:'pcards'}),more=el('div');
+  const seg2=el('div',{class:'seg pfilter',role:'group','aria-label':'Position'});
+  const draw=()=>{
+    seg2.replaceChildren(...[['','All'],['GK','GK'],['DEF','DEF'],['MID','MID'],['FWD','FWD']].filter(([k])=>!k||P.some(p=>p.pos===k)).map(([k,l])=>el('button',{'aria-pressed':String(pos===k),text:l,onclick:()=>{pos=k;draw()}})));
+    const list=P.filter(p=>!pos||p.pos===pos).sort((a,b)=>idle(a)-idle(b)||ga(b)-ga(a)||n(b.apps)-n(a.apps)||(a.pos==='GK'&&b.pos==='GK'?n(b.saves)-n(a.saves):0));
+    const shown=all?list:list.filter(p=>!idle(p)),hidden=list.length-shown.length;
+    grid.replaceChildren(...shown.map(p=>{const gk=p.pos==='GK',stats=gk?[['Apps',p.apps],['Saves',p.saves],['Clean',p.cs]]:[['Apps',p.apps],['Goals',p.goals],['Assists',p.assists]];
+      const c=el('div',{class:'pc'+(idle(p)?' idle':'')},el('span',{class:'pno','aria-hidden':'true',text:p.no??''}),el('span',{class:'pp',style:`--pcol:${PCOL[p.pos]||'#6b7280'}`,text:PN[p.pos]||'Player'}),
+        el('b',{class:'pnm',text:p.name}),el('div',{class:'pst'},...stats.map(([l,v])=>el('div',{},el('strong',{class:'num',text:v??'–'}),el('span',{text:l})))),
+        !gk&&ga(p)>=4?el('span',{class:'hot',text:'On fire'}):null);return c}));
+    if(!shown.length)grid.append(el('p',{class:'note',text:'No players have played here yet.'}));
+    more.replaceChildren(...(hidden||all?[el('button',{class:'linkbtn',text:all?'Hide players without an appearance':`Show ${hidden} more player${hidden===1?'':'s'} without an appearance`,onclick:()=>{all=!all;draw()}})]:[]));
+  };
+  draw();
+  card.append(el('h3',{class:'pgrid-h',text:'The Squad'}),seg2,grid,more);
+  if(d.statsFrom==='matches')card.append(el('p',{class:'note',text:'Goals are counted from this season’s league matches. Assists and saves are not available right now.'}));
+  // full sortable table, folded away
+  const POSN={DEF:'Defender',MID:'Midfielder',FWD:'Forward',GK:'Goalkeeper'},out=P.filter(p=>p.pos!=='GK');
+  const det=el('details',{class:'fulltable'},el('summary',{text:'Full stats table'}),
+    el('div',{style:'margin-top:10px'},statTable(out,[['no','#'],['name','Player'],['pos','Pos'],['apps','Apps'],['goals','Goals'],['assists','Assists']],'goals',POSN,'outfield players')),
+    gks.length?el('div',{style:'margin-top:14px'},statTable(gks,[['no','#'],['name','Player'],['apps','Apps'],['saves','Saves'],['conceded','Conceded'],['cs','Clean sheets']].filter(([k])=>['no','name','apps','saves'].includes(k)||gks.some(p=>p[k]!=null)),'apps',POSN,'goalkeepers')):null);
+  card.append(det);
   return card;
 }
 function statTable(rows,cols,sortKey,POSN,what){
@@ -1436,7 +1603,7 @@ function renderSim(M,fs,os,events,opp,home,ai){
 const XPAGES={
   europe:['Europe','Champions League and Europa League: live league-phase tables and the knockout bracket','UCL · UEL'],
   bracket:['Bracket Simulator','Pick any 16 clubs, then simulate a Champions League-style knockout','Play'],
-  fantasy:['Fantasy Draft','Süper Lig draft league: draft a squad against bot managers, then play the season','New']};
+  fantasy:['Fantasy Draft','Süper Lig draft league: pick your 15 on the pitch, then play a full season of simulated matches','New']};
 const EURO={ucl:'Champions League',uel:'Europa League'};
 function showX(name){
   C=null;CID=null;applyColors(null);closePicker(true);
@@ -1465,19 +1632,51 @@ function matchGlobal(rows){
 }
 const clubLabel=(sid,name)=>sid&&CLUBS[sid]?CLUBS[sid].name:name;
 
-// ---------- bracket drawing (shared by Europe and the simulator)
-function bracketEl(rounds){
-  return el('div',{class:'bracket'},...rounds.map(r=>el('div',{class:'bcol'},el('h4',{text:r.title}),el('div',{class:'bties'},...r.ties.map(tieEl)))));
+// ---------- knockout bracket drawing (shared by Europe and the simulator)
+// Mirrored tree: round of 16 on both sides, final + trophy in the middle. Lines are CSS borders, so cards stay plain HTML.
+let bUid=0;
+function trophyEl(){
+  const id='gold'+(++bUid),w=el('div',{class:'trophy','aria-hidden':'true'});
+  w.innerHTML=`<svg viewBox="0 0 64 84"><defs><linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="#a87708"/><stop offset=".45" stop-color="#ffe9a8"/><stop offset=".62" stop-color="#ffd24a"/><stop offset="1" stop-color="#b8860b"/></linearGradient></defs><path d="M15 6h34v15c0 12-7 21-17 23C22 42 15 33 15 21z" fill="url(#${id})"/><path d="M15 11H6c0 10 4 16 11 17M49 11h9c0 10-4 16-11 17" fill="none" stroke="url(#${id})" stroke-width="4" stroke-linecap="round"/><path d="M28 44h8v13h-8z" fill="url(#${id})"/><path d="M19 57h26l3 11H16z" fill="url(#${id})"/><rect x="12" y="68" width="40" height="9" rx="2" fill="#6b4e0c"/></svg>`;
+  return w;
 }
-function tieEl(t){
-  const row=(s,sc,side)=>el('div',{class:'tm'+(t.winner?(t.winner===side?' win':' lose'):'')},mini(s.sid,''),
-    el('span',{class:'nm'},s.sid&&CLUBS[s.sid]&&!s.noLink?el('a',{href:'#'+s.sid,text:clubLabel(s.sid,s.name)}):clubLabel(s.sid,s.name),s.seed?el('small',{text:s.seed}):null),
-    el('span',{class:'sc num',text:sc??''}));
-  return el('div',{class:'tie'+(t.winner?' done':'')},row(t.a,t.sa,'a'),row(t.b,t.sb,'b'),t.note?el('div',{class:'nt',text:t.note}):null);
+const PH={ph:true,a:{name:'TBD'},b:{name:'TBD'}};
+function teamRow(t,s,sc,side,pick){
+  const c=s.sid&&CLUBS[s.sid],r=el(pick?'button':'div',{class:'bt'+(t.winner?(t.winner===side?' w':' l'):'')+(s.empty?' empty':'')});
+  if(c){r.style.setProperty('--t1',c.colors.s1);r.style.setProperty('--t2',c.colors.s2)}
+  const label=c?c.name:s.name;
+  r.append(el('i',{class:'sw','aria-hidden':'true'}),el('span',{class:'bn'},c&&!pick?el('a',{href:'#'+s.sid,text:label}):label,s.seed?el('small',{text:s.seed}):null),el('span',{class:'bs num',text:sc??''}));
+  if(pick){r.onclick=pick;r.title=s.empty?'Pick a club':'Change club'}
+  return r;
 }
+function tieCard(t,delay,pickA,pickB){
+  return el('div',{class:'btie'+(t.ph?' ph':'')+(t.winner?' done':''),style:`--d:${delay||0}s`},teamRow(t,t.a,t.sa,'a',pickA),teamRow(t,t.b,t.sb,'b',pickB),t.note?el('div',{class:'bnote',text:t.note}):null);
+}
+function bracketTree(rounds,{animate=false,pick=null,champion=null}={}){
+  const names=['Round of 16','Quarter-finals','Semi-finals'];
+  const R=[8,4,2,1].map((n,i)=>Array.from({length:n},(_,k)=>rounds[i]&&rounds[i][k]||PH));
+  const delay=(ri,k)=>animate?+(ri*.6+k*.05).toFixed(2):0;
+  const col=(ri,side)=>{
+    const n=R[ri].length/2,body=el('div',{class:'bbody'});
+    const card=k=>{const idx=side*n+k,pk=pick&&ri===0?[()=>pick(idx*2),()=>pick(idx*2+1)]:[];return el('div',{class:'bcell'},tieCard(R[ri][idx],delay(ri,idx),...pk))};
+    if(n>1)for(let k=0;k<n;k+=2)body.append(el('div',{class:'bpair'},card(k),card(k+1)));
+    else body.append(el('div',{class:'bpair single'},card(0)));
+    return el('div',{class:'bcol '+(side?'rt':'lt'),style:`--o:${ri*2+side}`},el('h4',{text:names[ri]}),body);
+  };
+  const fin=R[3][0],cname=champion&&(CLUBS[champion.sid]?.name||champion.name);
+  const finalCol=el('div',{class:'bcol fin',style:'--o:7'},el('h4',{text:'Final'}),el('div',{class:'bbody'},el('div',{class:'bfinal'},trophyEl(),
+    el('div',{class:'bcell'},tieCard(fin,delay(3,0))),
+    el('div',{class:'bchamp',style:`--d:${animate?2.4:0}s`},...(cname?[el('small',{text:'Champions'}),cname]:[el('small',{text:'Winner lifts the trophy'})])))));
+  return el('div',{class:'bwrap'+(animate?' anim':'')},el('div',{class:'btree'},col(0,0),col(1,0),col(2,0),finalCol,col(2,1),col(1,1),col(0,1)));
+}
+const tieGrid=(title,ties)=>el('div',{class:'bwrap'},el('h4',{class:'bgh',text:title}),el('div',{class:'bgrid'},...ties.map(t=>tieCard(t,0))));
 
 // ---------- Europe page
 const ROUND_NAMES={po:'Knockout play-offs',r16:'Round of 16',qf:'Quarter-finals',sf:'Semi-finals',f:'Final'};
+function orderRound(prev,cur){ // put each tie under the earlier ties its clubs came from
+  const idx=t=>{const i=prev.findIndex(p=>[p.a.id,p.b.id].some(x=>x&&(x===t.a.id||x===t.b.id)));return i<0?99:i};
+  return [...cur].sort((x,y)=>idx(x)-idx(y));
+}
 let euReq=0;
 function renderEurope(m){
   const comp=EURO[store.get('euComp','ucl')]?store.get('euComp','ucl'):'ucl';
@@ -1490,27 +1689,29 @@ function renderEurope(m){
     if(tr.status!=='fulfilled'){box.replaceChildren(liveError(()=>{m.innerHTML='';renderEurope(m)}));return}
     const t=tr.value;
     const rows=t.rows.map(r=>({...r,zone:r.pos<=8?{text:'Round of 16',color:'#1f9d55'}:r.pos<=24?{text:'Knockout play-offs',color:'#c98a00'}:{text:'Out',color:'#8a90a8'}}));
-    const nm=r=>({name:r.name,sid:t.map.byId[r.id],seed:ordinal(r.pos)});
+    const nm=r=>r?{name:r.name,sid:t.map.byId[r.id],id:r.id,seed:ordinal(r.pos)}:{name:'TBD'};
     const cup=cr.status==='fulfilled'?cr.value.rounds:null;
-    let rounds=[],real=false;
+    let po=[],tree=null,lede,champion=null;
     if(cup&&Object.values(cup).some(x=>x.length)){
-      real=true;
-      rounds=Object.entries(ROUND_NAMES).filter(([k])=>cup[k]&&cup[k].length).map(([k,title])=>({title,ties:cup[k].map(x=>({
-        a:{name:x.a.name,sid:t.map.byId[x.a.id]},b:{name:x.b.name,sid:t.map.byId[x.b.id]},sa:x.agg?x.agg[0]:null,sb:x.agg?x.agg[1]:null,winner:x.winner,
-        note:x.legs.map(l=>l.done?`${l.a}–${l.b}${x.legs.length>1?(l.aHome?' (H)':' (A)'):''}`:fmtDate(new Date(l.date))).join(' · ')+(x.pens?` · ${x.pens[0]}–${x.pens[1]} pens`:'')}))}));
+      const conv=x=>({a:{name:x.a.name,sid:t.map.byId[x.a.id],id:x.a.id},b:{name:x.b.name,sid:t.map.byId[x.b.id],id:x.b.id},sa:x.agg?x.agg[0]:null,sb:x.agg?x.agg[1]:null,winner:x.winner,
+        note:x.legs.map(l=>l.done?`${l.a}–${l.b}${x.legs.length>1?(l.aHome?' (H)':' (A)'):''}`:fmtDate(new Date(l.date))).join(' · ')+(x.pens?` · ${x.pens[0]}–${x.pens[1]} pens`:'')});
+      po=cup.po.map(conv);const r16=cup.r16.map(conv),qf=orderRound(r16,cup.qf.map(conv)),sf=orderRound(qf,cup.sf.map(conv)),f=orderRound(sf,cup.f.map(conv));
+      tree=[r16,qf,sf,f];if(f[0]&&f[0].winner)champion=f[0].winner==='a'?f[0].a:f[0].b;
+      lede='The real knockout ties. Scores are aggregates; (H) and (A) show where the first-named club played each leg.';
     }else if(rows.length>=24&&rows.some(r=>r.p>0)){
       const R=i=>rows[i-1];
-      rounds=[{title:'Knockout play-offs',ties:[[9,24],[10,23],[11,22],[12,21],[13,20],[14,19],[15,18],[16,17]].map(([x,y])=>({a:nm(R(x)),b:nm(R(y))}))},
-        {title:'Round of 16',ties:[[1,'16/17'],[2,'15/18'],[3,'14/19'],[4,'13/20'],[5,'12/21'],[6,'11/22'],[7,'10/23'],[8,'9/24']].map(([x,w])=>({a:nm(R(x)),b:{name:`Winner ${w}`}}))}];
+      po=[[9,24],[10,23],[11,22],[12,21],[13,20],[14,19],[15,18],[16,17]].map(([x,y])=>({a:nm(R(x)),b:nm(R(y))}));
+      tree=[[[1,'16/17'],[8,'9/24'],[4,'13/20'],[5,'12/21'],[2,'15/18'],[7,'10/23'],[3,'14/19'],[6,'11/22']].map(([x,w])=>({a:nm(R(x)),b:{name:'Winner '+w}}))];
+      lede='Projected: who would meet if the league phase ended today. The real pairings are drawn in January.';
     }
-    box.replaceChildren(
+    box.replaceChildren(...[
       el('div',{class:'card'},el('h2',{text:EURO[comp]+' · League Phase'}),
         el('p',{class:'lede',style:'margin:-6px 0 12px',text:`${t.season?'Season '+fmtS(t.season)+' · ':''}Updated ${fmtTime(t.updated)} · Top 8 go straight to the round of 16, 9th–24th play off`}),
         tableEl({...t,rows},null)),
-      el('div',{class:'card'},el('h2',{text:'Knockout Bracket'}),
-        el('p',{class:'lede',style:'margin:-6px 0 12px',text:real?'Real ties so far. (H) and (A) show where the first-named club played each leg.':rounds.length?'Projected: who would meet if the league phase ended today. The real pairings are drawn in January.':'The bracket appears once the league phase has started.'}),
-        rounds.length?bracketEl(rounds):null),
-      el('p',{class:'note',style:'margin:0',text:'Live data from ESPN, refreshed every few minutes. Want to play it out yourself? Try the Bracket Simulator.'}));
+      el('div',{},el('h2',{class:'sech',text:'Knockout Bracket'}),el('p',{class:'lede',style:'margin:0 0 12px',text:lede||'The bracket appears once the league phase has started.'})),
+      po.length?tieGrid('Knockout play-offs',po):null,
+      tree?bracketTree(tree,{champion}):null,
+      el('p',{class:'note',style:'margin:0',text:'Live data from ESPN, refreshed every few minutes. Want to play it out yourself? Try the Bracket Simulator.'})].filter(Boolean));
   });
 }
 
@@ -1533,12 +1734,12 @@ function simTie(A,B,twoLegs){
   return {a:{sid:A},b:{sid:B},sa:ga,sb:gb,winner,note,win:winner==='a'?A:B};
 }
 
-// ---------- Bracket simulator
+// ---------- Bracket simulator: pick clubs straight on the bracket, then play it out
 let BS=null;
 function bsLoad(){
   BS=store.get('bracket',null);
   if(!BS||!Array.isArray(BS.slots)||BS.slots.length!==16)BS={slots:Array(16).fill(null)};
-  BS.slots=BS.slots.map(id=>CLUBS[id]?id:null);
+  BS.slots=BS.slots.map(id=>CLUBS[id]?id:null);BS.result=null;
 }
 const bsSave=()=>store.set('bracket',{slots:BS.slots});
 function openClubPicker(title,exclude,current,onPick){
@@ -1560,57 +1761,60 @@ function openClubPicker(title,exclude,current,onPick){
 }
 function renderBracketSim(m){
   bsLoad();
-  const slotsBox=el('div',{class:'slots'}),out=el('div',{class:'panel'}),msg=el('p',{class:'note',style:'margin:8px 0 0'});
-  const ready=Object.keys(CLUBS);
-  const drawSlots=()=>{
-    slotsBox.replaceChildren(...[0,1,2,3,4,5,6,7].map(t=>el('div',{class:'slotpair'},el('div',{class:'lbl',text:'Tie '+(t+1)}),...[0,1].map(k=>{const i=t*2+k,id=BS.slots[i];
-      return el('button',{class:'pickbtn'+(id?'':' empty'),onclick:()=>openClubPicker(`Tie ${t+1} · ${k?'Second':'First'} club`,BS.slots.filter(Boolean),id,v=>{BS.slots[i]=v;bsSave();drawSlots()})},
-        mini(id),el('span',{text:id?CLUBS[id].name:'Pick a club'}))}))));
-    msg.textContent=`${BS.slots.filter(Boolean).length} of 16 clubs picked.`+(BS.slots.some(x=>!x)?' Empty spots get a random club when you simulate.':'');
+  const ready=Object.keys(CLUBS),treeBox=el('div'),banner=el('div'),msg=el('span',{class:'note',style:'margin:0'});
+  const pick=i=>openClubPicker(`Round of 16 · tie ${Math.floor(i/2)+1}`,BS.slots.filter(Boolean),BS.slots[i],v=>{BS.slots[i]=v;BS.result=null;bsSave();draw()});
+  const slotTeam=i=>BS.slots[i]?{sid:BS.slots[i]}:{name:'+ Pick a club',empty:true};
+  const draw=()=>{
+    const res=BS.result;
+    msg.textContent=`${BS.slots.filter(Boolean).length} of 16 clubs picked. Tap any club on the bracket to change it.`+(BS.slots.some(x=>!x)?' Empty spots get a random club.':'');
+    const rounds=res?res.rounds:[Array.from({length:8},(_,k)=>({a:slotTeam(2*k),b:slotTeam(2*k+1)}))];
+    treeBox.replaceChildren(bracketTree(rounds,{animate:!!(res&&res.fresh),pick,champion:res?{sid:res.champ}:null}));
+    if(res){
+      const c=CLUBS[res.champ],fin=res.rounds[3][0],ru=fin.win===fin.a.sid?fin.b.sid:fin.a.sid;
+      const card=el('div',{class:'champ-card'+(res.fresh?' anim':'')},trophyEl(),el('div',{},el('div',{class:'eyebrow',text:'Champions'}),el('h2',{text:c.name}),
+        el('p',{style:'margin:6px 0 0;opacity:.88',text:`Beat ${CLUBS[ru].name} ${Math.max(fin.sa,fin.sb)}–${Math.min(fin.sa,fin.sb)} in the final${fin.note?' ('+fin.note.toLowerCase()+')':''}.`})));
+      card.style.setProperty('--k1',c.colors.deep);card.style.setProperty('--k2',c.colors.s1);
+      banner.replaceChildren(card);
+    }else banner.replaceChildren();
+    if(res)res.fresh=false;
   };
-  const randomFill=all=>{const used=new Set(all?[]:BS.slots.filter(Boolean));const pool=ready.filter(id=>!used.has(id)).sort(()=>Math.random()-.5);
-    BS.slots=BS.slots.map(id=>!all&&id?id:pool.pop());bsSave();drawSlots()};
-  const strongest=()=>{BS.slots=[...ready].sort((a,b)=>teamRating(CLUBS[b])-teamRating(CLUBS[a])).slice(0,16).sort(()=>Math.random()-.5);bsSave();drawSlots()};
+  const randomFill=all=>{const used=new Set(all?[]:BS.slots.filter(Boolean)),pool=ready.filter(id=>!used.has(id)).sort(()=>Math.random()-.5);
+    BS.slots=BS.slots.map(id=>!all&&id?id:pool.pop());BS.result=null;bsSave();draw()};
+  const strongest=()=>{BS.slots=[...ready].sort((a,b)=>teamRating(CLUBS[b])-teamRating(CLUBS[a])).slice(0,16).sort(()=>Math.random()-.5);BS.result=null;bsSave();draw()};
   const run=()=>{
     if(BS.slots.some(x=>!x))randomFill(false);
     let ids=[...BS.slots];const rounds=[];
-    for(const [title,two] of [['Round of 16',true],['Quarter-finals',true],['Semi-finals',true],['Final',false]]){
-      const ties=[];for(let i=0;i<ids.length;i+=2)ties.push(simTie(ids[i],ids[i+1],two));
-      rounds.push({title,ties});ids=ties.map(t=>t.win);
-    }
-    const champ=CLUBS[ids[0]],fin=rounds[3].ties[0],ru=fin.win===fin.a.sid?fin.b.sid:fin.a.sid;
-    const cr=el('div',{class:'crest',text:champ.short});cr.style.background=`conic-gradient(${champ.colors.s1} 0 25%,${champ.colors.s2} 0 50%,${champ.colors.s1} 0 75%,${champ.colors.s2} 0)`;
-    const card=el('div',{class:'champ-card'},cr,el('div',{},el('div',{class:'eyebrow',text:'Champions'}),el('h2',{text:champ.name}),
-      el('p',{style:'margin:6px 0 0;opacity:.85',text:`Beat ${CLUBS[ru].name} ${Math.max(fin.sa,fin.sb)}–${Math.min(fin.sa,fin.sb)} in the final${fin.note?' ('+fin.note.toLowerCase()+')':''}.`})));
-    card.style.background=champ.colors.deep;
-    out.replaceChildren(card,el('div',{class:'card'},el('h2',{text:'Simulated Bracket'}),
-      el('p',{class:'lede',style:'margin:-6px 0 12px',text:'Two legs up to the semi-finals (first-named club at home first), one-match final on neutral ground. Scores in the bracket are aggregates.'}),
-      bracketEl(rounds),el('div',{class:'row',style:'margin-top:12px'},el('button',{class:'btn primary',text:'Simulate again',onclick:run}))));
-    out.scrollIntoView({behavior:'smooth',block:'start'});
+    for(const two of [true,true,true,false]){const ties=[];for(let i=0;i<ids.length;i+=2)ties.push(simTie(ids[i],ids[i+1],two));rounds.push(ties);ids=ties.map(t=>t.win)}
+    BS.result={rounds,champ:ids[0],fresh:true};draw();
+    treeBox.scrollIntoView({behavior:'smooth',block:'start'});
   };
-  m.append(el('div',{class:'card'},el('h2',{text:'Pick Your 16'}),
-    el('p',{class:'lede',style:'margin:-6px 0 12px',text:'Choose any clubs from the six leagues. Each press of Simulate plays the whole knockout once, using team strength from recent seasons, home advantage and a lot of luck.'}),
-    el('div',{class:'controls'},el('button',{class:'btn primary',text:'Simulate',onclick:run}),el('button',{class:'btn',text:'Random 16',onclick:()=>randomFill(true)}),
-      el('button',{class:'btn',text:'Strongest 16',onclick:strongest}),el('button',{class:'btn',text:'Clear',onclick:()=>{BS.slots=Array(16).fill(null);bsSave();drawSlots();out.replaceChildren()}})),
-    slotsBox,msg),out,
-    el('p',{class:'disclaim',text:'Just for fun. Not a prediction of the real competition and not betting advice.'}));
-  drawSlots();
+  m.append(el('div',{class:'card'},el('h2',{text:'Your Knockout'}),
+    el('p',{class:'lede',style:'margin:-6px 0 12px',text:'Fill the round of 16 with any clubs from the six leagues, right on the bracket. Simulate plays two-legged ties up to the semi-finals and a one-match final, using team strength, home advantage and plenty of luck.'}),
+    el('div',{class:'controls',style:'margin:0;align-items:center'},el('button',{class:'btn primary',text:'Simulate',onclick:run}),el('button',{class:'btn',text:'Random 16',onclick:()=>randomFill(true)}),
+      el('button',{class:'btn',text:'Strongest 16',onclick:strongest}),el('button',{class:'btn',text:'Clear',onclick:()=>{BS.slots=Array(16).fill(null);BS.result=null;bsSave();draw()}})),
+    el('p',{style:'margin:10px 0 0'},msg)),
+    banner,treeBox,el('p',{class:'disclaim',text:'Just for fun. Not a prediction of the real competition and not betting advice.'}));
+  draw();
 }
 
-// ---------- Fantasy draft (Süper Lig), modelled on FPL Draft:
-// 15-man squads (2 GK, 5 DEF, 5 MID, 3 FWD), snake draft, each player owned by one manager only,
-// head-to-head gameweeks, auto-subs, classic FPL scoring. Gameweeks are simulated with the site's match model;
-// "Pts so far" estimates FPL points from real 2026/27 stats.
-const FZ_GW=34,FZ_Q={GK:2,DEF:5,MID:5,FWD:3},FZ_POS=['GK','DEF','MID','FWD'];
+// ---------- Fantasy Draft (Süper Lig)
+// Draft 15 players onto a pitch: 2 GK, 5 DEF, 4 MID, 4 FWD = a 4-3-3 first 11 plus one sub per position.
+// Snake draft against bot managers (each player belongs to one team only). Then the teams play a double
+// round-robin league of simulated matches with real scores, scorers, assists, cards, and season leaderboards.
+const FZ_Q={GK:2,DEF:5,MID:4,FWD:4},FZ_POS=['GK','DEF','MID','FWD'];
+const ROLE_GRP={GK:'GK',RB:'DEF',CB:'DEF',LB:'DEF',RWB:'DEF',LWB:'DEF',DM:'MID',CM:'MID',AM:'MID',RW:'FWD',LW:'FWD',ST:'FWD'};
+const FZ_SLOTS=[...FORMATIONS['4-3-3'].map(([role,x,y])=>({role,grp:ROLE_GRP[role],x,y})),...FZ_POS.map(g=>({role:g,grp:g,bench:true}))];
 const FZ_BOTS=['Kadıköy Kings','Bosphorus Bandits','Anatolian Eagles','Karadeniz Storm','Ege Waves','Ankara Athletic','Kapadokya Comets'];
 const ASSIST_W={AM:.6,RW:.6,LW:.6,CM:.45,ST:.35,RB:.35,LB:.35,RWB:.4,LWB:.4,DM:.2,CB:.08,GK:.02};
-let FZ=null,fzPool=null,fzIndex=null,fzLive=null,fzTimer=null,fzUI={pos:'',club:'',q:'',sort:'value'};
+const POS_LONG={GK:'Goalkeeper',DEF:'Defender',MID:'Midfielder',FWD:'Attacker'};
+const PITCH_SVG='<svg class="lines" viewBox="0 0 68 100" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="rgba(255,255,255,.7)" stroke-width=".35"><rect x="2" y="2" width="64" height="96"/><line x1="2" y1="50" x2="66" y2="50"/><circle cx="34" cy="50" r="8"/><rect x="15" y="2" width="38" height="15"/><rect x="25" y="2" width="18" height="5"/><rect x="15" y="83" width="38" height="15"/><rect x="25" y="93" width="18" height="5"/></g></svg>';
+let FZ=null,fzPool=null,fzIndex=null,fzLive=null,fzTimer=null,fzSel=null;
 function fzPoolBuild(){
   if(fzPool)return fzPool;
   fzPool=[];
   for(const n of LEAGUES.find(l=>l.id==='tur').clubs){const id=slug(n),c=CLUBS[id];if(!c)continue;
     const xi=usualXI(c),r=teamRating(c);
-    for(const p of c.squad)if(FZ_Q[p.grp])fzPool.push({pid:id+'|'+p.name,cid:id,name:p.name,pos:p.grp,role:p.roles[0]||{GK:'GK',DEF:'CB',MID:'CM',FWD:'ST'}[p.grp],starter:xi.includes(p.id)||xi.includes(p.name),rating:r,real:null,formG:0})}
+    for(const p of c.squad)if(FZ_Q[p.grp])fzPool.push({pid:id+'|'+p.name,cid:id,name:p.name,no:p.no||'',pos:p.grp,roles:p.roles.length?p.roles:[{GK:'GK',DEF:'CB',MID:'CM',FWD:'ST'}[p.grp]],starter:xi.includes(p.id)||xi.includes(p.name),rating:r,formG:0,stats:null})}
   fzIndex=new Map(fzPool.map(p=>[p.pid,p]));
   return fzPool;
 }
@@ -1623,57 +1827,50 @@ function matchPlayer(list,name){
   h=list.filter(p=>{const u=pnorm(p.name);return u[u.length-1]===last&&(t.length===1||u.length===1||u[0][0]===t[0][0])});if(h.length===1)return h[0];
   h=list.filter(p=>{const u=pnorm(p.name);return u.includes(last)||t.includes(u[u.length-1])});return h.length===1?h[0]:null;
 }
-function realPts(pos,e,tm){
-  const apps=e.apps||0,sub=Math.min(e.sub||0,apps),starts=apps-sub;
-  let pts=starts*2+sub+(e.goals||0)*({GK:6,DEF:6,MID:5,FWD:4}[pos]||4)+(e.assists||0)*3;
-  const share=tm.games?Math.min(1,starts/tm.games):0;
-  if(pos==='GK')pts+=(e.cs??Math.round(tm.cs*share))*4+Math.floor((e.saves||0)/3)-Math.floor((e.conceded||0)/2);
-  else if(pos==='DEF')pts+=Math.round(tm.cs*share)*4;
-  else if(pos==='MID')pts+=Math.round(tm.cs*share);
-  return Math.round(pts);
-}
-function fzLoadLive(){
+function fzLoadLive(){ // real 2026/27 goals and assists, shown while drafting and used as a small form boost
   if(!fzLive)fzLive=getLive('/api/live/players?league=tur').then(d=>{
     const map=matchTeams('tur',d.teams.map(x=>({id:x.id,name:x.name}))),pool=fzPoolBuild();
     for(const tm of d.teams){const cid=map.byId[tm.id];if(!cid)continue;const mine=pool.filter(p=>p.cid===cid);
-      for(const e of tm.players){const p=matchPlayer(mine,e.name);if(!p)continue;p.real=realPts(p.pos,e,tm);p.formG=Math.min(1.2,(e.goals||0)/Math.max(1,e.apps||0));p.stats=e}}
+      for(const e of tm.players){const p=matchPlayer(mine,e.name);if(!p)continue;p.stats={apps:e.apps||0,goals:e.goals||0,assists:e.assists||0};p.formG=Math.min(1.2,(e.goals||0)/Math.max(1,e.apps||0))}}
     return true}).catch(()=>{fzLive=null;return false});
   return fzLive;
 }
 const fzSave=()=>store.set('fantasy-tur',FZ);
 function fzLoad(){
   FZ=store.get('fantasy-tur',null);
-  if(!FZ||FZ.v!==1||!Array.isArray(FZ.picks)||!Array.isArray(FZ.managers))FZ=null;
-  else FZ.picks=FZ.picks.filter(pid=>fzP(pid));
+  if(!FZ||FZ.v!==2||!Array.isArray(FZ.picks)||!Array.isArray(FZ.managers)||FZ.picks.some(pid=>!fzP(pid)))FZ=null;
 }
-function fzFixtures(n){
+function fzFixtures(n){ // double round robin: everyone plays everyone home and away
   const rounds=[],t=[...Array(n).keys()];
   for(let r=0;r<n-1;r++){const pr=[];for(let i=0;i<n/2;i++)pr.push(r%2?[t[n-1-i],t[i]]:[t[i],t[n-1-i]]);rounds.push(pr);t.splice(1,0,t.pop())}
-  return Array.from({length:FZ_GW},(_,g)=>rounds[g%rounds.length]);
+  return rounds.concat(rounds.map(r=>r.map(([h,a])=>[a,h])));
 }
 function fzNew(n,slot,name){
   const bots=[...FZ_BOTS].sort(()=>Math.random()-.5),managers=[];
   for(let i=0;i<n;i++)managers.push(i===slot?{name:name||'My Team',me:true}:{name:bots.pop()});
   const order=[];for(let r=0;r<15;r++){const row=[...Array(n).keys()];if(r%2)row.reverse();order.push(...row)}
-  FZ={v:1,stage:'draft',managers,order,picks:[],lineups:{},gw:0,fixtures:fzFixtures(n),results:[],last:null};fzSave();
+  FZ={v:2,stage:'draft',managers,order,picks:[],slots:{[slot]:Array(15).fill(null)},md:0,fixtures:fzFixtures(n),results:[],stats:{}};fzSel=null;fzSave();
 }
 const fzMe=()=>FZ.managers.findIndex(m=>m.me);
 const fzSquad=m=>FZ.picks.filter((pid,i)=>FZ.order[i]===m);
 const fzTaken=()=>new Set(FZ.picks);
+const fzOwner=pid=>FZ.order[FZ.picks.indexOf(pid)];
 function fzNeed(m){const q={...FZ_Q};for(const pid of fzSquad(m))q[fzP(pid).pos]--;return q}
-const fzValue=p=>(p.starter?1:.4)*(8+5*(p.rating+1.3))*({FWD:1.12,MID:1.06,DEF:.92,GK:.78}[p.pos]||1)+(p.real||0)*.5;
+const fzValue=p=>(p.starter?1:.45)*(8+5*(p.rating+1.3))*({FWD:1.1,MID:1.05,DEF:.95,GK:.8}[p.pos]||1)+(p.stats?p.stats.goals*.8+p.stats.assists*.5:0);
 function fzBestFor(m){
   const need=fzNeed(m),own=fzTaken(),early=FZ.picks.length<FZ.managers.length*6;
   const cand=fzPoolBuild().filter(p=>!own.has(p.pid)&&need[p.pos]>0).map(p=>[fzValue(p)*(p.pos==='GK'&&early?.7:1)*(.85+Math.random()*.3),p]);
   cand.sort((a,b)=>b[0]-a[0]);return cand[0]&&cand[0][1].pid;
 }
-function fzPick(pid){
-  if(!FZ||FZ.stage!=='draft')return;
+function fzFreeSlot(S,p){let best=-1,bs=-1;FZ_SLOTS.forEach((s,i)=>{if(S[i]||s.grp!==p.pos)return;const sc=(s.bench?0:2)+(p.roles.includes(s.role)?1:0);if(sc>bs){bs=sc;best=i}});return best}
+function fzPick(pid,slotIdx){
+  if(!FZ||FZ.stage!=='draft')return false;
   const m=FZ.order[FZ.picks.length],p=fzP(pid);
-  if(m==null||!p||fzTaken().has(pid)||fzNeed(m)[p.pos]<=0)return;
+  if(m==null||!p||fzTaken().has(pid)||fzNeed(m)[p.pos]<=0)return false;
+  if(FZ.managers[m].me){const S=FZ.slots[m];if(slotIdx==null||S[slotIdx]||FZ_SLOTS[slotIdx].grp!==p.pos)slotIdx=fzFreeSlot(S,p);if(slotIdx<0)return false;S[slotIdx]=pid}
   FZ.picks.push(pid);
-  if(FZ.picks.length>=FZ.order.length)fzStartSeason();
-  fzSave();
+  if(FZ.picks.length>=FZ.order.length){FZ.stage='lineup';FZ.managers.forEach((mg,i)=>{if(!mg.me)FZ.slots[i]=fzAutoSlots(i)})}
+  fzSave();return true;
 }
 function fzRunBots(){
   clearTimeout(fzTimer);
@@ -1682,171 +1879,225 @@ function fzRunBots(){
     const m=FZ.order[FZ.picks.length];
     if(FZ.managers[m].me){fzRender();return}
     fzPick(fzBestFor(m));fzRender();
-    if(FZ.stage==='draft')fzTimer=setTimeout(step,220);
+    if(FZ.stage==='draft')fzTimer=setTimeout(step,300);
   };
-  fzTimer=setTimeout(step,220);
+  fzTimer=setTimeout(step,300);
 }
-function fzAutoLineup(m){
-  const sq=fzSquad(m).map(fzP).sort((a,b)=>fzValue(b)-fzValue(a)),by=pos=>sq.filter(p=>p.pos===pos);
-  const xi=[by('GK')[0],...by('DEF').slice(0,4),...by('MID').slice(0,4),...by('FWD').slice(0,2)].filter(Boolean).map(p=>p.pid);
-  return {xi,bench:sq.filter(p=>!xi.includes(p.pid)).sort((a,b)=>(a.pos==='GK')-(b.pos==='GK')).map(p=>p.pid)};
+function fzAutoSlots(m){
+  const left=fzSquad(m).map(fzP).sort((a,b)=>fzValue(b)-fzValue(a)),S=Array(15).fill(null);
+  const take=(i,s)=>{let k=s.bench?-1:left.findIndex(p=>p.pos===s.grp&&p.roles.includes(s.role));if(k<0)k=left.findIndex(p=>p.pos===s.grp);if(k>=0)S[i]=left.splice(k,1)[0].pid};
+  FZ_SLOTS.forEach((s,i)=>{if(!s.bench)take(i,s)});FZ_SLOTS.forEach((s,i)=>{if(s.bench)take(i,s)});
+  return S;
 }
-function fzStartSeason(){FZ.stage='season';FZ.managers.forEach((_,m)=>FZ.lineups[m]=fzAutoLineup(m))}
-function fzCount(xi){const c={GK:0,DEF:0,MID:0,FWD:0};xi.forEach(pid=>{const p=fzP(pid);if(p)c[p.pos]++});return c}
-function fzValid(xi){const c=fzCount(xi);return xi.length===11&&c.GK===1&&c.DEF>=3&&c.DEF<=5&&c.MID>=2&&c.MID<=5&&c.FWD>=1&&c.FWD<=3}
-const fzFormation=xi=>{const c=fzCount(xi);return `${c.DEF}-${c.MID}-${c.FWD}`};
-function fzPoints(pos,e){
-  if(!e.min)return 0;
-  let p=e.min==='start'?2:1;
-  p+=e.g*({GK:6,DEF:6,MID:5,FWD:4}[pos])+e.a*3;
-  if(e.min==='start'&&e.cs)p+=pos==='GK'||pos==='DEF'?4:pos==='MID'?1:0;
-  if(e.min==='start'&&(pos==='GK'||pos==='DEF'))p-=Math.floor(e.conc/2);
-  if(pos==='GK')p+=Math.floor(e.saves/3);
-  if(e.yc)p-=1;
-  return p;
+function fzTap(i){
+  const me=fzMe(),S=FZ.slots[me];
+  if(fzSel!=null&&fzSel!==i&&(!S[i]||fzP(S[i]).pos===fzP(S[fzSel]).pos)&&FZ_SLOTS[i].grp===fzP(S[fzSel]).pos){[S[fzSel],S[i]]=[S[i],S[fzSel]];fzSel=null;fzSave();fzRender();return}
+  if(!S[i]){if(FZ.stage==='draft'&&FZ.order[FZ.picks.length]===me)openFzPicker(i);return}
+  fzSel=fzSel===i?null:i;fzRender();
 }
-function fzSimRound(){ // one simulated Süper Lig matchday: fantasy points for every player in the pool
-  const pool=fzPoolBuild(),clubs=[...new Set(pool.map(p=>p.cid))].sort(()=>Math.random()-.5),ev={};
-  for(let i=0;i+1<clubs.length;i+=2){
-    const H=clubs[i],A=clubs[i+1],[gh,ga]=simGame(teamRating(CLUBS[H]),teamRating(CLUBS[A]),.3),inMatch=[];
-    for(const [cid,gf,gc] of [[H,gh,ga],[A,ga,gh]]){
-      const sq=pool.filter(p=>p.cid===cid),played=[];
-      let xi=sq.filter(p=>p.starter&&Math.random()<.92);
-      for(const pos of FZ_POS){const want={GK:1,DEF:4,MID:4,FWD:2}[pos];const have=xi.filter(p=>p.pos===pos).length;
-        xi.push(...sq.filter(p=>p.pos===pos&&!xi.includes(p)).sort((a,b)=>b.starter-a.starter||Math.random()-.5).slice(0,Math.max(0,want-have)))}
-      xi=xi.slice(0,11);
-      xi.forEach(p=>{ev[p.pid]={min:'start',g:0,a:0,cs:gc===0,conc:gc,saves:p.pos==='GK'?rpois(2+gc*.7):0,yc:Math.random()<.1};played.push(p)});
-      sq.filter(p=>!xi.includes(p)&&p.pos!=='GK').sort(()=>Math.random()-.5).slice(0,3+Math.floor(Math.random()*3)).forEach(p=>{ev[p.pid]={min:'sub',g:0,a:0,cs:false,conc:0,saves:0,yc:Math.random()<.04};played.push(p)});
-      for(let k=0;k<gf;k++){
-        if(Math.random()<.03)continue;
-        const sc=pickWeighted(played.map(p=>({p,w:(GOAL_W[p.role]??.2)*(ev[p.pid].min==='sub'?.4:1)*(1+(p.formG||0))}))).p;ev[sc.pid].g++;
-        if(Math.random()<.75){const others=played.filter(p=>p!==sc);if(others.length)ev[pickWeighted(others.map(p=>({p,w:(ASSIST_W[p.role]??.2)*(ev[p.pid].min==='sub'?.4:1)}))).p.pid].a++}
-      }
-      inMatch.push(...played);
-    }
-    inMatch.forEach(p=>{ev[p.pid].pts=fzPoints(p.pos,ev[p.pid])});
-    inMatch.sort((a,b)=>ev[b.pid].pts-ev[a.pid].pts).slice(0,3).forEach((p,j)=>{if(ev[p.pid].pts>2){ev[p.pid].bonus=3-j;ev[p.pid].pts+=3-j}});
-  }
-  return ev;
+function fzSlotEl(S,i,o){
+  const s=FZ_SLOTS[i],p=S[i]&&fzP(S[i]),st=p&&o.stats&&FZ.stats[p.pid];
+  const b=el('button',{class:'slot'+(p?'':' empty')+(fzSel===i?' sel':'')+(o.open&&!p?' open':'')+(fzSel!=null&&fzSel!==i&&S[fzSel]&&fzP(S[fzSel]).pos===s.grp?' swap':''),
+    'aria-label':p?`${p.name}, ${s.bench?'sub '+POS_LONG[s.grp]:ROLE_NAMES[s.role]}`:`Empty: ${s.bench?'sub '+POS_LONG[s.grp]:ROLE_NAMES[s.role]}`});
+  if(!s.bench){b.style.left=s.x+'%';b.style.top=s.y+'%'}
+  if(p){const c=CLUBS[p.cid];b.style.setProperty('--c-s1',c.colors.s1);b.style.setProperty('--c-s2',c.colors.s2)}
+  b.append(el('span',{class:'shirt',text:p?(p.no||initials(p.name)):'+'}),el('span',{class:'nm',text:p?shortName(p.name):(s.bench?POS_LONG[s.grp]:s.role)}),
+    el('span',{class:'rl',text:p?(s.bench?'SUB · '+p.pos:CLUBS[p.cid].short):(s.bench?'SUB':'')}),
+    ...(st&&(st.g||st.a)?[el('span',{class:'badge',text:[st.g?'⚽'+st.g:'',st.a?'A'+st.a:''].filter(Boolean).join(' ')})]:[]));
+  if(o.tap)b.onclick=()=>o.tap(i);
+  return b;
 }
-function fzPlayGW(){
-  if(!FZ||FZ.stage!=='season'||FZ.gw>=FZ_GW)return false;
-  const me=fzMe();if(!fzValid(FZ.lineups[me].xi))return false;
-  FZ.managers.forEach((m,i)=>{if(!m.me)FZ.lineups[i]=fzAutoLineup(i)});
-  const ev=fzSimRound();
-  const score=m=>{let xi=[...FZ.lineups[m].xi];const bench=[...FZ.lineups[m].bench],subs=[];
-    for(let i=0;i<xi.length;i++){if(ev[xi[i]]?.min)continue;
-      for(let j=0;j<bench.length;j++){const b=bench[j];if(!ev[b]?.min)continue;const test=[...xi];test[i]=b;if(fzValid(test)){subs.push([xi[i],b]);xi=test;bench.splice(j,1);break}}}
-    return {pts:xi.reduce((s,pid)=>s+(ev[pid]?.pts||0),0),xi,subs}};
-  const sc=FZ.managers.map((_,m)=>score(m)),fx=FZ.fixtures[FZ.gw];
-  FZ.results.push(fx.map(([x,y])=>[x,sc[x].pts,y,sc[y].pts]));
-  FZ.last={gw:FZ.gw+1,xi:sc[me].xi.map(pid=>[pid,ev[pid]||null]),subs:sc[me].subs};
-  FZ.gw++;fzSave();return true;
+function fzPitch(S,o={}){
+  const pitch=el('div',{class:'pitch fz'});pitch.innerHTML=PITCH_SVG;
+  FZ_SLOTS.forEach((s,i)=>{if(!s.bench)pitch.append(fzSlotEl(S,i,o))});
+  return el('div',{class:'fzfield'},pitch,el('div',{class:'dugout'},el('span',{class:'dlbl',text:'Subs'}),...FZ_SLOTS.map((s,i)=>s.bench?fzSlotEl(S,i,o):null).filter(Boolean)));
+}
+function openFzPicker(i){
+  const s=FZ_SLOTS[i];
+  lastFocus=document.activeElement;
+  $('#sheetEyebrow').textContent=`Pick ${FZ.picks.length+1} · ${s.bench?'Substitute':'Starting 11'}`;
+  $('#sheetTitle').textContent=s.bench?'Sub '+POS_LONG[s.grp].toLowerCase():ROLE_NAMES[s.role];
+  const body=$('#sheetBody');body.innerHTML='';
+  const q=el('input',{type:'text',placeholder:'Search players or clubs…','aria-label':'Search players',style:'width:100%;font-size:16px;padding:10px 12px'}),list=el('div',{style:'display:grid;gap:6px'});
+  const draw=()=>{
+    const qs=pnorm(q.value).join(' '),taken=fzTaken();
+    const ps=fzPoolBuild().filter(p=>p.pos===s.grp&&!taken.has(p.pid)&&(!qs||pnorm(p.name+' '+CLUBS[p.cid].name).join(' ').includes(qs)))
+      .map(p=>[p,s.bench||p.roles.includes(s.role)?1:0]).sort((a,b)=>b[1]-a[1]||fzValue(b[0])-fzValue(a[0])).slice(0,80);
+    list.replaceChildren(...ps.map(([p,fit])=>{const c=CLUBS[p.cid],no=el('span',{class:'no',text:p.no||''});no.style.setProperty('--c-s1',c.colors.s1);no.style.setProperty('--c-s2',c.colors.s2);
+      return el('button',{class:'opt',onclick:()=>{closePicker();if(fzPick(p.pid,i)){fzRender();fzRunBots()}}},no,
+        el('span',{},el('b',{text:p.name}),el('span',{class:'r',text:`${c.name} · ${p.roles.join('/')}${p.stats?` · this season ${p.stats.goals} G, ${p.stats.assists} A`:''}`})),
+        el('span',{class:'tag',text:!fit?'Out of position':p.starter?'Regular':'Squad'}))}));
+    if(!ps.length)list.append(el('p',{class:'note',text:'No players match.'}));
+  };
+  q.addEventListener('input',draw);draw();body.append(q,list);
+  $('#scrim').hidden=false;body.scrollTop=0;
+}
+// ----- a simulated match between two fantasy teams: score, scorers, assists, cards, subs
+function fzTeam(m){const S=FZ.slots[m];return {xi:S.slice(0,11).map((pid,i)=>({p:fzP(pid),role:FZ_SLOTS[i].role})).filter(x=>x.p),bench:S.slice(11).map(fzP).filter(Boolean)}}
+const fzRating=T=>T.xi.reduce((s,x)=>s+x.p.rating+(x.p.starter?0:-.3)+(x.p.formG||0)*.2+(x.p.roles.includes(x.role)||ROLE_NEAR[x.role]?.some(r=>x.p.roles.includes(r))?0:-.15),0)/Math.max(1,T.xi.length);
+function fzMatch(h,a){
+  const T=[fzTeam(h),fzTeam(a)],goals=simGame(fzRating(T[0]),fzRating(T[1]),.25),ev=[],on=[[],[]];
+  T.forEach((tm,k)=>{
+    on[k]=tm.xi.map(x=>({p:x.p,role:x.role,from:0,to:99}));
+    for(const b of tm.bench.filter(p=>p.pos!=='GK').sort(()=>Math.random()-.5).slice(0,Math.floor(Math.random()*4))){
+      const cand=on[k].filter(o=>o.from===0&&o.to===99&&o.p.pos===b.pos);if(!cand.length)continue;
+      const o=cand[Math.floor(Math.random()*cand.length)],mm=55+Math.floor(Math.random()*31);o.to=mm;on[k].push({p:b,role:o.role,from:mm,to:99});ev.push({m:String(mm),t:k,type:'sub',name:b.name,off:o.p.name})}
+    const at=mm=>on[k].filter(o=>o.from<=mm&&o.to>mm),booked={};
+    for(const mm of Array.from({length:rpois(1.7)},()=>3+Math.floor(Math.random()*89)).sort((x,y)=>x-y)){
+      const pool=at(mm);if(!pool.length)continue;
+      const o=pickWeighted(pool.map(o=>({o,w:{GK:.15,DEF:1.1,MID:1,FWD:.6}[o.p.pos]}))).o;booked[o.p.pid]=(booked[o.p.pid]||0)+1;
+      if(booked[o.p.pid]===2){ev.push({m:String(mm),t:k,type:'red',second:true,name:o.p.name,pid:o.p.pid});o.to=mm}else ev.push({m:String(mm),t:k,type:'yellow',name:o.p.name,pid:o.p.pid})}
+    if(Math.random()<.035){const mm=10+Math.floor(Math.random()*80),pool=at(mm).filter(o=>o.p.pos!=='GK');if(pool.length){const o=pool[Math.floor(Math.random()*pool.length)];ev.push({m:String(mm),t:k,type:'red',name:o.p.name,pid:o.p.pid});o.to=mm}}
+  });
+  [0,1].forEach(k=>{ // goals come after cards so a sent-off player can't score later
+    const at=mm=>on[k].filter(o=>o.from<=mm&&o.to>mm);
+    goalMinutes(goals[k]).forEach(mt=>{const pool=at(Math.min(89,parseInt(mt)));
+      if(!pool.length||Math.random()<.03){ev.push({m:mt,t:k,type:'goal',og:true,name:'Own goal'});return}
+      const sc=pickWeighted(pool.map(o=>({o,w:(GOAL_W[o.role]??.2)*(1+(o.p.formG||0))+.01}))).o,pen=Math.random()<.1;
+      let as=null;if(!pen&&Math.random()<.78){const others=pool.filter(o=>o!==sc);if(others.length)as=pickWeighted(others.map(o=>({o,w:(ASSIST_W[o.role]??.2)+.01}))).o}
+      ev.push({m:mt,t:k,type:'goal',name:sc.p.name,pid:sc.p.pid,pen,as:as?as.p.name:'',apid:as?as.p.pid:''})});
+  });
+  const st=pid=>FZ.stats[pid]||(FZ.stats[pid]={g:0,a:0,cs:0,yc:0,rc:0,apps:0});
+  on.forEach(list=>list.forEach(o=>{if(o.to>o.from)st(o.p.pid).apps++}));
+  for(const e of ev){if(e.type==='goal'&&e.pid){st(e.pid).g++;if(e.apid)st(e.apid).a++}else if(e.type==='yellow')st(e.pid).yc++;else if(e.type==='red'){st(e.pid).rc++;if(e.second)st(e.pid).yc++}}
+  [0,1].forEach(k=>{if(goals[1-k]===0){const gk=on[k].find(o=>o.p.pos==='GK'&&o.from===0);if(gk)st(gk.p.pid).cs++}});
+  ev.sort((x,y)=>minV(x.m)-minV(y.m));
+  return {h,a,hg:goals[0],ag:goals[1],ev};
+}
+function fzPlayMD(){
+  if(!FZ||FZ.stage!=='season'||FZ.md>=FZ.fixtures.length)return false;
+  FZ.managers.forEach((mg,i)=>{if(!mg.me)FZ.slots[i]=fzAutoSlots(i)});
+  FZ.results.push(FZ.fixtures[FZ.md].map(([h,a])=>fzMatch(h,a)));FZ.md++;
+  if(FZ.md>=FZ.fixtures.length)FZ.stage='done';
+  fzSave();return true;
 }
 function fzTable(){
-  const T=FZ.managers.map((m,i)=>({i,name:m.name,me:!!m.me,p:0,w:0,d:0,l:0,pf:0,pts:0}));
-  for(const gw of FZ.results)for(const [x,sx,y,sy] of gw)for(const [a,sa,sb] of [[x,sx,sy],[y,sy,sx]]){const r=T[a];r.p++;r.pf+=sa;if(sa>sb){r.w++;r.pts+=3}else if(sa===sb){r.d++;r.pts++}else r.l++}
-  return T.sort((a,b)=>b.pts-a.pts||b.pf-a.pf);
+  const T=FZ.managers.map((m,i)=>({i,name:m.name,me:!!m.me,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0,form:[]}));
+  for(const md of FZ.results)for(const r of md)for(const [x,f,a] of [[r.h,r.hg,r.ag],[r.a,r.ag,r.hg]]){const t=T[x];t.p++;t.gf+=f;t.ga+=a;
+    if(f>a){t.w++;t.pts+=3;t.form.push('W')}else if(f===a){t.d++;t.pts++;t.form.push('D')}else{t.l++;t.form.push('L')}}
+  return T.sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
 }
-function renderFantasy(m){fzPoolBuild();fzLoad();m.append(el('div',{id:'fzRoot',class:'panel'}));fzRender();if(FZ&&FZ.stage==='draft')fzRunBots();
-  fzLoadLive().then(ok=>{if(ok&&document.getElementById('fzRoot'))fzRender()})}
+const fzLeaders=(k,n=5)=>Object.entries(FZ.stats).filter(([,s])=>s[k]>0).sort((a,b)=>b[1][k]-a[1][k]||a[1].apps-b[1].apps).slice(0,n).map(([pid,s])=>({p:fzP(pid),v:s[k],pid})).filter(x=>x.p);
+// ----- views
+function renderFantasy(m){fzPoolBuild();fzLoad();fzSel=null;m.append(el('div',{id:'fzRoot',class:'panel'}));fzRender();if(FZ&&FZ.stage==='draft')fzRunBots();
+  fzLoadLive().then(ok=>{if(ok&&document.getElementById('fzRoot')&&(!FZ||FZ.stage==='draft'))fzRender()})}
 function fzRender(){
   const root=document.getElementById('fzRoot');if(!root)return;
-  const keep=root.querySelector('.pool')?.scrollTop||0;
-  root.replaceChildren(...(!FZ?fzSetupView():FZ.stage==='draft'?fzDraftView():fzSeasonView()));
-  const pool=root.querySelector('.pool');if(pool)pool.scrollTop=keep;
+  root.replaceChildren(...(!FZ?fzSetupView():FZ.stage==='draft'?fzDraftView():FZ.stage==='lineup'?fzLineupView():fzSeasonView()));
 }
-const posName={GK:'Goalkeepers',DEF:'Defenders',MID:'Midfielders',FWD:'Forwards'};
-const prow=(p,right,extra)=>el('div',{class:'prow'+(extra||'')},mini(p.cid),el('span',{style:'min-width:0'},el('b',{text:p.name}),el('small',{text:CLUBS[p.cid].name+(p.starter?'':' · squad player')})),
-  el('span',{class:'ps',text:p.pos}),el('span',{class:'pt',title:'Estimated FPL points from real 2026/27 stats',text:p.real==null?'–':p.real}),right||el('span'));
-function fzRulesCard(){
-  const pts=[['Playing (sub: 1)',2],['Goal by GK / DEF',6],['Goal by MID',5],['Goal by FWD',4],['Assist',3],['Clean sheet GK / DEF',4],['Clean sheet MID',1],['Every 3 saves (GK)',1],['Every 2 goals conceded (GK / DEF)',-1],['Yellow card',-1],['Best 3 players in each match','3 / 2 / 1']];
-  return el('div',{class:'card'},el('h2',{text:'How It Works'}),el('ul',{class:'rules'},
-    el('li',{text:'Like FPL Draft: every manager drafts a 15-man squad (2 GK, 5 DEF, 5 MID, 3 FWD) from the Süper Lig in a snake draft. A player can only be in one squad.'}),
-    el('li',{text:'Each gameweek you start 11: 1 goalkeeper, 3–5 defenders, 2–5 midfielders and 1–3 forwards. If a starter does not play, the first bench player who keeps the formation valid comes on.'}),
-    el('li',{text:'You play one other manager each gameweek, head to head: win 3 points, draw 1. The season has 34 gameweeks, like the Süper Lig.'}),
-    el('li',{text:'Gameweeks are simulated with Club Hub’s match model, so stronger clubs and in-form scorers do better. “Pts” in the player lists estimates each player’s FPL points from their real 2026/27 stats.'})),
-    el('div',{class:'ptsgrid'},...pts.map(([a,b])=>el('div',{},el('span',{text:a}),el('b',{text:b})))));
+function fzReset(){if(confirm('Start over? Your draft league will be deleted.')){clearTimeout(fzTimer);FZ=null;fzSel=null;store.set('fantasy-tur',null);fzRender()}}
+const pline=p=>`${CLUBS[p.cid].name} · ${p.pos}${p.stats?` · ${p.stats.goals} G, ${p.stats.assists} A this season`:''}`;
+const prow=(p,right)=>el('div',{class:'prow'},mini(p.cid),el('span',{style:'min-width:0'},el('b',{text:p.name}),el('small',{text:pline(p)})),el('span',{class:'ps',text:p.pos}),el('span'),right||el('span'));
+function fzHowCard(){
+  return el('div',{class:'card'},el('h2',{text:'How It Works'}),el('ol',{class:'rules'},
+    el('li',{text:'Draft 15 Süper Lig players: 2 goalkeepers, 5 defenders, 4 midfielders and 4 attackers. You and the bot managers take turns in a snake draft, and each player can only join one team.'}),
+    el('li',{text:'Every pick goes straight onto your pitch: 11 starters in a 4-3-3 and one substitute for each position.'}),
+    el('li',{text:'When the draft ends, set your first 11 by swapping starters and subs.'}),
+    el('li',{text:'Then the league kicks off: every team plays every other team home and away. Each match is simulated with a real score, goalscorers, assists, cards and substitutions. Win 3 points, draw 1.'}),
+    el('li',{text:'At the end you get the champions plus the top scorers, assists, clean sheets, yellow cards and red cards.'})));
 }
 function fzSetupView(){
   const name=el('input',{type:'text',maxlength:'24',placeholder:'e.g. Kadıköy Dream XI',value:store.get('fzName','')});
-  const n=el('select',{},...[4,6,8].map(x=>el('option',{value:x,text:x+' managers'})));n.value='6';
+  const n=el('select',{},...[4,6,8].map(x=>el('option',{value:x,text:x+' teams'})));n.value='6';
   const slot=el('select',{});
   const fill=()=>{slot.replaceChildren(el('option',{value:'r',text:'Random'}),...Array.from({length:+n.value},(_,i)=>el('option',{value:i,text:ordinal(i+1)+' pick'})))};fill();n.onchange=fill;
   const start=()=>{const N=+n.value,s=slot.value==='r'?Math.floor(Math.random()*N):+slot.value;store.set('fzName',name.value.trim());fzNew(N,s,name.value.trim().slice(0,24));fzRender();fzRunBots()};
-  return [el('div',{class:'card'},el('h2',{text:'Start a Draft League'}),
-    el('p',{class:'lede',style:'margin:-6px 0 12px',text:'You against bot managers, all drafting from the 18 Süper Lig squads.'}),
+  const demo=el('div',{class:'fzhero'},el('div',{},el('div',{class:'k',text:'Süper Lig · Draft League'}),el('h2',{text:'Build your 11. Win the league.'}),
+    el('p',{text:'Pick players straight onto the pitch, take on bot managers and play a full season of simulated matches.'})),
+    el('div',{class:'fzhero-pitch'},fzPitch(Array(15).fill(null),{})));
+  return [demo,el('div',{class:'card'},el('h2',{text:'Start a Draft League'}),
     el('div',{class:'controls',style:'margin:0'},el('div',{class:'field'},el('label',{text:'Your team name'}),name),el('div',{class:'field'},el('label',{text:'League size'}),n),
-      el('div',{class:'field'},el('label',{text:'Your draft slot'}),slot),el('button',{class:'btn primary',text:'Start draft',onclick:start}))),
-    fzRulesCard()];
+      el('div',{class:'field'},el('label',{text:'Your draft slot'}),slot),el('button',{class:'btn primary',text:'Start draft',onclick:start}))),fzHowCard()];
 }
 function fzDraftView(){
-  const i=FZ.picks.length,n=FZ.managers.length,m=FZ.order[i],me=fzMe(),myTurn=m===me,need=fzNeed(me),own=fzTaken();
-  const round=Math.floor(i/n)+1;
+  const i=FZ.picks.length,n=FZ.managers.length,m=FZ.order[i],me=fzMe(),myTurn=m===me,need=fzNeed(me),taken=fzTaken();
+  const nextMine=FZ.order.indexOf(me,i);
+  const clock=el('div',{class:'clock'+(myTurn?' me':'')},
+    el('div',{class:'k'},el('span',{class:'live-dot'}),myTurn?'You are on the clock':'On the clock'),
+    el('div',{class:'who',text:FZ.managers[m].name}),
+    el('div',{class:'meta'},el('span',{text:`Round ${Math.floor(i/n)+1}/15`}),el('span',{text:`Pick ${i+1}/${FZ.order.length}`}),el('span',{text:myTurn?'Tap an empty spot on your pitch':nextMine<0?'':`Your next pick: #${nextMine+1}`})),
+    el('div',{class:'bar'},el('i',{style:`width:${(i/FZ.order.length*100).toFixed(1)}%`})),
+    myTurn?el('div',{class:'row',style:'margin-top:12px'},el('button',{class:'btn sm',text:'Auto-pick for me',onclick:()=>{if(fzPick(fzBestFor(me))){fzRender();fzRunBots()}}})):null);
+  const best=fzPoolBuild().filter(p=>!taken.has(p.pid)&&need[p.pos]>0).sort((a,b)=>fzValue(b)-fzValue(a)).slice(0,6);
+  const bestCard=el('div',{class:'card'},el('h2',{text:'Best Available'}),el('div',{class:'pool',style:'max-height:none'},...best.map(p=>{
+    const b=el('button',{class:'btn sm'+(myTurn?' on':''),text:'Draft',onclick:()=>{if(fzPick(p.pid)){fzRender();fzRunBots()}}});b.disabled=!myTurn;return prow(p,b)})));
+  const log=el('div',{class:'card'},el('h2',{text:'Latest Picks'}),el('ol',{class:'log'},...FZ.picks.map((pid,k)=>{const p=fzP(pid),who=FZ.managers[FZ.order[k]];
+    return el('li',{class:who.me?'me':''},el('span',{text:'#'+(k+1)}),el('span',{text:`${who.name}: ${p.name} (${p.pos}, ${CLUBS[p.cid].name})`}))}).reverse().slice(0,12)));
   const needs=el('div',{class:'needs'},...FZ_POS.map(pos=>el('span',{class:need[pos]===0?'full':'',text:`${pos} ${FZ_Q[pos]-need[pos]}/${FZ_Q[pos]}`})));
-  const status=el('div',{class:'card'},el('div',{class:'fzbar'},el('div',{},el('div',{class:'eyebrow',text:`Round ${round} of 15 · pick ${i+1} of ${FZ.order.length}`}),
-      el('h2',{style:'margin:4px 0 0',text:myTurn?'Your pick!':`${FZ.managers[m].name} is picking…`})),needs),
-    el('div',{style:'margin-top:10px'},myTurn?el('div',{class:'turn'},'Choose a player below. ',el('button',{class:'btn sm',style:'margin-left:6px',text:'Auto-pick for me',onclick:()=>{fzPick(fzBestFor(me));fzRender();fzRunBots()}})):
-      el('div',{class:'wait'},el('span',{class:'dot'}),`Your next pick: ${(()=>{const k=FZ.order.indexOf(me,i);return k<0?'none':'pick '+(k+1)})()}`)));
-  // player list
-  const clubSel=el('select',{'aria-label':'Club'},el('option',{value:'',text:'All clubs'}),...LEAGUES.find(l=>l.id==='tur').clubs.map(slug).filter(id=>CLUBS[id]).map(id=>el('option',{value:id,text:CLUBS[id].name})));
-  clubSel.value=fzUI.club;clubSel.onchange=()=>{fzUI.club=clubSel.value;fzRender()};
-  const q=el('input',{type:'text',placeholder:'Search players…','aria-label':'Search players',value:fzUI.q});
-  q.oninput=()=>{fzUI.q=q.value;drawList()};
-  const sortSel=el('select',{'aria-label':'Sort'},el('option',{value:'value',text:'Best available'}),el('option',{value:'real',text:'Most points so far'}));sortSel.value=fzUI.sort;sortSel.onchange=()=>{fzUI.sort=sortSel.value;fzRender()};
-  const posSeg=el('div',{class:'seg',role:'group','aria-label':'Position'},...['',...FZ_POS].map(pos=>el('button',{'aria-pressed':String(fzUI.pos===pos),text:pos||'All',onclick:()=>{fzUI.pos=pos;fzRender()}})));
-  const list=el('div',{class:'pool'});
-  const drawList=()=>{
-    const s=pnorm(fzUI.q).join(' ');
-    const rows=fzPoolBuild().filter(p=>!own.has(p.pid)&&(!fzUI.pos||p.pos===fzUI.pos)&&(!fzUI.club||p.cid===fzUI.club)&&(!s||pnorm(p.name).join(' ').includes(s)))
-      .sort((a,b)=>fzUI.sort==='real'?(b.real??-99)-(a.real??-99)||fzValue(b)-fzValue(a):fzValue(b)-fzValue(a)).slice(0,150);
-    list.replaceChildren(...rows.map(p=>{const b=el('button',{class:'btn sm'+(myTurn&&need[p.pos]>0?' on':''),text:'Draft',onclick:()=>{fzPick(p.pid);fzRender();fzRunBots()}});b.disabled=!myTurn||need[p.pos]<=0;return prow(p,b)}));
-    if(!rows.length)list.append(el('p',{class:'note',style:'padding:10px',text:'No players match.'}));
-  };
-  drawList();
-  const pool=el('div',{class:'card'},el('h2',{text:'Available Players'}),el('div',{class:'fzfilters'},posSeg,clubSel,sortSel,q),list,
-    el('p',{class:'note',text:'Pts = estimated FPL points from real 2026/27 stats (– if not available yet). “Squad player” = not in the club’s usual starting XI.'}));
-  const mine=fzSquad(me).map(fzP);
-  const squad=el('div',{class:'card'},el('h2',{text:'Your Squad'}),...FZ_POS.map(pos=>{const ps=mine.filter(p=>p.pos===pos);return ps.length?el('div',{},el('div',{class:'eyebrow',style:'margin:8px 0 4px',text:posName[pos]}),...ps.map(p=>prow(p))):null}).filter(Boolean),
-    mine.length?null:el('p',{class:'lede',text:'No players yet.'}));
-  const log=el('div',{class:'card'},el('h2',{text:'Draft Log'}),el('ol',{class:'log'},...FZ.picks.map((pid,k)=>{const p=fzP(pid),who=FZ.managers[FZ.order[k]];
-    return el('li',{class:who.me?'me':''},el('span',{text:'#'+(k+1)}),el('span',{text:`${who.name}: ${p.name} (${p.pos}, ${CLUBS[p.cid].name})`}))}).reverse()));
-  return [status,pool,el('div',{class:'two'},squad,log),el('div',{},el('button',{class:'linkbtn',text:'Restart draft',onclick:fzReset}))];
+  return [el('div',{class:'fzwrap'},
+    el('div',{class:'card'},el('div',{class:'fzbar'},el('h2',{style:'margin:0',text:FZ.managers[me].name}),needs),
+      el('p',{class:'lede',style:'margin:6px 0 12px',text:myTurn?'Your pick! Tap an empty spot to choose who plays there.':'Tap two of your players in the same position to swap them.'}),fzPitch(FZ.slots[me],{tap:fzTap,open:myTurn})),
+    el('div',{class:'panel',style:'gap:16px'},clock,bestCard,log)),el('div',{},el('button',{class:'linkbtn',text:'Restart draft',onclick:fzReset}))];
 }
-function fzReset(){if(confirm('Start over? Your draft league will be deleted.')){clearTimeout(fzTimer);FZ=null;store.set('fantasy-tur',null);fzRender()}}
+function fzSquadsCard(){
+  return el('div',{class:'card'},el('h2',{text:'All Squads'}),...FZ.managers.map((mg,k)=>el('details',{class:'sq'},el('summary',{text:mg.name+(mg.me?' (you)':'')}),
+    el('div',{class:'pool',style:'max-height:none;margin-top:8px'},...fzSquad(k).map(fzP).sort((a,b)=>FZ_POS.indexOf(a.pos)-FZ_POS.indexOf(b.pos)).map(p=>prow(p))))));
+}
+function fzLineupView(){
+  const me=fzMe();
+  return [el('div',{class:'clock me'},el('div',{class:'k',text:'Draft complete'}),el('div',{class:'who',text:'Set your first 11'}),
+      el('p',{style:'margin:8px 0 0;opacity:.9',text:'Tap a player, then tap a teammate in the same position to swap them. Your subs sit in the dugout.'}),
+      el('div',{class:'row',style:'margin-top:12px;display:flex;gap:8px;flex-wrap:wrap'},el('button',{class:'btn primary',text:'Start the season',onclick:()=>{FZ.stage='season';fzSel=null;fzSave();fzRender();window.scrollTo(0,0)}}),
+        el('button',{class:'btn',text:'Pick my best 11',onclick:()=>{FZ.slots[me]=fzAutoSlots(me);fzSel=null;fzSave();fzRender()}}))),
+    el('div',{class:'card fzone'},fzPitch(FZ.slots[me],{tap:fzTap})),fzSquadsCard(),el('div',{},el('button',{class:'linkbtn',text:'Restart draft',onclick:fzReset}))];
+}
+function fzTimeline(r){
+  let hs=0,as=0,ht=false;const rows=[el('div',{class:'tl-row ko'},el('span',{class:'tl-min',text:"0'"}),el('span',{text:'Kick-off'}))];
+  const HT=()=>el('div',{class:'tl-row ht'},el('span',{class:'tl-min',text:'HT'}),el('span',{text:'Half-time'}));
+  const who=(b,s)=>el('span',{class:'tl-who'},el('b',{text:b}),el('small',{text:s}));
+  for(const e of r.ev){
+    if(!ht&&minV(e.m)>45){rows.push(HT());ht=true}
+    const side=e.t===0?'h':'a',team=FZ.managers[e.t===0?r.h:r.a].name,min=el('span',{class:'tl-min num',text:e.m+"'"});
+    if(e.type==='goal'){e.t===0?hs++:as++;rows.push(el('div',{class:'tl-row goal '+side},min,el('span',{class:'tl-ball',text:'⚽'}),
+      who(e.name,team+(e.as?' · assist '+e.as:'')+(e.pen?' · penalty':'')+(e.og?' · scored by the other team':'')),el('span',{class:'tl-sc num',text:`${hs}–${as}`})))}
+    else if(e.type==='yellow'||e.type==='red')rows.push(el('div',{class:'tl-row cardev '+side},min,el('span',{class:'tl-card '+(e.type==='red'?'r':'y'),role:'img','aria-label':e.type==='red'?'Red card':'Yellow card'}),who(e.name,team+(e.second?' · second yellow, sent off':e.type==='red'?' · sent off':'')),el('span')));
+    else rows.push(el('div',{class:'tl-row subev '+side},min,el('span',{class:'tl-sub',text:'⇄'}),who(e.name+' on',`${e.off} off · ${team}`),el('span')));
+  }
+  if(!ht)rows.push(HT());
+  rows.push(el('div',{class:'tl-row ko'},el('span',{class:'tl-min',text:'FT'}),el('span',{text:`Full-time · ${FZ.managers[r.h].name} ${r.hg}–${r.ag} ${FZ.managers[r.a].name}`})));
+  return el('div',{class:'timeline'},...rows);
+}
+const scorersLine=(r,k)=>{const g={};r.ev.filter(e=>e.type==='goal'&&e.t===k).forEach(e=>{const n=e.og?'OG':shortName(e.name);(g[n]=g[n]||[]).push(e.m+"'"+(e.pen?' p':''))});return Object.entries(g).map(([n,m])=>`${n} ${m.join(', ')}`).join(' · ')};
+function fzLeaderCard(title,k,unit){
+  const L=fzLeaders(k);
+  return el('div',{class:'card lb'},el('h3',{text:title}),L.length?el('ol',{class:'rank'},...L.map((x,i)=>el('li',{class:fzOwner(x.pid)===fzMe()?'mine':''},el('span',{class:'r',text:i+1}),
+    el('span',{class:'n',text:x.p.name},el('span',{class:'y',text:`${FZ.managers[fzOwner(x.pid)].name} · ${CLUBS[x.p.cid].name}`})),el('span',{class:'g num',text:x.v})))):el('p',{class:'note',text:'Nobody yet.'}));
+}
 function fzSeasonView(){
-  const me=fzMe(),T=fzTable(),done=FZ.gw>=FZ_GW,L=FZ.lineups[me],valid=fzValid(L.xi),out=[];
-  const play=n=>{for(let k=0;k<n;k++)if(!fzPlayGW())break;fzRender()};
-  const pbtn=(t,n)=>{const b=el('button',{class:n===1?'btn primary':'btn',text:t,onclick:()=>play(n)});b.disabled=!valid;return b};
-  out.push(el('div',{class:'card'},el('div',{class:'fzbar'},el('div',{},el('div',{class:'eyebrow',text:FZ.managers[me].name+' · '+FZ.managers.length+'-team draft league'}),
-      el('h2',{style:'margin:4px 0 0',text:done?`Season over: ${T[0].name} win the league!`:`Gameweek ${FZ.gw+1} of ${FZ_GW}`})),
-    done?el('button',{class:'btn primary',text:'New draft',onclick:fzReset}):el('div',{class:'controls',style:'margin:0'},pbtn('Play gameweek',1),pbtn('Play 5',5),pbtn('Play to the end',FZ_GW))),
-    !valid&&!done?el('p',{class:'warn',style:'margin:10px 0 0',text:'Your starting 11 is not valid. Fix it in “Your Lineup” below.'}):null));
-  if(FZ.last){
-    const gw=FZ.results[FZ.last.gw-1],mine=gw.find(([x,,y])=>x===me||y===me),[x,sx,y,sy]=mine,us=x===me?sx:sy,them=x===me?sy:sx,opp=FZ.managers[x===me?y:x].name;
-    const res=us>them?'W':us<them?'L':'D';
-    const evText=e=>!e||!e.min?'Did not play':[e.min==='sub'?'Sub':'' ,e.g?`${e.g} goal${e.g>1?'s':''}`:'',e.a?`${e.a} assist${e.a>1?'s':''}`:'',e.min==='start'&&e.cs?'clean sheet':'',e.saves>=3?`${e.saves} saves`:'',e.yc?'yellow card':'',e.bonus?`+${e.bonus} bonus`:''].filter(Boolean).join(', ')||'Played';
-    out.push(el('div',{class:'card'},el('h2',{text:`Gameweek ${FZ.last.gw}`}),
-      el('div',{class:'vs'},el('div',{class:'nm',text:FZ.managers[me].name}),el('div',{class:'big num',text:`${us} – ${them}`}),el('div',{class:'nm',text:opp})),
-      el('p',{class:'lede',style:'margin:10px 0',text:res==='W'?'A win! +3 points.':res==='D'?'A draw. +1 point.':'A defeat this time.'}),
-      el('div',{class:'pool',style:'max-height:none'},...FZ.last.xi.map(([pid,e])=>{const p=fzP(pid);return p?el('div',{class:'prow'},mini(p.cid),el('span',{style:'min-width:0'},el('b',{text:p.name}),el('small',{text:evText(e)})),el('span',{class:'ps',text:p.pos}),el('span'),el('span',{class:'pt',style:'font-size:18px',text:e?.pts??0})):null}).filter(Boolean)),
-      FZ.last.subs.length?el('p',{class:'note',text:'Auto-subs: '+FZ.last.subs.map(([o,i])=>`${fzP(i)?.name} for ${fzP(o)?.name}`).join(', ')+'.'}):null,
-      el('div',{class:'minis'},...gw.filter(r=>r!==mine).map(([a,sa,b,sb])=>el('div',{},el('span',{text:FZ.managers[a].name}),el('b',{text:`${sa} – ${sb}`}),el('span',{text:FZ.managers[b].name}))))));
+  const me=fzMe(),T=fzTable(),done=FZ.stage==='done',total=FZ.fixtures.length,out=[];
+  const play=n=>{for(let k=0;k<n;k++)if(!fzPlayMD())break;fzSel=null;fzRender();if(FZ.stage==='done')window.scrollTo({top:0,behavior:'smooth'})};
+  out.push(el('div',{class:'clock'+(done?' gold':'')},el('div',{class:'k',text:done?'Final whistle':`${FZ.managers.length}-team draft league`}),
+    el('div',{class:'who',text:done?`${T[0].name} are champions!`:`Matchday ${FZ.md+1} of ${total}`}),
+    el('div',{class:'bar'},el('i',{style:`width:${(FZ.md/total*100).toFixed(1)}%`})),
+    el('div',{class:'row',style:'margin-top:12px;display:flex;gap:8px;flex-wrap:wrap'},...(done?[el('button',{class:'btn primary',text:'New draft',onclick:fzReset})]:
+      [el('button',{class:'btn primary',text:'Play matchday',onclick:()=>play(1)}),el('button',{class:'btn',text:'Play the rest',onclick:()=>play(total)})]))));
+  if(done){
+    const aw=[['Golden Boot','g','goals'],['Assist King','a','assists'],['Golden Glove','cs','clean sheets'],['Most Yellow Cards','yc','yellows'],['Most Red Cards','rc','reds']].map(([t,k,u])=>{const x=fzLeaders(k,1)[0];
+      return x?el('div',{class:'award'},el('div',{class:'k',text:t}),el('div',{class:'v num',text:x.v},el('small',{text:u})),el('b',{text:x.p.name}),el('span',{text:FZ.managers[fzOwner(x.pid)].name})):null}).filter(Boolean);
+    out.push(el('div',{class:'awards'},el('div',{class:'award winner'},trophyEl(),el('div',{class:'k',text:'Champions'}),el('b',{text:T[0].name}),el('span',{text:`${T[0].pts} points · ${T[0].w} wins`})),...aw));
+  }
+  const last=FZ.results[FZ.results.length-1];
+  if(last){
+    const mine=last.find(r=>r.h===me||r.a===me),mdNo=FZ.results.length;
+    const res=mine?(mine.h===me?mine.hg-mine.ag:mine.ag-mine.hg):0;
+    if(mine)out.push(el('div',{class:'card'},el('h2',{text:`Matchday ${mdNo}`}),
+      el('div',{class:'score'},el('div',{class:'cap',text:res>0?'Win':res<0?'Defeat':'Draw'}),el('div',{class:'teams'},FZ.managers[mine.h].name,el('small',{text:'Home'})),
+        el('div',{class:'big num',text:`${mine.hg} – ${mine.ag}`}),el('div',{class:'teams'},FZ.managers[mine.a].name,el('small',{text:'Away'}))),
+      el('div',{style:'margin-top:14px'},fzTimeline(mine)),
+      el('h3',{class:'subh',text:'Other results'}),el('div',{class:'mres'},...last.filter(r=>r!==mine).map(r=>el('div',{},
+        el('div',{class:'ln'},el('span',{text:FZ.managers[r.h].name}),el('b',{class:'num',text:`${r.hg} – ${r.ag}`}),el('span',{text:FZ.managers[r.a].name})),
+        el('div',{class:'sc'},el('span',{text:scorersLine(r,0)}),el('span'),el('span',{text:scorersLine(r,1)})))))));
   }
   out.push(el('div',{class:'card'},el('h2',{text:'League Table'}),el('div',{class:'ltwrap'},el('table',{class:'ltable'},
-    el('thead',{},el('tr',{},...['#','Manager','P','W','D','L','For','Pts'].map((h,k)=>el('th',{class:k===1?'l':k===0?'pos':k>=3&&k<=5?'hxs':'',text:h})))),
-    el('tbody',{},...T.map((r,k)=>el('tr',{class:r.me?'me':''},el('td',{class:'pos',text:k+1}),el('td',{class:'team'},el('b',{text:r.name})),el('td',{text:r.p}),el('td',{class:'hxs',text:r.w}),el('td',{class:'hxs',text:r.d}),el('td',{class:'hxs',text:r.l}),el('td',{title:'Fantasy points scored',text:r.pf}),el('td',{class:'pts',text:r.pts}))))))));
-  // lineup editor
-  const sq=fzSquad(me).map(fzP).sort((a,b)=>FZ_POS.indexOf(a.pos)-FZ_POS.indexOf(b.pos)||fzValue(b)-fzValue(a));
-  const toggle=pid=>{const xi=L.xi.includes(pid)?L.xi.filter(x=>x!==pid):[...L.xi,pid];FZ.lineups[me]={xi,bench:sq.map(p=>p.pid).filter(x=>!xi.includes(x))};fzSave();fzRender()};
-  const c=fzCount(L.xi);
-  out.push(el('div',{class:'card'},el('h2',{text:'Your Lineup'}),
-    el('p',{class:'lede',style:'margin:-6px 0 12px',text:valid?`Formation ${fzFormation(L.xi)}. Tap a player to move him between the starting 11 and the bench.`:`${L.xi.length} starters (${c.GK} GK, ${c.DEF} DEF, ${c.MID} MID, ${c.FWD} FWD). You need 11: 1 GK, 3–5 DEF, 2–5 MID, 1–3 FWD.`}),
-    el('div',{class:'pool',style:'max-height:none'},...sq.map(p=>{const on=L.xi.includes(p.pid);return prow(p,el('button',{class:'btn sm'+(on?' on':''),text:on?'Starting':'Bench',onclick:()=>toggle(p.pid)}),on?'':' bench')})),
-    el('div',{class:'row',style:'margin-top:10px'},el('button',{class:'btn sm',text:'Pick my best 11',onclick:()=>{FZ.lineups[me]=fzAutoLineup(me);fzSave();fzRender()}}))));
-  out.push(el('div',{class:'card'},el('h2',{text:'All Squads'}),...FZ.managers.map((mg,k)=>el('details',{class:'sq'},el('summary',{text:mg.name+(mg.me?' (you)':'')}),
-    el('div',{class:'pool',style:'max-height:none;margin-top:8px'},...fzSquad(k).map(fzP).sort((a,b)=>FZ_POS.indexOf(a.pos)-FZ_POS.indexOf(b.pos)).map(p=>prow(p)))))));
-  out.push(fzRulesCard(),el('div',{},el('button',{class:'linkbtn',text:'Delete this league and start over',onclick:fzReset})));
+    el('thead',{},el('tr',{},...[['#','pos'],['Team','l'],['P',''],['W','hxs'],['D','hxs'],['L','hxs'],['GF','hs'],['GA','hs'],['GD',''],['Pts',''],['Form','l hs']].map(([h,c])=>el('th',{class:c,text:h})))),
+    el('tbody',{},...T.map((r,k)=>{const pos=el('td',{class:'pos',text:k+1});if(k===0&&r.p)pos.style.borderLeftColor='#ffd200';
+      return el('tr',{class:r.me?'me':''},pos,el('td',{class:'team'},el('b',{text:r.name})),el('td',{text:r.p}),el('td',{class:'hxs',text:r.w}),el('td',{class:'hxs',text:r.d}),el('td',{class:'hxs',text:r.l}),
+        el('td',{class:'hs',text:r.gf}),el('td',{class:'hs',text:r.ga}),el('td',{text:(r.gf-r.ga>0?'+':'')+(r.gf-r.ga)}),el('td',{class:'pts',text:r.pts}),el('td',{class:'l hs'},formEl(r.form.slice(-5).reverse().join(''))))}))))));
+  out.push(el('div',{},el('h2',{class:'sech',text:done?'Season Leaders':'Leaders So Far'}),el('div',{class:'lbs'},
+    fzLeaderCard('Top Scorers','g'),fzLeaderCard('Assists','a'),fzLeaderCard('Clean Sheets','cs'),fzLeaderCard('Yellow Cards','yc'),fzLeaderCard('Red Cards','rc'))));
+  out.push(el('div',{class:'card fzone'},el('h2',{text:'Your Team'}),el('p',{class:'lede',style:'margin:-6px 0 12px',text:done?'Your season, with goals (⚽) and assists (A).':'Tap a player, then a teammate in the same position, to swap before the next matchday.'}),
+    fzPitch(FZ.slots[me],{tap:done?null:fzTap,stats:true})));
+  out.push(fzSquadsCard(),fzHowCard(),el('div',{},el('button',{class:'linkbtn',text:'Delete this league and start over',onclick:fzReset})));
   return out;
 }
 
