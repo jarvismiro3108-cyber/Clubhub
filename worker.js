@@ -126,7 +126,8 @@ async function ask(env, prompt, search) {
 
 // ---------- live data: current league tables, results and player stats from ESPN's public JSON feed.
 // The browser only sends a league id and an ESPN team id; the server fetches, trims and caches the data.
-const ESPN_LEAGUE = { eng: 'eng.1', esp: 'esp.1', ita: 'ita.1', ger: 'ger.1', fra: 'fra.1', tur: 'tur.1' };
+const ESPN_LEAGUE = { eng: 'eng.1', esp: 'esp.1', ita: 'ita.1', ger: 'ger.1', fra: 'fra.1', tur: 'tur.1', ucl: 'uefa.champions', uel: 'uefa.europa' };
+const DOMESTIC = new Set(['eng', 'esp', 'ita', 'ger', 'fra', 'tur']);
 const SEASON_START = '20260701'; // 2026/27
 const memo = new Map();
 async function getJSON(url, ttlSec) {
@@ -181,7 +182,7 @@ function parseEvent(ev, fallbackComp) {
   if (!h || !a) return null;
   const st = c.status?.type || ev.status?.type || {};
   const side = x => ({ id: String(x.team?.id || x.id || '').replace(/\D/g, ''), name: str(x.team?.displayName || x.team?.name, 50),
-    score: n0(x.score && typeof x.score === 'object' ? (x.score.value ?? x.score.displayValue) : x.score), pens: n0(x.shootoutScore) });
+    score: n0(x.score && typeof x.score === 'object' ? (x.score.value ?? x.score.displayValue) : x.score), pens: n0(x.shootoutScore), win: x.winner === true });
   const goals = (Array.isArray(c.details) ? c.details : []).filter(d => d?.scoringPlay).map(d => ({
     min: str(d.clock?.displayValue, 8), name: str(d.athletesInvolved?.[0]?.displayName, 40), pid: String(d.athletesInvolved?.[0]?.id || ''),
     team: String(d.team?.id || ''), og: !!d.ownGoal || /own goal/i.test(d.type?.text || ''), pen: !!d.penaltyKick || /penalty/i.test(d.type?.text || ''),
@@ -225,6 +226,12 @@ function rosterAthletes(d) {
   const list = Array.isArray(d?.athletes) ? d.athletes : [];
   return list.flatMap(x => (Array.isArray(x?.items) ? x.items : [x])).filter(a => a && (a.displayName || a.fullName));
 }
+function athleteStats(a) {
+  const s = flatStats(a.statistics || a.stats || null), g = (...k) => { for (const x of k) if (s[x] != null) return s[x]; return null; };
+  return { pid: String(a.id || ''), name: str(a.displayName || a.fullName, 40), no: n0(a.jersey), pos: POS(a.position), age: n0(a.age),
+    apps: g('appearances', 'gamesPlayed'), sub: g('subIns'), goals: g('totalGoals', 'goals'), assists: g('goalAssists', 'assists'),
+    saves: g('saves'), conceded: g('goalsConceded'), cs: g('cleanSheet', 'cleanSheets'), _any: Object.keys(s).length > 0 };
+}
 async function liveClub(lg, id) {
   const base = espnBase(lg);
   const [sch, lev, ros] = await Promise.allSettled([
@@ -240,12 +247,7 @@ async function liveClub(lg, id) {
 
   let players = [], statsFrom = 'none';
   if (ros.status === 'fulfilled') {
-    players = rosterAthletes(ros.value).slice(0, 60).map(a => {
-      const s = flatStats(a.statistics || a.stats || null), g = (...k) => { for (const x of k) if (s[x] != null) return s[x]; return null; };
-      return { pid: String(a.id || ''), name: str(a.displayName || a.fullName, 40), no: n0(a.jersey), pos: POS(a.position), age: n0(a.age),
-        apps: g('appearances', 'gamesPlayed'), sub: g('subIns'), goals: g('totalGoals', 'goals'), assists: g('goalAssists', 'assists'),
-        saves: g('saves'), conceded: g('goalsConceded'), cs: g('cleanSheet', 'cleanSheets'), _any: Object.keys(s).length > 0 };
-    });
+    players = rosterAthletes(ros.value).slice(0, 60).map(athleteStats);
     if (players.some(p => p._any && (p.apps != null || p.goals != null))) statsFrom = 'roster';
   }
   if (statsFrom === 'none' && lev.status === 'fulfilled') { // fall back to counting goals in this season's league matches
@@ -259,6 +261,68 @@ async function liveClub(lg, id) {
   }
   players.forEach(p => delete p._any);
   return { team: str(ros.value?.team?.displayName || '', 50), results, next, players, statsFrom, updated: new Date().toISOString() };
+}
+// every club's player stats in one league (for the fantasy game's points)
+async function livePlayers(lg) {
+  const [st, ev] = await Promise.allSettled([getJSON(`https://site.api.espn.com/apis/v2/sports/soccer/${ESPN_LEAGUE[lg]}/standings`, 600), leagueEvents(lg)]);
+  if (st.status !== 'fulfilled') throw st.reason;
+  const t = parseStandings(st.value);
+  if (!t || !t.rows.length) throw new Error('no table');
+  const events = ev.status === 'fulfilled' ? ev.value.events.filter(e => e.done) : [];
+  const teams = await Promise.all(t.rows.slice(0, 24).map(async r => {
+    let players = [];
+    try { players = rosterAthletes(await getJSON(`${espnBase(lg)}/teams/${r.id}/roster`, 1800)).slice(0, 60).map(athleteStats).filter(p => p._any); } catch {}
+    players.forEach(p => { delete p._any; delete p.pid; delete p.age; });
+    const mine = events.filter(e => e.home.id === r.id || e.away.id === r.id);
+    const cs = mine.filter(e => (e.home.id === r.id ? e.away.score : e.home.score) === 0).length;
+    return { id: r.id, name: r.name, games: r.p, cs, players };
+  }));
+  return { season: t.season, teams, updated: new Date().toISOString() };
+}
+
+// knockout ties (Champions League / Europa League): legs grouped by round and pairing
+const ROUNDS = ['po', 'r16', 'qf', 'sf', 'f'];
+function roundOf(raw, date) {
+  const c = raw?.competitions?.[0] || {};
+  const txt = [raw?.season?.slug, raw?.season?.type?.name, raw?.seasonType?.name, c.type?.text, ...(Array.isArray(c.notes) ? c.notes : []).map(n => n?.headline)]
+    .filter(x => typeof x === 'string').join(' ').toLowerCase();
+  if (/semi/.test(txt)) return 'sf';
+  if (/quarter/.test(txt)) return 'qf';
+  if (/round of 16|last 16|rd of 16|round-of-16/.test(txt)) return 'r16';
+  if (/play-?off|knockout round/.test(txt)) return 'po';
+  if (/\bfinal\b/.test(txt)) return 'f';
+  if (/league|group/.test(txt)) return null;
+  const d = new Date(date); if (isNaN(d)) return null;
+  const m = d.getUTCMonth() + 1, day = d.getUTCDate();
+  return m === 2 ? 'po' : m === 3 ? 'r16' : m === 4 ? (day <= 20 ? 'qf' : 'sf') : m === 5 ? (day <= 12 ? 'sf' : 'f') : m === 6 ? 'f' : null;
+}
+async function liveCup(lg) {
+  const d = await getJSON(`${espnBase(lg)}/scoreboard?dates=20270101-20270630&limit=1000`, 600);
+  const ties = new Map();
+  for (const raw of d?.events || []) {
+    const e = parseEvent(raw, ''), r = e && roundOf(raw, e.date);
+    if (!r || !e.home.id || !e.away.id) continue;
+    const key = r + ':' + [e.home.id, e.away.id].sort().join('-');
+    if (!ties.has(key)) ties.set(key, { round: r, legs: [] });
+    ties.get(key).legs.push({ date: e.date, done: e.done, home: e.home, away: e.away });
+  }
+  const rounds = Object.fromEntries(ROUNDS.map(r => [r, []]));
+  for (const t of ties.values()) {
+    t.legs.sort((a, b) => a.date.localeCompare(b.date));
+    const first = t.legs[0], a = { id: first.home.id, name: first.home.name }, b = { id: first.away.id, name: first.away.name };
+    const goals = id => t.legs.reduce((s, l) => s + ((l.home.id === id ? l.home.score : l.away.score) ?? 0), 0);
+    const last = t.legs[t.legs.length - 1], done = t.legs.every(l => l.done);
+    const side = id => (last.home.id === id ? last.home : last.away);
+    let winner = null;
+    if (done) {
+      const ga = goals(a.id), gb = goals(b.id);
+      winner = ga > gb ? 'a' : gb > ga ? 'b' : side(a.id).win ? 'a' : side(b.id).win ? 'b' : (side(a.id).pens ?? 0) > (side(b.id).pens ?? 0) ? 'a' : (side(b.id).pens ?? 0) > (side(a.id).pens ?? 0) ? 'b' : null;
+    }
+    const pens = side(a.id).pens != null && side(b.id).pens != null ? [side(a.id).pens, side(b.id).pens] : null;
+    rounds[t.round].push({ a, b, legs: t.legs.map(l => ({ date: l.date, done: l.done, aHome: l.home.id === a.id, a: l.home.id === a.id ? l.home.score : l.away.score, b: l.home.id === a.id ? l.away.score : l.home.score })),
+      agg: t.legs.some(l => l.done) ? [goals(a.id), goals(b.id)] : null, pens, winner });
+  }
+  return { rounds, updated: new Date().toISOString() };
 }
 function liveJson(status, obj) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': status === 200 ? 'private, max-age=300' : 'no-store', 'X-Content-Type-Options': 'nosniff' } });
@@ -305,13 +369,16 @@ async function handle(request, env) {
     const r = await ask(env, 'Reply with only this JSON: {"ok":true}', false);
     return json(200, r.result ? { ok: true } : { ok: false, error: r.error });
   }
-  if (url.pathname === '/api/live/table' || url.pathname === '/api/live/club') {
+  if (url.pathname.startsWith('/api/live/')) {
     if (request.method !== 'GET') return liveJson(405, { error: 'method' });
     if (request.headers.get('Origin') && !origin) return liveJson(403, { error: 'forbidden' });
     const lg = url.searchParams.get('league') || '';
     if (!ESPN_LEAGUE[lg]) return liveJson(400, { error: 'bad_request' });
     try {
       if (url.pathname === '/api/live/table') return liveJson(200, await liveTable(lg));
+      if (url.pathname === '/api/live/cup') return lg === 'ucl' || lg === 'uel' ? liveJson(200, await liveCup(lg)) : liveJson(400, { error: 'bad_request' });
+      if (url.pathname === '/api/live/players') return DOMESTIC.has(lg) ? liveJson(200, await livePlayers(lg)) : liveJson(400, { error: 'bad_request' });
+      if (url.pathname !== '/api/live/club' || !DOMESTIC.has(lg)) return liveJson(404, { error: 'not_found' });
       const id = url.searchParams.get('id') || '';
       if (!/^\d{1,7}$/.test(id)) return liveJson(400, { error: 'bad_request' });
       return liveJson(200, await liveClub(lg, id));

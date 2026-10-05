@@ -43,7 +43,18 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
 - The page matches our club names to ESPN's (`matchTeams()` in the template: exact tokens first, then fuzzy, each club once;
   add odd spellings to `TEAM_ALIAS`). Home page has a Clubs/Table switch; club pages have a "This Season" tab.
 
-## Prediction model (in the template)
+## Europe, Bracket Simulator, Fantasy Draft (hash routes #europe, #bracket, #fantasy; `XPAGES` / `showX()`)
+- Europe: `/api/live/table?league=ucl|uel` (league phase, zones set client-side: 1–8 R16, 9–24 play-offs) and
+  `/api/live/cup?league=ucl|uel` (knockout legs Jan–Jun 2027 grouped into ties by round; round from ESPN notes or the
+  UEFA date windows). No real ties yet → projected bracket from the table. European team names are matched against all
+  114 clubs with `matchGlobal()` (confident matches only; foreign clubs stay unlinked).
+- Bracket Simulator: 16 picked clubs (localStorage `clubhub-bracket`), two-legged ties + one-match final via `simTie()`
+  (Poisson on `teamRating()`, extra time, penalties).
+- Fantasy Draft (Süper Lig, modelled on FPL Draft): 15-man squads 2/5/5/3, snake draft vs bots, unique ownership,
+  H2H over 34 simulated gameweeks (`fzSimRound()` → FPL scoring + 3/2/1 bonus, auto-subs). State in localStorage
+  `clubhub-fantasy-tur`. "Pts" = estimated FPL points from real stats via `/api/live/players?league=tur` (all rosters).
+
+
 `teamRating()` (goal difference per game over the last 3 seasons + league level), `xiPenalty()`,
 Poisson scorelines in `modelPredict()`, one sampled result per press (`simulate()`), goalscorers by
 position weights (`GOAL_W`). The AI is told to stay within one goal of the simulated score.
