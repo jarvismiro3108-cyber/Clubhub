@@ -43,6 +43,15 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
 - The page matches our club names to ESPN's (`matchTeams()` in the template: exact tokens first, then fuzzy, each club once;
   add odd spellings to `TEAM_ALIAS`). Home page has a Clubs/Table switch; club pages have a "This Season" tab.
 
+## Europe, Fantasy and Bracket pages (in the template, routes `#europe`, `#fantasy`, `#bracket`)
+- `GET /api/live/cup?comp=ucl|uel` → league-phase table, knockout ties grouped by ESPN `season.slug` (aggregate + winner),
+  recent results and next fixtures. Before the knockout draw the page shows a projected bracket from the table.
+  ESPN teams are matched to our clubs with `matchAny()` (exact tokens, then fuzzy ≥ .7).
+- Fantasy: Süper Lig draft league modelled on FPL Draft (snake draft, 2/5/5/3 squads, FPL points, H2H gameweeks).
+  Matches are simulated with `fxMatch()` (same team ratings as the prediction model); projections come from two
+  seeded simulated seasons. State lives in localStorage (`clubhub-fantasy-tur`).
+- Dream Bracket: pick any of our clubs, two-legged ties + extra time + penalties, stored in `clubhub-mybracket`.
+
 ## Prediction model (in the template)
 `teamRating()` (goal difference per game over the last 3 seasons + league level), `xiPenalty()`,
 Poisson scorelines in `modelPredict()`, one sampled result per press (`simulate()`), goalscorers by
