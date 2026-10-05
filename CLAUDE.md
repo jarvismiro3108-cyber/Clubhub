@@ -32,6 +32,15 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
   grounded results — the page renders them in a sandboxed iframe.
 - `GET /api/test` → `{"ok":true}` when the key works.
 
+## Live data (worker.js + "This Season" tab)
+- `GET /api/live/table?league=eng|esp|ita|ger|fra|tur` → current table (+ last-5 form) and
+  `GET /api/live/club?league=..&id=<ESPN team id>` → this season's results (with goalscorers), next match and player stats
+  (apps/goals/assists; saves/conceded/clean sheets for keepers). The worker fetches ESPN's public JSON
+  (`site.api.espn.com`, no key), trims it and keeps it in memory for 10–30 min. If ESPN has no player stats it falls back
+  to counting goals from the league match reports.
+- The page matches our club names to ESPN's (`matchTeams()` in the template: exact tokens first, then fuzzy, each club once;
+  add odd spellings to `TEAM_ALIAS`). Home page has a Clubs/Table switch; club pages have a "This Season" tab.
+
 ## Prediction model (in the template)
 `teamRating()` (goal difference per game over the last 3 seasons + league level), `xiPenalty()`,
 Poisson scorelines in `modelPredict()`, one sampled result per press (`simulate()`), goalscorers by
