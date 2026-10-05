@@ -1,0 +1,10 @@
+{"name":"Nottingham Forest","short":"NFFC","league":"eng","founded":"1865","city":"Nottingham","nick":"Forest","stadium":"City Ground","cap":"31,212","coach":"Oliver Glasner",
+"colors":["#DD0000","#FFFFFF","#5a0606"],
+"honours":[["European Cups",2,"1979, 1980"],["League title",1,"1977–78"],["FA Cups",2,"1898, 1959"],["League Cups",4,"1978, 1979, 1989, 1990"],["UEFA Super Cup",1,"1979"],["Charity Shield",1,"1978"]],
+"legends":[["Grenville Morris","All-time top scorer, 1898–1913","213 goals"],["Bobby McKinlay","Most appearances, 1951–1970","Club record"]],
+"records":[["42 games","Unbeaten league run, 1977–78"],["Double Europe","Back-to-back European Cups under Brian Clough"],["1978","League champions the season after promotion"]],
+"squad":[[26,"Matz Sels","GK","BEL",["GK"],34],[12,"John Victor","GK","BRA",["GK"],30],[33,"Steven Benda","GK","GER",["GK"],28],
+[5,"Murillo","DEF","BRA",["CB"],24],[31,"Nikola Milenković","DEF","SRB",["CB"],28],[2,"Ousmane Diomande","DEF","CIV",["CB"],22],[23,"Jair Cunha","DEF","BRA",["CB"],21],[37,"Nicolò Savona","DEF","ITA",["RB","CB"],23],[27,"Daniel Muñoz","DEF","COL",["RB","RWB"],30],[34,"Ola Aina","DEF","NGA",["RB","LB"],29],[3,"Neco Williams","DEF","WAL",["LB","RB"],25],[25,"Luca Netz","DEF","GER",["LB"],23],
+[21,"Xaver Schlager","MID","AUT",["CM","DM"],29],[6,"Ibrahim Sangaré","MID","CIV",["DM"],28],[22,"Ryan Yates","MID","ENG",["CM","DM"],28],[8,"Nicolás Domínguez","MID","ARG",["CM"],28],[10,"Morgan Gibbs-White","MID","ENG",["AM"],26],[24,"James McAtee","MID","ENG",["AM","RW"],23],
+[14,"Dan Ndoye","FWD","SUI",["RW","LW"],25],[7,"Callum Hudson-Odoi","FWD","ENG",["LW","RW"],25],[15,"Arnaud Kalimuendo","FWD","FRA",["ST","LW"],24],[11,"Igor Jesus","FWD","BRA",["ST"],25],[19,"Liam Delap","FWD","ENG",["ST"],23],[9,"Chris Wood","FWD","NZL",["ST"],34]],
+"starters":["Matz Sels","Ola Aina","Murillo","Nikola Milenković","Neco Williams","Xaver Schlager","Ibrahim Sangaré","Morgan Gibbs-White","Dan Ndoye","Callum Hudson-Odoi","Chris Wood"]}

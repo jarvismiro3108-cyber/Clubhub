@@ -1,0 +1,10 @@
+{"name":"Hoffenheim","short":"TSG","league":"ger","founded":"1 July 1899","city":"Sinsheim","nick":"Die Kraichgauer","stadium":"PreZero Arena","cap":"30,150","coach":"Christian Ilzer",
+"colors":["#1961B5","#FFFFFF","#0b2c55"],
+"honours":[["Bundesliga promotion",1,"2008, after back-to-back promotions"],["German U-19 title",1,"2014"],["German U-17 title",1,"2008"]],
+"legends":[["Andrej Kramarić","All-time top scorer, 2016–","Club record"],["Andrej Kramarić","Most appearances","432 games"]],
+"records":[["3rd","Best Bundesliga finish (2017–18)"],["2018–19","First Champions League group stage"],["5th","Finish in 2025–26, back in Europe"]],
+"squad":[[1,"Oliver Baumann","GK","GER",["GK"],36],[36,"Lúkas Petersson","GK","GER",["GK"],22],[37,"Luca Philipp","GK","GER",["GK"],25],
+[5,"Ozan Kabak","DEF","TUR",["CB"],26],[21,"Albian Hajdari","DEF","SUI",["CB"],23],[2,"Robin Hranáč","DEF","CZE",["CB"],26],[28,"Koki Machida","DEF","JPN",["CB"],29],[4,"Sean Dulić","DEF","GER",["CB"],21],[39,"Mats Rots","DEF","NED",["RB"],20],[29,"Natnael Abraha","DEF","GER",["CB"],18],[15,"Valentin Gendrey","DEF","FRA",["RB"],26],[34,"Vladimír Coufal","DEF","CZE",["RB"],34],[13,"Bernardo","DEF","BRA",["LB","CB"],31],
+[7,"Leon Avdullahu","MID","SUI",["DM","CM"],22],[18,"Wouter Burger","MID","NED",["DM","CB"],25],[32,"Cajetan Lenz","MID","GER",["CM"],20],[20,"Bambasé Conté","MID","GER",["CM"],23],[17,"Nathan De Cat","MID","BEL",["CM"],18],[16,"Luis Engelns","MID","GER",["CM"],19],[22,"Alexander Prass","MID","AUT",["LB","LWB","CM"],25],
+[8,"Patrick Wimmer","FWD","AUT",["RW","AM"],25],[14,"Adam Daghim","FWD","DEN",["LW","RW"],21],[10,"Adam Hložek","FWD","CZE",["LW","ST"],24],[11,"Fisnik Asllani","FWD","GER",["ST","AM"],24],[27,"Andrej Kramarić","FWD","CRO",["ST","AM"],35],[19,"Tim Lemperle","FWD","GER",["ST"],24],[9,"Max Moerstedt","FWD","GER",["ST"],20]],
+"starters":["Oliver Baumann","Vladimír Coufal","Ozan Kabak","Albian Hajdari","Alexander Prass","Leon Avdullahu","Wouter Burger","Patrick Wimmer","Andrej Kramarić","Adam Hložek","Fisnik Asllani"]}

@@ -1,0 +1,19 @@
+1|Galatasaray|34|23|8|3|69|24|77
+2|Fenerbahçe|34|20|8|6|61|34|68
+3|Trabzonspor|34|15|11|8|60|39|56
+4|Beşiktaş|34|15|10|9|50|39|55
+5|Eskişehirspor|34|14|8|12|42|41|50
+6|İstanbul B.B.|34|14|8|12|48|49|50
+7|Sivasspor|34|13|11|10|57|54|50
+8|Bursaspor|34|13|10|11|44|35|49
+9|Gençlerbirliği|34|13|10|11|49|48|49
+10|Gaziantepspor|34|13|9|12|39|33|48
+11|Kayserispor|34|13|5|16|42|39|44
+12|Kardemir Karabükspor|34|13|5|16|44|56|44
+13|Mersin İdman Yurdu|34|12|6|16|34|45|42
+14|Orduspor|34|10|12|12|28|34|42
+15|Antalyaspor|34|10|9|15|32|42|39
+16|Samsunspor|34|9|9|16|36|47|36
+17|Manisaspor|34|8|8|18|31|52|32
+18|MKE Ankaragücü|34|2|5|27|22|77|11
+SEASONNOTE|Regular season shown. The top four then played a play-off group to decide the title, which Galatasaray won.

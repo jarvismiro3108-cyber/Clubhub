@@ -1,9 +1,11 @@
 # Club Hub
 
-Football club website: history, records, squad picker and match predictions for every club in the top 5 leagues and the Süper Lig.
+Independent football fan site: history, records, squads and match predictions for every club in the top 5 European leagues and the Süper Lig.
 
-- `public/index.html` — the whole website
-- `worker.js` — Cloudflare Worker: serves the site and the AI endpoint `/api/analyze` (Gemini, with Google Search for current form)
-- `wrangler.jsonc` — Cloudflare settings
+- `src/template.html` — the front end
+- `data/` — club files, league tables, coaches
+- `build.py` — builds `public/index.html` (run `python3 build.py`)
+- `public/` — the website that gets deployed
+- `worker.js`, `wrangler.jsonc` — Cloudflare Worker (site + AI endpoint)
 
-The Gemini key is stored in Cloudflare as the secret `GEMINI_API_KEY` (never in this repo).
+See `CLAUDE.md` for how everything works.

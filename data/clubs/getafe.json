@@ -1,0 +1,10 @@
+{"name":"Getafe","short":"GET","league":"esp","founded":"8 July 1983","city":"Getafe, Madrid","nick":"Azulones","stadium":"Coliseum","cap":"16,500","coach":"José Bordalás",
+"colors":["#005999","#FFFFFF","#00284a"],
+"honours":[["Copa del Rey finals",2,"Runners-up 2007, 2008"],["Segunda B title",1,"1998–99"]],
+"legends":[],
+"records":[["5th","Best league finish (2018–19)"],["UEFA Cup QF","Quarter-finals in 2007–08, lost to Bayern on away goals"],["4–0","Beat Barcelona in the 2007 Copa del Rey semi-final"]],
+"squad":[[13,"David Soria","GK","ESP",["GK"],33],[1,"Jiří Letáček","GK","CZE",["GK"],27],
+[2,"Dakonam Djené","DEF","TOG",["CB"],34],[5,"Abdel Abqar","DEF","MAR",["CB"],27],[24,"Zaid Romero","DEF","ARG",["CB"],26],[15,"Sebastián Boselli","DEF","URU",["CB"],22],[4,"Saba Sazonov","DEF","GEO",["CB"],24],[26,"Jean Ives Valou","DEF","CIV",["CB"],20],[17,"Kiko Femenía","DEF","ESP",["RB"],35],[21,"Andrés García","DEF","ESP",["RB"],23],[3,"Davinchi","DEF","ESP",["LB"],18],[22,"Johan Mojica","DEF","COL",["LB"],34],
+[8,"Nemanja Gudelj","MID","SRB",["DM","CB"],34],[23,"Orel Mangala","MID","BEL",["DM","CM"],28],[11,"Ramón Terrats","MID","ESP",["CM","AM"],25],[16,"Francho Serrano","MID","ESP",["CM"],24],[6,"Mario Martín","MID","ESP",["CM"],22],
+[7,"Juanmi","FWD","ESP",["LW","ST"],33],[9,"Borja Mayoral","FWD","ESP",["ST"],29],[10,"Martín Satriano","FWD","URU",["ST"],25],[20,"Iván Azón","FWD","ESP",["ST"],23],[19,"Enes Ünal","FWD","TUR",["ST"],29]],
+"starters":["David Soria","Kiko Femenía","Dakonam Djené","Abdel Abqar","Davinchi","Nemanja Gudelj","Orel Mangala","Ramón Terrats","Mario Martín","Juanmi","Borja Mayoral"]}

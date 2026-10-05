@@ -1,0 +1,22 @@
+1|Galatasaray|36|28|4|4|83|27|88
+2|Fenerbahçe|36|25|5|6|87|42|80
+3|Beşiktaş|36|23|9|4|78|36|78
+4|Adana Demirspor|36|20|9|7|76|45|69
+5|İstanbul Başakşehir|36|18|8|10|54|37|62
+6|Trabzonspor|36|17|6|13|64|54|57
+7|Fatih Karagümrük|36|13|12|11|75|63|51
+8|Konyaspor|36|12|15|9|49|41|51
+9|Kayserispor|36|15|5|16|55|61|47
+10|Kasımpaşa|36|12|7|17|45|61|43
+11|Ankaragücü|36|12|6|18|43|53|42
+12|İstanbulspor|36|12|5|19|47|63|41
+13|Antalyaspor|36|11|8|17|46|55|41
+14|Sivasspor|36|11|8|17|46|54|41
+15|Alanyaspor|36|11|8|17|54|70|41
+16|Giresunspor|36|10|10|16|42|60|40
+17|Ümraniyespor|36|7|9|20|47|64|30
+18|Gaziantep|36|6|7|23|31|72|25
+19|Hatayspor|36|6|5|25|19|83|23
+NOTE|Kayserispor|3-point deduction
+NOTE|Gaziantep|Withdrew after the February 2023 earthquake; remaining matches awarded 3–0
+NOTE|Hatayspor|Withdrew after the February 2023 earthquake; remaining matches awarded 3–0

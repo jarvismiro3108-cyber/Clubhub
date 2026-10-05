@@ -1,0 +1,18 @@
+1|Galatasaray|34|21|8|5|66|35|71
+2|Fenerbahçe|34|18|7|9|56|39|61
+3|Beşiktaş|34|16|10|8|63|49|58
+4|Bursaspor|34|14|13|7|52|41|55
+5|Kayserispor|34|15|7|12|48|45|52
+6|Kasımpaşa|34|14|8|12|48|37|50
+7|Antalyaspor|34|14|5|15|50|52|47
+8|Eskişehirspor|34|11|13|10|48|40|46
+9|Trabzonspor|34|13|7|14|39|40|46
+10|Gaziantepspor|34|12|10|12|42|49|46
+11|Gençlerbirliği|34|10|15|9|46|47|45
+12|Sivasspor|34|12|8|14|42|46|44
+13|Elazığspor|34|10|13|11|31|46|43
+14|Akhisar Belediyespor|34|11|9|14|36|44|42
+15|Kardemir Karabükspor|34|11|7|16|41|53|40
+16|İstanbul B.B.|34|9|9|16|43|50|36
+17|Orduspor|34|6|11|17|35|51|29
+18|Mersin İdman Yurdu|34|4|10|20|31|53|22
