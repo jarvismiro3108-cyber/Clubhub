@@ -19,8 +19,8 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
 - `worker.js` + `wrangler.jsonc` — Cloudflare Worker named `clubhub`. It serves `public/` and the AI
   endpoint `POST /api/analyze`. Cloudflare builds and deploys automatically on every push to `main`
   (check status with the "Workers Builds: clubhub" check on the commit).
-  Pushing a commit to another branch first gives it a preview build; the production build of that same commit on `main`
-  can then fail instantly (no log). Push a new commit to `main` to trigger a fresh production build.
+  The check shows no log. Once (5 Oct 2026) a production build failed for unknown reasons while the same code built fine
+  locally (`npx wrangler deploy --dry-run`) and as a branch preview; the next push to `main` deployed normally.
 
 ## The AI part (worker.js)
 - Gemini API (free tier) with Google Search grounding. The key is a Cloudflare secret; the worker
