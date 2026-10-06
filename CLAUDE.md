@@ -69,6 +69,17 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
 - Match preview: before kick-off the match centre opens on a Preview tab (`matchPreview()`): win/draw/loss and likeliest
   score from `teamRating()` + Poisson, both clubs' table position and form, head-to-head (`h2h` in `/api/live/match`, from
   ESPN `headToHeadGames`). Live match pages refresh every 60 s.
+- Real xG (worker.js): Understat (`US_LG`: eng/esp/ita/ger/fra; no Süper Lig) via its JSON endpoints `getLeagueData/<lg>/<year>`,
+  `getMatchData/<id>`, `getPlayerData/<id>` (need `X-Requested-With: XMLHttpRequest`; formats checked against the
+  understatAPI test fixtures). Matches are found by date + `teamScore()` name matching; `/api/live/match` then carries real
+  team xG (`home.xgReal`) and `us.shots` / `us.players` (shot map, xG/xA per player). Süper Lig xG stays a labelled estimate.
+- Head-to-head: ESPN `headToHeadGames` plus the home club's ESPN league schedules for the last five seasons
+  (`h2hFromSchedules()`, `?season=<year>`, cached 24 h). Shown on the preview and on finished matches (`h2hCard()`).
+- Player profiles: `GET /api/live/player?league=..&team=<ESPN team id>&name=..&pos=GK|DEF|MID|FWD` (`liveProfile()`): ESPN
+  roster bio (DOB, height, weight, birthplace) + all box-score stats, percentiles against league players in the same
+  position (ESPN per game; Understat per 90 with xG/xA/xGChain), Understat match log, season-by-season and shot map.
+- Menu: fixed round button top right (`#menuBtn`) opens a drawer (`openMenu()`): search, my club, pages, leagues, recently
+  viewed clubs (`store` key `recent`). Crumb rows keep 58px free on the right for the button.
 - The club tab formerly called Match Analysis is now **Predict** (route suffix still `match`). Squad Picker and the
   Predict opponent start from the usual XI and bench (`#autofill` / `#oppUsual`) when nothing is saved.
 - The page matches our club names to ESPN's (`matchTeams()` in the template: exact tokens first, then fuzzy, each club once;

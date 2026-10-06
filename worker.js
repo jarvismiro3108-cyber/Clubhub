@@ -130,11 +130,11 @@ const ESPN_LEAGUE = { eng: 'eng.1', esp: 'esp.1', ita: 'ita.1', ger: 'ger.1', fr
 const DOMESTIC = new Set(['eng', 'esp', 'ita', 'ger', 'fra', 'tur']);
 const SEASON_START = '20260701'; // 2026/27
 const memo = new Map();
-async function getJSON(url, ttlSec) {
+async function getJSON(url, ttlSec, extraHeaders) {
   const now = Date.now(), hit = memo.get(url);
   if (hit && now - hit.t < ttlSec * 1000) return hit.v;
   try {
-    const r = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0 (compatible; ClubHub/1.0)' } });
+    const r = await fetch(url, { headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0 (compatible; ClubHub/1.0)', ...(extraHeaders || {}) } });
     if (!r.ok) throw new Error('upstream ' + r.status);
     const v = await r.json();
     memo.set(url, { t: now, v });
@@ -230,7 +230,9 @@ function athleteStats(a) {
   const s = flatStats(a.statistics || a.stats || null), g = (...k) => { for (const x of k) if (s[x] != null) return s[x]; return null; };
   return { pid: String(a.id || ''), name: str(a.displayName || a.fullName, 40), no: n0(a.jersey), pos: POS(a.position), age: n0(a.age),
     apps: g('appearances', 'gamesPlayed'), sub: g('subIns'), goals: g('totalGoals', 'goals'), assists: g('goalAssists', 'assists'),
-    saves: g('saves'), conceded: g('goalsConceded'), cs: g('cleanSheet', 'cleanSheets'), _any: Object.keys(s).length > 0 };
+    saves: g('saves'), conceded: g('goalsConceded'), cs: g('cleanSheet', 'cleanSheets'),
+    shots: g('totalShots'), sot: g('shotsOnTarget'), fouls: g('foulsCommitted'), fouled: g('foulsSuffered'), yc: g('yellowCards'), rc: g('redCards'),
+    offsides: g('offsides'), faced: g('shotsFaced'), _any: Object.keys(s).length > 0 };
 }
 async function liveClub(lg, id) {
   const base = espnBase(lg);
@@ -272,7 +274,7 @@ async function livePlayers(lg) {
   const teams = await Promise.all(t.rows.slice(0, 24).map(async r => {
     let players = [];
     try { players = rosterAthletes(await getJSON(`${espnBase(lg)}/teams/${r.id}/roster`, 1800)).slice(0, 60).map(athleteStats).filter(p => p._any); } catch {}
-    players.forEach(p => { delete p._any; delete p.pid; delete p.age; });
+    players.forEach(p => { delete p._any; delete p.pid; delete p.age; delete p.fouls; delete p.fouled; delete p.offsides; delete p.faced; });
     const mine = events.filter(e => e.home.id === r.id || e.away.id === r.id);
     const cs = mine.filter(e => (e.home.id === r.id ? e.away.score : e.home.score) === 0).length;
     return { id: r.id, name: r.name, games: r.p, cs, players };
@@ -409,11 +411,17 @@ async function liveMatch(lg, id) {
     h2h.push({ id: eid, date: String(e.gameDate || e.date || ''), home: String(e.homeTeamId || '').replace(/\D/g, ''), away: String(e.awayTeamId || '').replace(/\D/g, ''),
       hs, as, comp: str(e.leagueName || e.leagueAbbreviation || '', 40) });
   }
+  const dt = new Date(c.date || d?.header?.date || Date.now()), curYear = dt.getUTCMonth() >= 6 ? dt.getUTCFullYear() : dt.getUTCFullYear() - 1;
+  const [extra, us] = await Promise.allSettled([home.id && away.id ? h2hFromSchedules(lg, home.id, away.id, curYear) : [],
+    st.completed || st.state === 'in' ? usMatchData(lg, String(c.date || ''), home.name, away.name, !!st.completed) : null]);
+  if (extra.status === 'fulfilled') for (const e of extra.value) if (!seen.has(e.id) && e.id !== String(id)) { seen.add(e.id); h2h.push(e); }
   h2h.sort((a, b) => b.date.localeCompare(a.date)); h2h.splice(10);
+  const usd = us.status === 'fulfilled' ? us.value : null;
+  if (usd) { home.xg = usd.xg.h; away.xg = usd.xg.a; home.xgReal = away.xgReal = true; }
   const gi = d?.gameInfo || {};
   return { id: String(id), date: String(c.date || d?.header?.date || ''), done: !!st.completed, state: str(st.state, 10), detail: str(st.shortDetail || st.detail, 24),
     comp: str(d?.header?.league?.name || '', 50), venue: str(gi.venue?.fullName, 60), city: str(gi.venue?.address?.city, 40), attendance: n0(gi.attendance),
-    home, away, events, h2h, updated: new Date().toISOString() };
+    home, away, events, h2h, us: usd ? { shots: usd.shots, players: usd.players } : null, updated: new Date().toISOString() };
 }
 
 // ---------- matchday: every match on one date in the six leagues and the two European cups (live scores while playing)
@@ -431,6 +439,125 @@ async function liveDay(date) {
     if (events.length) leagues.push({ lg: DAY_LEAGUES[i], name, events });
   });
   return { date, leagues, partial: res.some(r => r.status === 'rejected'), updated: now.toISOString() };
+}
+
+// ---------- real xG from Understat (Premier League, La Liga, Serie A, Bundesliga, Ligue 1; Understat has no Süper Lig).
+// Understat loads its pages from small JSON endpoints (getLeagueData / getMatchData / getPlayerData) that expect an AJAX header.
+const US_LG = { eng: 'EPL', esp: 'La_Liga', ita: 'Serie_A', ger: 'Bundesliga', fra: 'Ligue_1' };
+const US_SEASON = '2026'; // Understat names a season by its first year
+const usGet = (path, ttl) => getJSON('https://understat.com/' + path, ttl, { 'X-Requested-With': 'XMLHttpRequest', Referer: 'https://understat.com/',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36' });
+const nrm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ı/g, 'i').replace(/ø/g, 'o').replace(/ß/g, 'ss').replace(/æ/g, 'ae')
+  .toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean);
+function sameNameW(a, b) {
+  const x = nrm(a), y = nrm(b); if (!x.length || !y.length) return false;
+  if (x.join(' ') === y.join(' ')) return true;
+  const [s, l] = x.length <= y.length ? [x, y] : [y, x];
+  if (s.every(t => l.includes(t))) return true; // "Vinicius Junior" vs "Vinicius Jose Paixao de Oliveira Junior"
+  return x[x.length - 1] === y[y.length - 1] && x[0][0] === y[0][0];
+}
+const TEAM_STOP_W = new Set('fc afc cf sc ac as ss ssc us rcd ud cd rc ogc aj sco estac tsg vfl vfb club de calcio the and sv fk 1 hove albion'.split(' '));
+const TEAM_ALIAS_W = { internazionale: 'inter', rasenballsport: 'rb', munchen: 'munich', cologne: 'koln', 'm gladbach': 'monchengladbach', saint: 'st' };
+function teamToks(n) { let t = nrm(n).join(' '); for (const [a, b] of Object.entries(TEAM_ALIAS_W)) t = t.replace(new RegExp('\\b' + a + '\\b', 'g'), b);
+  return t.split(' ').filter(x => x && !TEAM_STOP_W.has(x)); }
+function teamScore(a, b) { // 0..1, how well two spellings of a club name agree
+  const x = teamToks(a), y = teamToks(b); if (!x.length || !y.length) return 0;
+  const hit = x.filter(t => y.some(u => u === t || (t.length >= 4 && u.length >= 4 && (u.startsWith(t) || t.startsWith(u) || u.includes(t) || t.includes(u))))).length;
+  return hit / Math.min(x.length, y.length) * 0.8 + hit / Math.max(x.length, y.length) * 0.2;
+}
+async function usMatch(lg, date, homeName, awayName) {
+  if (!US_LG[lg]) return null;
+  const L = await usGet(`getLeagueData/${US_LG[lg]}/${US_SEASON}`, 1800), t = Date.parse(date);
+  let best = null;
+  for (const m of L?.dates || []) {
+    const mt = Date.parse(String(m.datetime).replace(' ', 'T') + 'Z');
+    if (!(Math.abs(mt - t) < 36 * 3600e3)) continue;
+    const s1 = teamScore(m.h?.title, homeName) * teamScore(m.a?.title, awayName), s2 = teamScore(m.h?.title, awayName) * teamScore(m.a?.title, homeName);
+    const sc = Math.max(s1, s2); if (sc >= 0.25 && (!best || sc > best.sc)) best = { id: String(m.id), swap: s2 > s1, sc, done: !!m.isResult };
+  }
+  return best;
+}
+async function usMatchData(lg, date, homeName, awayName, done) {
+  const m = await usMatch(lg, date, homeName, awayName); if (!m || !m.done) return null;
+  const d = await usGet(`getMatchData/${m.id}`, done ? 6 * 3600 : 300);
+  const side = k => m.swap ? (k === 'h' ? 'a' : 'h') : k; // Understat side -> our side
+  const shots = [], players = { h: [], a: [] }, xg = { h: 0, a: 0 };
+  for (const k of ['h', 'a']) for (const s of d?.shots?.[k] || []) {
+    const o = side(k), v = Number(s.xG) || 0; xg[o] += v;
+    shots.push({ t: o, min: n0(s.minute), x: Number(s.X), y: Number(s.Y), xg: Math.round(v * 1000) / 1000, res: str(s.result, 20), p: str(s.player, 40),
+      sit: str(s.situation, 20), type: str(s.shotType, 20), as: str(s.player_assisted, 40) });
+  }
+  for (const k of ['h', 'a']) for (const r of Object.values(d?.rosters?.[k] || {})) players[side(k)].push({ p: str(r.player, 40), xg: Number(r.xG) || 0, xa: Number(r.xA) || 0,
+    shots: n0(r.shots), kp: n0(r.key_passes), min: n0(r.time), g: n0(r.goals), a: n0(r.assists) });
+  return { id: m.id, xg: { h: Math.round(xg.h * 100) / 100, a: Math.round(xg.a * 100) / 100 }, shots: shots.sort((a, b) => (a.min ?? 0) - (b.min ?? 0)), players };
+}
+// ---------- head-to-head: ESPN's own list plus the home club's league schedules of the last five seasons
+async function h2hFromSchedules(lg, homeId, awayId, curYear) {
+  if (!DOMESTIC.has(lg)) return [];
+  const years = [1, 2, 3, 4, 5].map(k => curYear - k);
+  const res = await Promise.allSettled(years.map(y => getJSON(`${espnBase(lg)}/teams/${homeId}/schedule?season=${y}`, 24 * 3600)));
+  const out = [];
+  for (const r of res) if (r.status === 'fulfilled') for (const raw of r.value?.events || []) {
+    const e = parseEvent(raw, ''); if (!e || !e.done || e.home.score == null) continue;
+    const ids = [e.home.id, e.away.id]; if (!ids.includes(homeId) || !ids.includes(awayId)) continue;
+    out.push({ id: e.id, date: e.date, home: e.home.id, away: e.away.id, hs: e.home.score, as: e.away.score, comp: e.comp });
+  }
+  return out;
+}
+// ---------- player profile: ESPN roster bio + season stats, Understat xG/xA, percentiles, match log, shot map, career
+const US_POS = p => { const s = String(p || ''); return /GK/.test(s) ? 'GK' : /^D/.test(s) ? 'DEF' : /\bF\b|^F/.test(s) ? 'FWD' : 'MID'; };
+function pct(list, v) { if (!list.length) return null; const below = list.filter(x => x < v).length, eq = list.filter(x => x === v).length; return Math.round((below + eq / 2) / list.length * 100); }
+async function liveProfile(lg, teamId, name, grp) {
+  const base = espnBase(lg), out = { name, source: [] };
+  const ros = await getJSON(`${base}/teams/${teamId}/roster`, 1800).catch(() => null);
+  const team = str(ros?.team?.displayName || ros?.team?.name || '', 50);
+  const a = ros ? rosterAthletes(ros).find(x => sameNameW(x.displayName || x.fullName, name)) : null;
+  if (a) {
+    const st = athleteStats(a); delete st._any;
+    out.bio = { full: str(a.fullName || a.displayName, 60), dob: str(a.dateOfBirth, 30), age: n0(a.age), height: str(a.displayHeight, 12), weight: str(a.displayWeight, 12),
+      nat: str(a.citizenship || a.citizenshipCountry?.name, 40), born: str([a.birthPlace?.city, a.birthPlace?.country].filter(Boolean).join(', '), 60),
+      pos: str(a.position?.displayName || a.position?.name, 30), no: n0(a.jersey) };
+    out.espn = st; out.source.push('ESPN');
+  }
+  // league peers from ESPN (all leagues): per-appearance numbers
+  if (DOMESTIC.has(lg)) try {
+    const lp = await livePlayers(lg), peers = lp.teams.flatMap(t => t.players).filter(p => (p.pos || '') === grp && (p.apps || 0) >= 3);
+    if (out.espn && peers.length >= 8) {
+      const per = (p, k) => (p[k] || 0) / Math.max(1, p.apps || 0), keys = grp === 'GK' ? [['saves', 'Saves'], ['cs', 'Clean sheets'], ['conceded', 'Goals conceded', true]]
+        : [['goals', 'Goals'], ['assists', 'Assists'], ['shots', 'Shots'], ['sot', 'Shots on target'], ['yc', 'Yellow cards', true]];
+      out.espnPct = keys.filter(([k]) => out.espn[k] != null).map(([k, label, low]) => { const v = per(out.espn, k), list = peers.map(p => per(p, k)), q = pct(list, v);
+        return { k, label, v: Math.round(v * 100) / 100, pct: low && q != null ? 100 - q : q }; });
+      out.peersN = peers.length;
+    }
+  } catch {}
+  if (US_LG[lg]) try {
+    const L = await usGet(`getLeagueData/${US_LG[lg]}/${US_SEASON}`, 1800), all = L?.players || [];
+    const inTeam = all.filter(p => String(p.team_title || '').split(',').some(t => teamScore(t, team) >= 0.6));
+    const p = inTeam.find(x => sameNameW(x.player_name, name)) || (all.filter(x => sameNameW(x.player_name, name)).length === 1 ? all.find(x => sameNameW(x.player_name, name)) : null);
+    if (p) {
+      const num = k => Number(p[k]) || 0, mins = num('time'), maxT = Math.max(...all.map(x => Number(x.time) || 0), 1);
+      const peers = all.filter(x => US_POS(x.position) === (grp || US_POS(p.position)) && (Number(x.time) || 0) >= Math.max(270, maxT * 0.2));
+      const p90 = (x, k) => (Number(x[k]) || 0) / Math.max(1, Number(x.time) || 0) * 90;
+      const KEYS = [['goals', 'Goals'], ['npxG', 'Non-penalty xG'], ['xG', 'Expected goals (xG)'], ['assists', 'Assists'], ['xA', 'Expected assists (xA)'], ['shots', 'Shots'],
+        ['key_passes', 'Key passes'], ['xGChain', 'xG chain'], ['xGBuildup', 'xG buildup']];
+      out.us = { id: String(p.id), team: str(p.team_title, 60), pos: str(p.position, 10), games: num('games'), min: mins, goals: num('goals'), npg: num('npg'), assists: num('assists'),
+        xg: Math.round(num('xG') * 100) / 100, npxg: Math.round(num('npxG') * 100) / 100, xa: Math.round(num('xA') * 100) / 100, sh: num('shots'), kp: num('key_passes'),
+        yc: num('yellow_cards'), rc: num('red_cards'), peersN: peers.length,
+        per90: mins >= 90 ? KEYS.map(([k, label]) => ({ k, label, v: Math.round(p90(p, k) * 100) / 100, pct: peers.length >= 8 ? pct(peers.map(x => p90(x, k)), p90(p, k)) : null })) : [] };
+      const pd = await usGet(`getPlayerData/${p.id}`, 3600).catch(() => null);
+      if (pd) {
+        out.us.seasons = (pd.groups?.season || []).map(s => ({ season: str(s.season, 6), team: str(s.team, 60), games: n0(s.games), min: n0(s.time), goals: n0(s.goals), assists: n0(s.assists),
+          xg: Math.round((Number(s.xG) || 0) * 100) / 100, xa: Math.round((Number(s.xA) || 0) * 100) / 100, shots: n0(s.shots) })).slice(0, 12);
+        out.us.matches = (pd.matches || []).filter(m => String(m.season) === US_SEASON).map(m => ({ date: str(m.date, 12), h: str(m.h_team, 40), a: str(m.a_team, 40), hg: n0(m.h_goals), ag: n0(m.a_goals),
+          min: n0(m.time), g: n0(m.goals), as: n0(m.assists), xg: Math.round((Number(m.xG) || 0) * 100) / 100, xa: Math.round((Number(m.xA) || 0) * 100) / 100, sh: n0(m.shots), kp: n0(m.key_passes), pos: str(m.position, 6) }))
+          .sort((x, y) => y.date.localeCompare(x.date)).slice(0, 40);
+        out.us.shots = (pd.shots || []).filter(s => String(s.season) === US_SEASON).slice(-200).map(s => ({ x: Number(s.X), y: Number(s.Y), xg: Math.round((Number(s.xG) || 0) * 1000) / 1000,
+          res: str(s.result, 20), min: n0(s.minute), sit: str(s.situation, 20), type: str(s.shotType, 20), vs: str(s.h_a === 'h' ? s.a_team : s.h_team, 40), date: str(s.date, 10) }));
+      }
+      out.source.push('Understat');
+    }
+  } catch {}
+  return out;
 }
 
 function liveJson(status, obj, maxAge = 300) {
@@ -501,6 +628,11 @@ async function handle(request, env) {
         if (!/^\d{1,12}$/.test(ev)) return liveJson(400, { error: 'bad_request' });
         const m = await liveMatch(lg, ev);
         return liveJson(200, m, m.done ? 300 : 30);
+      }
+      if (url.pathname === '/api/live/player') {
+        const team = url.searchParams.get('team') || '', name = (url.searchParams.get('name') || '').slice(0, 60), pos = url.searchParams.get('pos') || '';
+        if (!DOMESTIC.has(lg) || !/^\d{1,7}$/.test(team) || !name.trim() || !/^(GK|DEF|MID|FWD|)$/.test(pos)) return liveJson(400, { error: 'bad_request' });
+        return liveJson(200, await liveProfile(lg, team, name, pos), 900);
       }
       if (url.pathname !== '/api/live/club' || !DOMESTIC.has(lg)) return liveJson(404, { error: 'not_found' });
       const id = url.searchParams.get('id') || '';

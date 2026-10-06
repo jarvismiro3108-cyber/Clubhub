@@ -316,6 +316,17 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Pitch shirts (Squad Picker, Predict, Fantasy):** round numbered shirts split in the club's first colour and a
   slightly darker half, ringed in the second colour, number in black or white for contrast (same family as the match
   centre's line-up chips).
+- **Menu:** a round 46px button fixed top right in the poster colour with a white ring and a 4px bottom edge (three bars
+  that turn into a cross); it opens a right-hand drawer in the page's dark shade: Club Hub wordmark, search bar, a my-club
+  tile in its colours, big Big Shoulders links (Home, Matchday, Europe, Bracket Simulator, Fantasy Draft), league pills,
+  recently viewed clubs and small legal links.
+- **Player page (detailed):** poster header; a "This Season" poster panel with big accent-coloured numbers (apps,
+  minutes, goals, assists, xG, xA) and a row of per-90 rates; percentile bars against league players in the same
+  position (blue 80+, green 60+, orange 40+, red below, number in a matching badge); a half-pitch shot map (goals
+  filled in the accent colour, saved blue, missed white outline, blocked dashed; size = xG); match-by-match table;
+  season-by-season rows with goals vs xG bars; details list and teammates.
+- **Match shot map / dangerous players:** both teams on one pitch in their colours (home shoots right), and a list of
+  the players with the most xG + xA in the match.
 - **Search:** a full-width pill bar on the home page and a round magnifier button in every poster header; results open
   in the bottom sheet, which takes the page colours (home included): clubs first, then players with a numbered shirt
   circle in their club colours and a Club/Player tag.
