@@ -263,7 +263,11 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   order (wrapping round) and each league remembers its last shirt; a chunky white "Open <club>" pill button has a
   solid 6px bottom edge. The poster lettering uses **Archivo** (self-hosted, OFL) at 125% width and weight 800–900;
   nowhere else uses Archivo. Poster accents follow the club, so the Gold Means Winning rule applies outside it.
-- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are night-panel tiles directly under the poster, each with its own small
+- **Home page colour world:** below the poster the whole home page (feature tiles, league heading, club cards,
+  Clubs/Table switch, live table, footer) uses the poster's darker shade as its background, with tinted panels and
+  white text; it recolours with the poster on every swap. The league heading uses the poster's wide Archivo.
+  Club pages, Europe, Bracket and Fantasy keep the standard light/dark themes.
+- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tinted tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
 - **Scoreboard:** navy block, team names either side, a dark inset score box, used for every match result.
 - **Knockout tie card:** glassy dark card, club-colour stripe per row, winner row tinted gold with a gold score.

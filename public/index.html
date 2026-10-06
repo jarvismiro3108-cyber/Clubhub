@@ -79,15 +79,17 @@ a,button,select,input,label{touch-action:manipulation;-webkit-tap-highlight-colo
 
 /* home */
 /* home poster: one loud colour per league, a giant shirt as the figure, wide heavy headline */
-.poster{--p-bg:#d4122a;--p-deep:#8e0a1b;--p-ink:#fff;--p-acc:#ffd200;position:relative;overflow:hidden;isolation:isolate;color:var(--p-ink);background:var(--p-bg);transition:background-color .5s cubic-bezier(.2,.8,.2,1),color .3s}
+body{--p-bg:#1d2a57;--p-deep:#0f1733;--p-ink:#fff;--p-acc:#ffd200}
+.poster{position:relative;overflow:hidden;isolation:isolate;color:var(--p-ink);background:var(--p-bg);transition:background-color .5s cubic-bezier(.2,.8,.2,1),color .3s}
+.poster::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;z-index:0;pointer-events:none;background:linear-gradient(180deg,transparent,var(--p-deep));transition:background .5s}
 .p-curve{position:absolute;z-index:-1;width:150vmax;height:150vmax;border-radius:50%;left:46%;top:58%;background:color-mix(in srgb,var(--p-deep) 55%,var(--p-bg));transition:background-color .5s}
 .p-wrap{max-width:1180px;margin:0 auto;padding:44px 88px 34px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);grid-template-areas:"text fig" "foot fig" "lg lg";align-items:end;column-gap:8px;min-height:min(720px,94vh);position:relative}
 .p-text{grid-area:text;position:relative;z-index:3;align-self:end;min-width:0}
 .p-leagues{grid-area:lg;position:relative;z-index:3;min-width:0}
-.p-figure{grid-area:fig;position:relative;z-index:1;align-self:center;justify-self:center;width:min(500px,40vw);margin-left:-150px;min-width:0}
+.p-figure{grid-area:fig;position:relative;z-index:1;align-self:center;justify-self:center;width:min(480px,38vw);margin-left:-90px;min-width:0}
 .p-foot{grid-area:foot;position:relative;z-index:3;align-self:start;min-width:0}
 .p-kicker{font-family:'Archivo',var(--display);font-stretch:125%;font-weight:800;font-size:clamp(16px,2vw,26px);text-transform:uppercase;letter-spacing:.01em;line-height:1;margin-bottom:6px}
-.p-title{margin:0;font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.84;letter-spacing:-.02em;display:grid}
+.p-title{margin:0;text-shadow:0 2px 0 rgba(0,0,0,.12),0 12px 34px rgba(0,0,0,.3);font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.84;letter-spacing:-.02em;display:grid}
 .p-title .p-a{font-size:clamp(76px,11.2vw,164px)}
 .p-title .p-b{font-size:clamp(76px,11.2vw,164px);padding-left:.62em}
 .p-title .p-c{font-size:clamp(30px,4.1vw,58px);color:var(--p-acc);justify-self:end;margin-top:.12em;transition:color .4s}
@@ -176,6 +178,29 @@ a,button,select,input,label{touch-action:manipulation;-webkit-tap-highlight-colo
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .club.ready:hover{box-shadow:0 10px 24px -8px rgba(0,0,0,.6)}}
 :root[data-theme="dark"] .club.ready:hover{box-shadow:0 10px 24px -8px rgba(0,0,0,.6)}
 .homehead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+body.on-home{background:var(--p-deep);transition:background-color .5s cubic-bezier(.2,.8,.2,1)}
+#home main{color-scheme:dark;
+  --bg:var(--p-deep);--fg:#ffffff;--fg2:color-mix(in srgb,#fff 84%,var(--p-deep));--muted:color-mix(in srgb,#fff 72%,var(--p-deep));
+  --surface:color-mix(in srgb,#fff 9%,var(--p-deep));--surface2:color-mix(in srgb,#fff 15%,var(--p-deep));--line:color-mix(in srgb,#fff 18%,var(--p-deep));
+  --c-hi:#ffffff;--c-hi-ink:var(--p-deep);color:var(--fg);padding-top:30px}
+#home main .homehead h2{font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;font-size:clamp(28px,4.2vw,44px);letter-spacing:-.01em;line-height:.95}
+#home main .homehead span{font-size:14px}
+#home main .seg{background:color-mix(in srgb,#fff 12%,var(--p-deep))}
+#home main .seg button{color:#fff}
+#home main .seg button[aria-pressed="true"]{background:#fff;color:var(--p-deep);box-shadow:0 3px 0 color-mix(in srgb,#000 30%,var(--p-deep))}
+#home main .club{border-color:var(--line)}
+#home main .club.ready:hover{border-color:color-mix(in srgb,#fff 55%,var(--p-deep));box-shadow:0 12px 26px -10px rgba(0,0,0,.55)}
+#home main .club .kit{--shirt-line:rgba(255,255,255,.5);background:color-mix(in srgb,#000 22%,var(--p-deep))}
+#home main .club .chev{color:var(--muted)}
+#home main .play{background:color-mix(in srgb,#fff 9%,var(--p-deep));border-color:var(--line);box-shadow:0 12px 26px -16px rgba(0,0,0,.6)}
+#home main .play:hover{border-color:var(--p-acc)}
+#home main .play .pic{background:color-mix(in srgb,#000 28%,var(--p-deep));box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+#home main .play small{color:var(--fg2)}
+#home main .dot{background:#fff}
+#home main .ltable td.pts,#home main .ltable td.team a{color:#fff}
+#home main .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-deep))}
+body.on-home .sitefoot{color:color-mix(in srgb,#fff 74%,var(--p-deep));border-top-color:color-mix(in srgb,#fff 16%,var(--p-deep))}
+body.on-home .sitefoot a,body.on-home .sitefoot b{color:#fff}
 .homehead h2{font-size:28px;text-transform:uppercase}
 .homehead span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
 
@@ -1033,7 +1058,7 @@ function renderPoster(L,swap){
   if(swap)posterClub=ids[(ids.indexOf(posterClub)+1)%ids.length];
   store.set('poster-'+L.id,posterClub);
   const c=CLUBS[posterClub],sh=$('#pShirt'),open=$('#pOpen');
-  const paint=()=>{const st=posterPalette(c);for(const [k,v] of Object.entries(st))P.style.setProperty('--p-'+k,v);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg)};
+  const paint=()=>{const st=posterPalette(c);for(const [k,v] of Object.entries(st))document.body.style.setProperty('--p-'+k,v);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg)};
   const put=()=>{paint();sh.replaceChildren(bigShirtSvg(c));sh.href='#'+posterClub;sh.setAttribute('aria-label','Open '+c.name);open.textContent='Open '+c.name;open.href='#'+posterClub};
   $('#pBrowse').textContent=`Browse all ${ids.length} clubs`;
   if(swap&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -1071,7 +1096,7 @@ window.addEventListener('hashchange',route);
 let curLeague=store.get('league','tur');
 function showHome(){
   C=null;CID=null;applyColors(null);document.title='Club Hub';
-  $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;closePicker(true);
+  $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;closePicker(true);document.body.classList.add('on-home');
   const sn=$('#siteNav');sn.innerHTML='';
   Object.entries(XPAGES).forEach(([k,[t]])=>{const pic=el('span',{class:'pic','aria-hidden':'true'});pic.innerHTML=PLAY_ART[k];
     sn.append(el('a',{class:'play',href:'#'+k},pic,el('span',{},el('b',{text:t}),el('small',{text:PLAY_TEXT[k]})),chevSvg()))});
@@ -1103,7 +1128,7 @@ let state=null;
 function openClub(id,tab){
   if(CID!==id){
     CID=id;C=CLUBS[id];applyColors(C);document.title=C.name+' · Club Hub';
-    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;
+    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;document.body.classList.remove('on-home');
     const L=LEAGUES.find(l=>l.id===C.league);
     $('#crumbLeague').textContent=L.name+' · 2026/27';
     $('#crest').replaceChildren(shirtSvg(C));$('#clubName').textContent=C.name;$('#clubMeta').textContent=C.meta;
@@ -1820,7 +1845,7 @@ const XPAGES={
 const EURO={ucl:'Champions League',uel:'Europa League'};
 function showX(name){
   C=null;CID=null;applyColors(null);closePicker(true);
-  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=false;
+  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=false;document.body.classList.remove('on-home');
   document.title=XPAGES[name][0]+' · Club Hub';
   $('#xTitle').textContent=XPAGES[name][0];$('#xSub').textContent=XPAGES[name][1];
   const nav=$('#xNav');nav.innerHTML='';
