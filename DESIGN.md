@@ -11,7 +11,7 @@ colors:
   surface-sunk: "#e9ecf4"
   ink: "#0e1530"
   ink-soft: "#4a5272"
-  muted: "#7c84a3"
+  muted: "#5f6787"
   line: "#d9ddea"
   night-paper: "#080d1c"
   night-surface: "#10172e"
@@ -21,6 +21,9 @@ colors:
   result-win: "#1f9d55"
   result-draw: "#c98a00"
   result-loss: "#d0423a"
+  badge-win: "#17803f"
+  badge-draw: "#a16207"
+  badge-loss: "#c0352c"
   pitch-light: "#2f7d47"
   pitch-dark: "#2a7240"
   chart-goals: "#2a78d6"
@@ -151,11 +154,14 @@ A navy-and-gold matchday palette with neutral reading surfaces and a reserved se
 - **Paper** (#f3f4f8) / **Night Paper** (#080d1c): page background, light / dark.
 - **Surface** (#ffffff) / **Night Surface** (#10172e): cards and sheets.
 - **Surface Sunk** (#e9ecf4) / **Night Surface Sunk** (#182141): table headers, chips, inactive buttons, list rows.
-- **Ink** (#0e1530), **Ink Soft** (#4a5272), **Muted** (#7c84a3): text by importance; **Line** (#d9ddea) borders.
+- **Ink** (#0e1530), **Ink Soft** (#4a5272), **Muted** (#5f6787; dark mode #8e96b6): text by importance, all at least
+  4.5:1 on their backgrounds; **Line** (#d9ddea) borders.
 
 ### Result and data colours
 - **Win** (#1f9d55), **Draw** (#c98a00), **Loss** (#d0423a): match outcomes and form guides only (dark-mode steps
   are brighter: #34c172, #e2a72a, #ef6a60). League-table zone edges reuse them (European places / relegation).
+  Badges with white W/D/L letters use the deeper **badge** steps (#17803f, #a16207, #c0352c) in both themes so the
+  letters stay readable.
 - **Pitch** (#2f7d47 / #2a7240): the striped grass behind lineups.
 - **Chart goals** (#2a78d6) and **chart assists** (#eb6834): the validated pair for goal-contribution bars
   (dark: #3987e5 / #d95926).
@@ -238,9 +244,17 @@ on phones (`.hs` under 640px, `.hxs` under 420px). The user's own club or team r
 
 ### Navigation
 Header tabs are uppercase Barlow Condensed on the dark header with a 4px accent underline for the active tab. Site
-sections (Europe, Bracket Simulator, Fantasy Draft) are pill links in the home hero.
+sections (Europe, Bracket Simulator, Fantasy Draft) are the feature tiles in the home hero; the league switcher is one
+swipeable row of pills on phones. Club tabs scroll sideways on phones with a fade at the edge.
 
 ### Signature components
+- **Club shirt badge:** each club is a small shirt drawn in its colours (body = first colour, sleeves and collar =
+  second), with a thin outline so white or navy shirts never vanish. Used on club cards and the club header; it
+  replaces crests entirely.
+- **Floodlit hero:** the home header is a night stadium: two floodlight beams switch on once at load (static under
+  reduced motion), faint pitch markings along the bottom, the CLUB HUB wordmark with gold HUB.
+- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are glassy tiles on the hero, each with its own small
+  drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
 - **Scoreboard:** navy block, team names either side, a dark inset score box, used for every match result.
 - **Knockout tie card:** glassy dark card, club-colour stripe per row, winner row tinted gold with a gold score.
 - **Pitch and shirts:** striped grass with circular two-colour shirts, name tags and a dugout bar for subs.
@@ -255,9 +269,12 @@ sections (Europe, Bracket Simulator, Fantasy Draft) are pill links in the home h
 - **Do** pair every win/draw/loss colour with a W/D/L letter.
 - **Do** check every screen at 390px and 1280px, in light and dark, with no horizontal page scroll.
 - **Do** give animations a `prefers-reduced-motion` fallback.
+- **Do** theme browser surfaces: gold text selection, club-colour caret and focus (gold on dark panels), styled
+  dropdown arrows, quiet scrollbars.
 
 ### Don't:
 - **Don't** use club crests, league logos or official marks, or anything that imitates them.
+- **Don't** show build status to visitors (no "ready", "open" or "soon" tags).
 - **Don't** use Trophy Gold for anything but winners, trophies and the current selection.
 - **Don't** use the win/draw/loss colours as decoration or as a club colour.
 - **Don't** make whole pages loud: a page gets at most one or two night panels.

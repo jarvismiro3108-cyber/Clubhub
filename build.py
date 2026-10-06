@@ -212,7 +212,7 @@ if os.environ.get('ARTIFACT_OUT'):
     open(os.environ['ARTIFACT_OUT'], 'w', encoding='utf-8').write(site)
 
 # standalone copy for the public site (GitHub -> Cloudflare): needs its own doctype + charset
-head = '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+head = '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<meta name="theme-color" content="#0f1a3f">\n'
 # self-hosted fonts on the public site (no requests to Google Fonts)
 ff = ''.join(f"@font-face{{font-family:'Barlow Condensed';font-weight:{w};font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-{n}.woff) format('woff')}}"
              for w, n in [(500, 'Medium'), (600, 'SemiBold'), (700, 'Bold'), (800, 'ExtraBold')])
