@@ -30,36 +30,36 @@ colors:
   chart-assists: "#eb6834"
 typography:
   display:
-    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "clamp(40px, 7vw, 72px)"
-    fontWeight: 800
-    lineHeight: 0.92
-    letterSpacing: "0.01em"
+    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
+    fontSize: "clamp(100px, 15vw, 224px)"
+    fontWeight: 900
+    lineHeight: 0.84
+    letterSpacing: "0"
   headline:
-    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "34px"
-    fontWeight: 800
-    lineHeight: 1
+    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
+    fontSize: "clamp(26px, fit to width, 150px)"
+    fontWeight: 900
+    lineHeight: 0.88
   title:
-    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "24px"
-    fontWeight: 700
-    lineHeight: 1.1
+    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
+    fontSize: "clamp(27px, 3.2vw, 34px)"
+    fontWeight: 900
+    lineHeight: 1
   stat:
-    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
-    fontSize: "46px"
-    fontWeight: 800
+    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
+    fontSize: "clamp(48px, 5.6vw, 66px)"
+    fontWeight: 900
     lineHeight: 1
   body:
-    fontFamily: "Figtree, system-ui, sans-serif"
+    fontFamily: "Libre Franklin, system-ui, sans-serif"
     fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.5
   label:
-    fontFamily: "Figtree, system-ui, sans-serif"
-    fontSize: "11.5px"
-    fontWeight: 600
-    letterSpacing: "0.14em"
+    fontFamily: "Big Shoulders Display, Arial Narrow, sans-serif"
+    fontSize: "16px"
+    fontWeight: 800
+    letterSpacing: "0.04em"
 rounded:
   sm: "6px"
   md: "8px"
@@ -128,7 +128,8 @@ scan. The design is used mostly on phones, around matchdays.
 **Key Characteristics:**
 - Navy night panels and gold accents for big moments; calm light cards for reading.
 - Club colours (two stripes) stand in for crests, which are never used.
-- Barlow Condensed uppercase for headings, numbers and scores; Figtree for everything you read.
+- Big Shoulders Display (stadium signage) in capitals for headings, labels, numbers and scores; Libre Franklin (the
+  sports-newspaper grotesque) for everything you read.
 - Results always pair colour with a letter (W/D/L), never colour alone.
 - Full light and dark themes; motion respects reduced-motion settings.
 
@@ -178,20 +179,25 @@ as a club's colour, and always pair them with W/D/L text.
 
 ## Typography
 
-**Display Font:** Barlow Condensed (with Arial Narrow, sans-serif), self-hosted.
-**Poster Font:** Archivo at 125% width, weight 800–900, home poster only (self-hosted).
-**Body Font:** Figtree (with system-ui, sans-serif), self-hosted.
+**Display Font:** Big Shoulders Display (variable 100–900, with Arial Narrow, sans-serif), self-hosted, OFL.
+**Body Font:** Libre Franklin (variable 100–900, with system-ui, sans-serif), self-hosted, OFL.
 
-**Character:** a stadium scoreboard paired with a friendly modern sans: condensed uppercase for anything you glance
-at, a warm readable sans for anything you read.
+**Character:** stadium signage and the sports pages. Tall, tight Big Shoulders capitals for anything you glance at
+(titles, labels, scores, shirt lettering, tabs, buttons); Libre Franklin, a Franklin Gothic revival, for anything you
+read. Two families only; the old Barlow Condensed, Figtree and Archivo were dropped because they read as generic.
+
+**Named Rules.** *No tiny spaced-out capitals*: a label is either a short Big Shoulders cap line at 15px or more with
+light tracking (0.03–0.05em), or plain sentence case in Libre Franklin. *No middle-dot meta strings*: join facts
+with words, commas or line breaks (the club details line in the header is a wrapped row of separate facts).
+*Headlines track at 0*, never negative; condensed caps need room, not squeezing.
 
 ### Hierarchy
-- **Display** (800, clamp(40px, 7vw, 72px), 0.92): the home hero only.
-- **Headline** (800, 34px, 1): club and page names in the header, uppercase.
-- **Title** (700, 24px): card headings, uppercase; section headings outside cards use the same style.
-- **Stat** (800, 46–60px, 1): big numbers on stat boards, spotlight cards and scoreboards.
-- **Body** (400, 15px, 1.5): paragraphs and lists, max about 65ch.
-- **Label** (600, 11.5px, 0.14em, uppercase): eyebrows above headings and small captions.
+- **Display** (900, clamp(100px, 15vw, 224px), 0.84): the home poster headline.
+- **Headline** (900, fitted to width up to 150px, 0.88): club and page names in the poster headers.
+- **Title** (900, 27–34px): card headings and section headings, capitals.
+- **Stat** (900, 48–88px): stat tiles, spotlight numbers, scoreboards; tabular figures.
+- **Label** (800, 15–18px, 0.03–0.05em, capitals): kickers, table headers, tabs, buttons, small tile headings.
+- **Body** (400, 15px, 1.5): paragraphs and lists, max about 65ch; metadata and helper text in sentence case.
 
 ### Named Rules
 **The Numbers Line Up Rule.** Every score, table and stat uses tabular numerals (`.num` / `font-variant-numeric`).
@@ -227,8 +233,8 @@ faint diagonal or vertical stripe texture, like a mown pitch or stadium stands.
 ## Components
 
 ### Buttons
-- **Primary:** club colour (Floodlight Navy by default), uppercase Barlow Condensed 19px, 8px radius. One per area.
-- **Secondary:** Surface Sunk with Ink text, Figtree 600; `.sm` for compact rows; disabled at half opacity.
+- **Primary:** club colour (Floodlight Navy by default), uppercase Big Shoulders Display, 8px radius. One per area.
+- **Secondary:** Surface Sunk with Ink text, Libre Franklin 600; `.sm` for compact rows; disabled at half opacity.
 - **On dark panels:** keep primary/secondary, but the primary becomes the navy button on a green or gold panel.
 
 ### Chips and segmented controls
@@ -240,7 +246,7 @@ faint diagonal or vertical stripe texture, like a mown pitch or stadium stands.
 - **Card:** Surface, 1px Line border, 10px radius, 18px padding, uppercase title.
 - **Night panel:** the page's darkest shade (`--p-page`) with a soft glow of the poster colour at the top and a faint
   gold glow at the bottom, white text, gold accents, 20px radius (the knockout bracket).
-- **Poster tile:** the poster colour with the darker curve, white Archivo label and a giant Archivo headline
+- **Poster tile:** the poster colour with the darker curve, white Big Shoulders label and a giant Big Shoulders headline
   (bracket champion card, fantasy hero, draft clock, fantasy awards with the number in the poster accent colour).
   "Your turn" on the draft clock is a solid tile in the page accent colour; season champions get a deep gold tile
   (#3d2c05 to #86650b) so white text stays readable.
@@ -252,7 +258,7 @@ League tables use a coloured left edge for zones, a bold Pts column, W/D/L form 
 on phones (`.hs` under 640px, `.hxs` under 420px). The user's own club or team row is tinted with the club colour.
 
 ### Navigation
-Club pages and the Europe, Bracket and Fantasy pages use Archivo pill tabs: outlined white on the poster colour, the active one solid white
+Club pages and the Europe, Bracket and Fantasy pages use Big Shoulders pill tabs: outlined white on the poster colour, the active one solid white
 with poster-colour text and a 4px bottom edge. Site
 sections (Europe, Bracket Simulator, Fantasy Draft) are the feature tiles in the home hero; the league switcher is one
 swipeable row of pills on phones. Club tabs scroll sideways on phones with a fade at the edge.
@@ -270,12 +276,11 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   in the second colour or in white/black when that would not show); the wide heavy CLUB HUB headline overlaps it;
   vertical rails run down both edges; the round SWAP CLUB sticker steps through the league's clubs in alphabetical
   order (wrapping round) and each league remembers its last shirt; a chunky white "Open <club>" pill button has a
-  solid 6px bottom edge. The poster lettering uses **Archivo** (self-hosted, OFL) at 125% width and weight 800–900;
-  Archivo is also used on club pages (header, card titles, player cards). Poster accents follow the club, so the Gold
+  solid 6px bottom edge. The poster lettering is Big Shoulders Display 900 at a very large size. Poster accents follow the club, so the Gold
   Means Winning rule applies outside it.
 - **Home page colour world:** below the poster the whole home page (feature tiles, league heading, club cards,
   Clubs/Table switch, live table, footer) uses the poster's darker shade as its background, with tinted panels and
-  white text; it recolours with the poster on every swap. The league heading uses the poster's wide Archivo.
+  white text; it recolours with the poster on every swap. The league heading uses the poster's Big Shoulders.
 - **Europe, Bracket Simulator, Fantasy Draft:** the same poster header (giant page title, figure on the right, pill
   tabs) and the same tinted colour world as club pages (`body.on-x`), each with its own palette (`XPAL`, run through
   `posterPalette()`): Champions League royal blue and Europa League burnt orange (the page recolours when you switch
@@ -289,7 +294,7 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   when the accent would vanish on the grass), never a fixed yellow.
 - **Club pages:** every club page (Club & Records, This Season, Squad Picker, Match Analysis) uses the same colour
   world, built from that club's `posterPalette()`. The header is a poster: the poster colour with the darker curve, the
-  club name in giant wide Archivo (sized from the longest word with container units so words never break), and the big
+  club name in giant Big Shoulders capitals (sized from the longest word with container units so words never break), and the big
   club shirt on the right (beside the club details on phones). Below it the page background is `page`, a shade of
   the club colour dark enough that muted text (72% white) reads on the lightest card (15% white); cards are tinted
   panels with white text and 16px corners. Trophy cabinet and This Season stat tiles are small posters (poster colour,
@@ -298,7 +303,7 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   relegation in the lightened loss colour. The browser's theme colour follows the club.
 - **Player cards (sticker album):** each player in "The Squad" gets a card with his own shirt (surname and number, in
   the club's colours) on a poster-colour panel, a coloured position dot (GK amber, DEF blue, MID green, FWD coral), the
-  name in Archivo capitals and a three-number stats row split by thin lines (zeros muted). Players without an
+  name in Big Shoulders capitals and a three-number stats row split by thin lines (zeros muted). Players without an
   appearance have a greyed shirt panel; four or more goal contributions earn a tilted yellow "On fire" sticker.
 - **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tinted tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
@@ -313,7 +318,7 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Do** take each club's identity from its two colours and short code.
 - **Do** keep tables, results and stats on calm cards (light/dark themes, or the club's tinted panels on club pages);
   save night panels for big moments.
-- **Do** use tabular numbers and Barlow Condensed for scores and stats.
+- **Do** use tabular numbers and Big Shoulders Display for scores and stats.
 - **Do** pair every win/draw/loss colour with a W/D/L letter.
 - **Do** check every screen at 390px and 1280px, in light and dark, with no horizontal page scroll.
 - **Do** give animations a `prefers-reduced-motion` fallback.
