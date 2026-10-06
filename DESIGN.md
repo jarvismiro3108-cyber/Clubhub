@@ -164,7 +164,10 @@ A navy-and-gold matchday palette with neutral reading surfaces and a reserved se
   letters stay readable.
 - **Pitch** (#2f7d47 / #2a7240): the striped grass behind lineups.
 - **Chart goals** (#2a78d6) and **chart assists** (#eb6834): the validated pair for goal-contribution bars
-  (dark: #3987e5 / #d95926).
+  (dark: #3987e5 / #d95926). On club pages the bars are white (goals) and half-white (assists) so they read on
+  any club colour.
+- **Club-page result colours:** on club pages win/draw/loss text is lightened per club (`posterPalette()` returns
+  `win`, `draw`, `loss`) until it reads at 4.6:1 on the lightest club card; the probability bar then uses dark text.
 
 ### Named Rules
 **The Gold Means Winning Rule.** Trophy Gold marks winners, champions, trophies and the current selection. Never use
@@ -237,20 +240,23 @@ faint diagonal or vertical stripe texture, like a mown pitch or stadium stands.
 - **Card:** Surface, 1px Line border, 10px radius, 18px padding, uppercase title.
 - **Night panel:** Night Stand to Night Deep gradient, white text, gold accents, 14px radius (bracket, banners,
   awards, fantasy hero).
-- **Spotlight card:** club-colour gradient with a huge faded shirt number, gold label, big stat.
+- **Spotlight card:** a mini poster in the club's poster colour with the darker curve, the player's own shirt tucked
+  in the corner, white label and name, and the big stat in the poster accent colour.
 
 ### Tables
 League tables use a coloured left edge for zones, a bold Pts column, W/D/L form squares, and hide secondary columns
 on phones (`.hs` under 640px, `.hxs` under 420px). The user's own club or team row is tinted with the club colour.
 
 ### Navigation
-Header tabs are uppercase Barlow Condensed on the dark header with a 4px accent underline for the active tab. Site
+Europe, Bracket and Fantasy header tabs are uppercase Barlow Condensed on the dark header with a 4px accent underline
+for the active tab. Club page tabs are Archivo pills: outlined white on the poster colour, the active one solid white
+with poster-colour text and a 4px bottom edge. Site
 sections (Europe, Bracket Simulator, Fantasy Draft) are the feature tiles in the home hero; the league switcher is one
 swipeable row of pills on phones. Club tabs scroll sideways on phones with a fade at the edge.
 
 ### Signature components
 - **Club shirt badge:** each club is a small shirt drawn in its colours (body = first colour, sleeves and collar =
-  second), with a thin outline so white or navy shirts never vanish. Used on club cards and the club header; it
+  second), with a thin outline so white or navy shirts never vanish. Used on club cards (the club header shows the big poster shirt); it
   replaces crests entirely.
 - **Home poster:** the home header is a sports poster coloured from the featured club's shirt (`posterPalette()`,
   OKLCH): a deeper or brighter shade of the shirt colour; for yellow or white shirts the club's second colour (e.g.
@@ -262,14 +268,28 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   vertical rails run down both edges; the round SWAP CLUB sticker steps through the league's clubs in alphabetical
   order (wrapping round) and each league remembers its last shirt; a chunky white "Open <club>" pill button has a
   solid 6px bottom edge. The poster lettering uses **Archivo** (self-hosted, OFL) at 125% width and weight 800–900;
-  nowhere else uses Archivo. Poster accents follow the club, so the Gold Means Winning rule applies outside it.
+  Archivo is also used on club pages (header, card titles, player cards). Poster accents follow the club, so the Gold
+  Means Winning rule applies outside it.
 - **Home page colour world:** below the poster the whole home page (feature tiles, league heading, club cards,
   Clubs/Table switch, live table, footer) uses the poster's darker shade as its background, with tinted panels and
   white text; it recolours with the poster on every swap. The league heading uses the poster's wide Archivo.
-  Club pages, Europe, Bracket and Fantasy keep the standard light/dark themes.
+  Europe, Bracket and Fantasy keep the standard light/dark themes.
+- **Club pages:** every club page (Club & Records, This Season, Squad Picker, Match Analysis) uses the same colour
+  world, built from that club's `posterPalette()`. The header is a poster: the poster colour with the darker curve, the
+  club name in giant wide Archivo (sized from the longest word with container units so words never break), and the big
+  club shirt on the right (beside the club details on phones). Below it the page background is `page`, a shade of
+  the club colour dark enough that muted text (72% white) reads on the lightest card (15% white); cards are tinted
+  panels with white text and 16px corners. Trophy cabinet and This Season stat tiles are small posters (poster colour,
+  curve, big number in the poster accent colour). Primary buttons and segmented controls are white pills with a solid
+  bottom edge. The points chart reads its colours from the page: champions white, top three light, the rest faint,
+  relegation in the lightened loss colour. The browser's theme colour follows the club.
+- **Player cards (sticker album):** each player in "The Squad" gets a card with his own shirt (surname and number, in
+  the club's colours) on a poster-colour panel, a coloured position dot (GK amber, DEF blue, MID green, FWD coral), the
+  name in Archivo capitals and a three-number stats row split by thin lines (zeros muted). Players without an
+  appearance have a greyed shirt panel; four or more goal contributions earn a tilted yellow "On fire" sticker.
 - **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tinted tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
-- **Scoreboard:** navy block, team names either side, a dark inset score box, used for every match result.
+- **Scoreboard:** navy block (the poster colour on club pages), team names either side, a dark inset score box, used for every match result.
 - **Knockout tie card:** glassy dark card, club-colour stripe per row, winner row tinted gold with a gold score.
 - **Pitch and shirts:** striped grass with circular two-colour shirts, name tags and a dugout bar for subs.
 - **On-the-clock banner:** broadcast-style night panel with a live dot, big name and a gold progress bar.
@@ -278,7 +298,8 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 
 ### Do:
 - **Do** take each club's identity from its two colours and short code.
-- **Do** keep tables, results and stats on calm light (or dark-mode) cards; save night panels for big moments.
+- **Do** keep tables, results and stats on calm cards (light/dark themes, or the club's tinted panels on club pages);
+  save night panels for big moments.
 - **Do** use tabular numbers and Barlow Condensed for scores and stats.
 - **Do** pair every win/draw/loss colour with a W/D/L letter.
 - **Do** check every screen at 390px and 1280px, in light and dark, with no horizontal page scroll.
