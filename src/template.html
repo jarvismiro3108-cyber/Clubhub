@@ -926,6 +926,7 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 </header>
 
 <main>
+<div id="clubLoading" hidden></div>
 <section class="panel" id="p-club" role="tabpanel" aria-labelledby="t-club">
   <div><div class="eyebrow">Trophy cabinet</div><div class="board" id="board" style="margin-top:8px"></div></div>
   <div class="card"><h2 id="titlesHead"></h2><p class="lede" id="titlesText"></p><div class="chips" id="titleChips"></div><p class="note" id="cupsNote"></p></div>
@@ -1221,7 +1222,18 @@ konyaspor:{
 }
 };
 // All other clubs come from the generated data block at the top of this script.
-for(const [id,c] of Object.entries(typeof EXTRA!=='undefined'?EXTRA:{})){if(CLUBS[id])continue;c.seasons=c.seasons?parseSeasons(c.seasons):[];c.squad=parseSquad(c.squad);CLUBS[id]=c}
+for(const c of Object.values(CLUBS))c.full=true; // hand-written clubs carry everything
+for(const [id,c] of Object.entries(typeof EXTRA!=='undefined'?EXTRA:{})){if(CLUBS[id])continue;c.seasons=c.seasons?parseSeasons(c.seasons):[];c.squad=c.squad?parseSquad(c.squad):[];c.pref=c.pref||{};c.starters=c.starters||[];c.full=!!c.records;CLUBS[id]=c}
+// Speed: each league's full club data (history, records, squads) is a separate file, fetched the first time it is needed.
+const leagueLoads={};
+function ensureLeague(lg){
+  const files=typeof LEAGUE_DATA!=='undefined'?LEAGUE_DATA:{};
+  if(!files[lg]||Object.values(CLUBS).every(c=>c.league!==lg||c.full))return Promise.resolve();
+  return leagueLoads[lg]||(leagueLoads[lg]=fetch(files[lg]).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(d=>{
+    for(const [id,h] of Object.entries(d)){const c=CLUBS[id];if(!c||c.full)continue;Object.assign(c,h);c.seasons=h.seasons?parseSeasons(h.seasons):[];c.squad=parseSquad(h.squad||[]);c.full=true}
+  }).catch(e=>{delete leagueLoads[lg];throw e}));
+}
+const idle=f=>('requestIdleCallback' in window?requestIdleCallback(f,{timeout:3000}):setTimeout(f,1200));
 
 // =====================================================================
 // helpers
@@ -1375,6 +1387,7 @@ function showHome(){
   const on=bar.querySelector('[aria-pressed="true"]');if(on&&bar.scrollWidth>bar.clientWidth)bar.scrollLeft=Math.max(0,on.offsetLeft-bar.offsetLeft-16);
   const L=LEAGUES.find(l=>l.id===curLeague)||LEAGUES[0];
   renderPoster(L);
+  idle(()=>ensureLeague(L.id).catch(()=>{})); // so opening a club from this league is instant
   $('#leagueTitle').textContent=L.name;
   $('#leagueCount').textContent=`${L.country}, ${L.clubs.length} clubs`;
   const g=$('#clubGrid');g.innerHTML='';
@@ -1396,16 +1409,31 @@ function showHome(){
 // CLUB PAGE
 // =====================================================================
 let state=null;
+function clubHeader(c){
+  document.title=c.name+' | Club Hub';
+  const L=LEAGUES.find(l=>l.id===c.league);
+  $('#crumbLeague').textContent=L.name+' 2026/27';
+  $('#crest').replaceChildren(bigShirtSvg(c));fitTitle($('#clubName'),c.name);$('#clubMeta').replaceChildren(...c.meta.split(' · ').map(t=>el('span',{text:t})));
+}
 function openClub(id,tab){
+  if(!CLUBS[id].full){ // show the header straight away, fill the tabs once the league file is in
+    CID=null;C=null;
+    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');
+    paintClub(CLUBS[id]);clubHeader(CLUBS[id]);window.scrollTo(0,0);
+    ['club','season','squad','match'].forEach(n=>$('#p-'+n).hidden=true);
+    const ld=$('#clubLoading');ld.hidden=false;ld.replaceChildren(loadingEl('Loading the club…'));
+    ensureLeague(CLUBS[id].league).then(()=>{if(location.hash.slice(1).startsWith(id)){ld.hidden=true;openClub(id,tab)}})
+      .catch(()=>ld.replaceChildren(liveError(()=>openClub(id,tab),'The club could not be loaded. Check your connection and try again.')));
+    return;
+  }
+  $('#clubLoading').hidden=true;
   const back=CID===id&&!$('#matchPage').hidden; // coming back from a match page: keep the club page as it was
   if(back){document.title=C.name+' | Club Hub';$('#matchPage').hidden=true;$('#clubPage').hidden=false;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
     showTab(tab);requestAnimationFrame(()=>window.scrollTo(0,clubScroll));return}
   if(CID!==id){
-    CID=id;C=CLUBS[id];applyColors(C);document.title=C.name+' | Club Hub';
+    CID=id;C=CLUBS[id];applyColors(C);
     $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
-    const L=LEAGUES.find(l=>l.id===C.league);
-    $('#crumbLeague').textContent=L.name+' 2026/27';
-    $('#crest').replaceChildren(bigShirtSvg(C));fitTitle($('#clubName'),C.name);$('#clubMeta').replaceChildren(...C.meta.split(' · ').map(t=>el('span',{text:t})));
+    clubHeader(C);
     $('#squadEyebrow').textContent=`${C.squadNote.replace(/ · /g,'. ')}. Coach: ${C.coach}`;
     state=store.get('lineup-'+id,null)||{formation:'4-2-3-1',xi:{},bench:[]};state.bench=(state.bench||[]).slice(0,9);
     renderClubTab();renderFormationSelect();renderPitch();renderOpp();$('#p-season').innerHTML='';seasonFor=null;
@@ -2520,7 +2548,10 @@ function fzTable(){
 }
 const fzLeaders=(k,n=5)=>Object.entries(FZ.stats).filter(([,s])=>s[k]>0).sort((a,b)=>b[1][k]-a[1][k]||a[1].apps-b[1].apps).slice(0,n).map(([pid,s])=>({p:fzP(pid),v:s[k],pid})).filter(x=>x.p);
 // ----- views
-function renderFantasy(m){fzPoolBuild();fzLoad();fzSel=null;m.append(el('div',{id:'fzRoot',class:'panel'}));fzRender();if(FZ&&FZ.stage==='draft')fzRunBots();
+function renderFantasy(m){
+  if(!Object.values(CLUBS).every(c=>c.league!=='tur'||c.full)){m.append(loadingEl('Loading the Süper Lig squads…'));
+    ensureLeague('tur').then(()=>{if(location.hash==='#fantasy'){m.innerHTML='';renderFantasy(m)}}).catch(()=>{m.innerHTML='';m.append(liveError(()=>{m.innerHTML='';renderFantasy(m)},'The squads could not be loaded. Check your connection and try again.'))});return}
+  fzPoolBuild();fzLoad();fzSel=null;m.append(el('div',{id:'fzRoot',class:'panel'}));fzRender();if(FZ&&FZ.stage==='draft')fzRunBots();
   fzLoadLive().then(ok=>{if(ok&&document.getElementById('fzRoot')&&(!FZ||FZ.stage==='draft'))fzRender()})}
 function fzRender(){
   const root=document.getElementById('fzRoot');if(!root)return;

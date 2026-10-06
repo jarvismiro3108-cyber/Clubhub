@@ -439,7 +439,11 @@ async function handle(request, env) {
   if (!url.pathname.startsWith('/api/')) {
     const res = await env.ASSETS.fetch(request);
     const out = new Response(res.body, res);
-    out.headers.set('X-Robots-Tag', 'noindex, nofollow'); out.headers.set('Cache-Control', 'private, no-store');
+    out.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    // league data files carry a content hash in their name, so browsers may keep them for good; fonts for a month;
+    // pages are re-checked on every visit (cheap 304s). Always "private": the site sits behind a password.
+    out.headers.set('Cache-Control', url.pathname.startsWith('/data/') ? 'private, max-age=31536000, immutable'
+      : url.pathname.startsWith('/fonts/') ? 'private, max-age=2592000' : 'private, no-cache');
     return out;
   }
 

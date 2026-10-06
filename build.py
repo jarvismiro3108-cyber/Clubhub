@@ -2,6 +2,7 @@
 
 Reads data/ (club files, league tables, coaches) and src/template.html, and writes public/index.html.
 Build per-club data for Club Hub from clubs/*.json + league tables. Output: clubs_data.json"""
+import hashlib
 import json, glob, re, collections, unicodedata, os
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = lambda *p: os.path.join(ROOT, 'data', *p)
@@ -205,8 +206,26 @@ for cid, d in out.items():
 
 tpl = open(os.path.join(ROOT, 'src', 'template.html'), encoding='utf-8').read()
 assert '/*EXTRA_DATA*/' in tpl
-data = json.dumps(out, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
-site = tpl.replace('/*EXTRA_DATA*/', 'const EXTRA=' + data + ';')
+# Speed: the page carries only what every club needs at once (name, colours, coach, the last three seasons for the
+# strength model). The heavy parts (full history, records, squads) go into one file per league, loaded when needed.
+LITE = ('name', 'short', 'league', 'meta', 'coach', 'stadium', 'colors', 'squadNote')
+lite, heavy = {}, {}
+for cid, d in out.items():
+    lite[cid] = {k: d[k] for k in LITE if k in d}
+    lite[cid]['seasons'] = '\n'.join(d['seasons'].split('\n')[-3:]) if d['seasons'] else ''
+    heavy.setdefault(d['league'], {})[cid] = {k: v for k, v in d.items() if k not in LITE}
+ddir = os.path.join(ROOT, 'public', 'data')
+os.makedirs(ddir, exist_ok=True)
+for f in os.listdir(ddir):
+    if f.endswith('.json'): os.remove(os.path.join(ddir, f))
+files = {}
+for lg, clubs in sorted(heavy.items()):
+    body = json.dumps(clubs, ensure_ascii=False, separators=(',', ':'))
+    name = f"{lg}-{hashlib.sha1(body.encode()).hexdigest()[:10]}.json"  # content hash in the name, so browsers can keep it for good
+    open(os.path.join(ddir, name), 'w', encoding='utf-8').write(body)
+    files[lg] = 'data/' + name
+data = json.dumps(lite, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+site = tpl.replace('/*EXTRA_DATA*/', 'const EXTRA=' + data + ';const LEAGUE_DATA=' + json.dumps(files) + ';')
 # optional: a copy for the private Claude artifact version (uses Google Fonts, no doctype)
 if os.environ.get('ARTIFACT_OUT'):
     open(os.environ['ARTIFACT_OUT'], 'w', encoding='utf-8').write(site)
