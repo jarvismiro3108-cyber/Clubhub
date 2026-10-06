@@ -406,8 +406,25 @@ async function liveMatch(lg, id) {
     home, away, events, updated: new Date().toISOString() };
 }
 
-function liveJson(status, obj) {
-  return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': status === 200 ? 'private, max-age=300' : 'no-store', 'X-Content-Type-Options': 'nosniff' } });
+// ---------- matchday: every match on one date in the six leagues and the two European cups (live scores while playing)
+const DAY_LEAGUES = ['tur', 'eng', 'esp', 'ita', 'ger', 'fra', 'ucl', 'uel'];
+async function liveDay(date) {
+  const now = new Date(), near = Math.abs(Date.UTC(+date.slice(0, 4), +date.slice(4, 6) - 1, +date.slice(6, 8)) - now.getTime()) < 2 * 864e5;
+  const res = await Promise.allSettled(DAY_LEAGUES.map(lg => getJSON(`${espnBase(lg)}/scoreboard?dates=${date}`, near ? 45 : 900)));
+  if (res.every(r => r.status === 'rejected')) throw new Error('down');
+  const leagues = [];
+  res.forEach((r, i) => {
+    if (r.status !== 'fulfilled') return;
+    const name = str(r.value?.leagues?.[0]?.name || '', 50);
+    const events = (r.value?.events || []).map(e => parseEvent(e, name)).filter(Boolean).map(({ goals, ...e }) => e)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    if (events.length) leagues.push({ lg: DAY_LEAGUES[i], name, events });
+  });
+  return { date, leagues, partial: res.some(r => r.status === 'rejected'), updated: now.toISOString() };
+}
+
+function liveJson(status, obj, maxAge = 300) {
+  return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': status === 200 ? `private, max-age=${maxAge}` : 'no-store', 'X-Content-Type-Options': 'nosniff' } });
 }
 
 // ---------- handler
@@ -458,6 +475,11 @@ async function handle(request, env) {
   if (url.pathname.startsWith('/api/live/')) {
     if (request.method !== 'GET') return liveJson(405, { error: 'method' });
     if (request.headers.get('Origin') && !origin) return liveJson(403, { error: 'forbidden' });
+    if (url.pathname === '/api/live/day') {
+      const date = url.searchParams.get('date') || '';
+      if (!/^20\d{6}$/.test(date)) return liveJson(400, { error: 'bad_request' });
+      try { return liveJson(200, await liveDay(date), 30); } catch (e) { console.log('live day', e && e.message); return liveJson(502, { error: 'live_unavailable' }); }
+    }
     const lg = url.searchParams.get('league') || '';
     if (!ESPN_LEAGUE[lg]) return liveJson(400, { error: 'bad_request' });
     try {
@@ -467,7 +489,8 @@ async function handle(request, env) {
       if (url.pathname === '/api/live/match') {
         const ev = url.searchParams.get('id') || '';
         if (!/^\d{1,12}$/.test(ev)) return liveJson(400, { error: 'bad_request' });
-        return liveJson(200, await liveMatch(lg, ev));
+        const m = await liveMatch(lg, ev);
+        return liveJson(200, m, m.done ? 300 : 30);
       }
       if (url.pathname !== '/api/live/club' || !DOMESTIC.has(lg)) return liveJson(404, { error: 'not_found' });
       const id = url.searchParams.get('id') || '';
