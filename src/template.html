@@ -987,8 +987,11 @@ function renderPoster(L,swap){
   for(const [k,v] of Object.entries(st))P.style.setProperty('--p-'+k,v);
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg);
   $('#pLeague').textContent=L.name;$('#pRailLeague').textContent=L.name;
-  const ids=L.clubs.map(slug).filter(id=>CLUBS[id]);
-  if(swap||!posterClub||CLUBS[posterClub].league!==L.id){const pool=ids.filter(i=>i!==posterClub);posterClub=pool[Math.floor(Math.random()*pool.length)]}
+  // fixed order: the same alphabetical order as the club list; SWAP always moves to the next club (and wraps round)
+  const ids=[...L.clubs].sort((a,b)=>a.localeCompare(b)).map(slug).filter(id=>CLUBS[id]);
+  if(!posterClub||CLUBS[posterClub].league!==L.id){const saved=store.get('poster-'+L.id,null);posterClub=ids.includes(saved)?saved:ids[0]}
+  if(swap)posterClub=ids[(ids.indexOf(posterClub)+1)%ids.length];
+  store.set('poster-'+L.id,posterClub);
   const c=CLUBS[posterClub],sh=$('#pShirt'),open=$('#pOpen');
   const put=()=>{sh.replaceChildren(bigShirtSvg(c));sh.href='#'+posterClub;sh.setAttribute('aria-label','Open '+c.name);open.textContent='Open '+c.name;open.href='#'+posterClub};
   $('#pBrowse').textContent=`Browse all ${ids.length} clubs`;
