@@ -305,6 +305,17 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   the club's colours) on a poster-colour panel, a coloured position dot (GK amber, DEF blue, MID green, FWD coral), the
   name in Big Shoulders capitals and a three-number stats row split by thin lines (zeros muted). Players without an
   appearance have a greyed shirt panel; four or more goal contributions earn a tilted yellow "On fire" sticker.
+- **My club card (home):** a wide poster tile in the favourite club's colours (shirt on the left, giant name, "Change"
+  link) with three dark inset tiles: Table, Last match (W/D/L badge + score) and Next match; links open the season tab
+  or the match centre. Without a favourite it is a dashed "Choose your club" button. Club pages have a small star pill in
+  the header (white when it is your club).
+- **Matchday list (home):** day pills (Yesterday to five days ahead, same style as the league pills), then one card per
+  competition: a header button (name, red live dot, match count, chevron; folded unless live, your league or one of
+  the first two) and rows of time/status, home name, score box and away name. Live rows show a red dot with the
+  minute and a red ring around the score.
+- **Pitch shirts (Squad Picker, Predict, Fantasy):** round numbered shirts split in the club's first colour and a
+  slightly darker half, ringed in the second colour, number in black or white for contrast (same family as the match
+  centre's line-up chips).
 - **Kit wall (home club list):** every club is a tall tile in its own poster colour (`posterPalette()`) with the darker
   curve, its big shirt hanging at the top and its name in Big Shoulders capitals with the coach underneath; two columns
   on phones. Replaces the old identical grey list cards.

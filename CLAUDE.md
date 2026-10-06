@@ -13,7 +13,10 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
 - `data/computed_tables.json` — final tables rebuilt from match results (up to 2021–22);
   `data/raw/<league>_<season>.txt` — official tables `pos|team|P|W|D|L|GF|GA|Pts` for later seasons,
   plus `NOTE|team|text` (deductions etc.) and `SEASONNOTE|text` lines. `data/coaches.json` — current coaches.
-- `build.py` — turns all of the above into `public/index.html`. **Always run `python3 build.py` after
+- `build.py` — turns all of the above into `public/index.html` plus `public/data/<league>-<hash>.json`. Speed: the page
+  only carries light data for every club (name, colours, coach, meta, last three seasons for `teamRating()`); full history,
+  records and squads are in the per-league files, fetched by `ensureLeague()` (club pages, Predict, Fantasy) and
+  prefetched for the home page's league. Check `leagueReady(lg)` before touching `squad`/`pref`/`records` of other clubs. **Always run `python3 build.py` after
   changing anything in `src/` or `data/`, and commit `public/index.html` too.** Never hand-edit
   `public/index.html`.
 - `worker.js` + `wrangler.jsonc` — Cloudflare Worker named `clubhub`. It serves `public/` and the AI
@@ -41,12 +44,20 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
   (apps/goals/assists; saves/conceded/clean sheets for keepers). The worker fetches ESPN's public JSON
   (`site.api.espn.com`, no key), trims it and keeps it in memory for 10–30 min. If ESPN has no player stats it falls back
   to counting goals from the league match reports.
+- Matchday (home): `GET /api/live/day?date=YYYYMMDD` → every match that day in the six leagues + UCL/UEL (ESPN scoreboards);
+  `renderMatchday()` shows yesterday to five days ahead, live leagues first, live scores refresh every 60 s while visible,
+  rows open the match centre. Live responses (`day`, unfinished `match`) are cached 30 s, others 5 min.
+- My club: `store` key `myclub` (star button on club pages, `setMyClub()`); the home page opens on its league/poster and
+  shows a card with table position, last result and next match (`renderMyClub()`).
+- Caching (worker.js): `/data/*` immutable (content-hashed), `/fonts/*` 30 days, pages `no-cache` (revalidate).
 - Match centre: `GET /api/live/match?league=..&id=<ESPN event id>` (ESPN `summary`): score, timeline (`keyEvents`: goals with
   assists, cards, subs), line-ups with formation and ESPN position codes, team stats (boxscore). ESPN has no xG or ratings:
   `estXG()` estimates xG from shot counts and `ratePlayer()` gives a simple 3–10 rating from the box score; the page labels
   both as Club Hub estimates. Route `#match-<league>-<id>` (`showMatch()`): poster scoreboard, Facts / Line-ups / Stats tabs,
   both XIs on one pitch (`placeXI()`: rows from the formation, left/right from codes like `CD-L`, `RB`). Every result on a
   club's This Season tab links there; Back returns to the club page at the same scroll position.
+- The club tab formerly called Match Analysis is now **Predict** (route suffix still `match`). Squad Picker and the
+  Predict opponent start from the usual XI and bench (`#autofill` / `#oppUsual`) when nothing is saved.
 - The page matches our club names to ESPN's (`matchTeams()` in the template: exact tokens first, then fuzzy, each club once;
   add odd spellings to `TEAM_ALIAS`). Home page has a Clubs/Table switch; club pages have a "This Season" tab.
 

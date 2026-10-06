@@ -399,7 +399,7 @@ select,input[type=text]{background-color:var(--surface);color:var(--fg);border:1
 .pitch svg.lines{position:absolute;inset:0;width:100%;height:100%}
 .slot{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:3px;width:84px;background:none;border:0;padding:0;cursor:pointer;color:#fff}
 .shirt{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:18px;transition:transform .15s;
-  background:repeating-linear-gradient(90deg,var(--c-s1) 0 7px,var(--c-s2) 7px 14px);color:#fff;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+  background:linear-gradient(90deg,var(--c-s1) 0 50%,color-mix(in srgb,var(--c-s1) 82%,#000) 50%);color:var(--c-ink,#fff);border:2.5px solid var(--c-s2);box-shadow:0 0 0 1.5px rgba(255,255,255,.55),0 3px 8px rgba(0,0,0,.4)}
 .slot:hover .shirt{transform:scale(1.08)}
 .slot.empty .shirt{background:rgba(255,255,255,.18);border:2px dashed rgba(255,255,255,.8);text-shadow:none;font-size:13px}
 .slot .nm{font-size:11.5px;font-weight:700;background:rgba(5,10,30,.72);padding:1px 6px;border-radius:4px;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -423,7 +423,7 @@ select,input[type=text]{background-color:var(--surface);color:var(--fg);border:1
 .opt{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;text-align:left;width:100%;background:var(--surface2);border:2px solid transparent;border-radius:10px;padding:9px 10px;cursor:pointer;color:var(--fg)}
 .opt:hover{border-color:var(--strong)}
 .opt.current{border-color:var(--c-hi)}
-.opt .no{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;background:repeating-linear-gradient(90deg,var(--c-s1) 0 6px,var(--c-s2) 6px 12px);color:#fff;text-shadow:0 0 3px #000,0 0 3px #000,0 0 2px #000;font-size:15px}
+.opt .no{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;background:linear-gradient(90deg,var(--c-s1) 0 50%,color-mix(in srgb,var(--c-s1) 82%,#000) 50%);color:var(--c-ink,#fff);border:2px solid var(--c-s2);font-size:15px}
 .opt b{display:block;font-size:15px}
 .opt span.r{font-size:12px;color:var(--muted)}
 .opt .tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--surface);color:var(--fg2);white-space:nowrap}
@@ -446,7 +446,7 @@ body:is(.on-club,.on-x) .sheet-head h3{font-family:var(--display);font-weight:90
 .score .cap{grid-column:1/-1;font-family:var(--display);font-size:17px;letter-spacing:.05em;text-transform:uppercase;font-weight:800}
 .oppwrap{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start;margin-top:4px}
 @media (max-width:760px){.oppwrap{grid-template-columns:1fr}}
-.pitch.opp .shirt{background:repeating-linear-gradient(90deg,var(--o1) 0 7px,var(--o2) 7px 14px)}
+.pitch.opp .shirt{background:linear-gradient(90deg,var(--o1) 0 50%,color-mix(in srgb,var(--o1) 82%,#000) 50%);border-color:var(--o2);color:var(--o-ink,#fff)}
 .pitch.opp{--o1:#c9ccd6;--o2:#3a4058}
 .opp-info{display:grid;gap:10px;align-content:start}
 .opp-info .chips{margin:0}
@@ -899,6 +899,7 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 .md-more{padding:8px 14px 12px}
 @media (max-width:520px){.md-row{grid-template-columns:44px minmax(0,1fr) 58px minmax(0,1fr);gap:7px;padding:9px 10px}.md-t b{font-size:13px}.md-t .mini{display:none}.md-sc{font-size:19px;min-width:52px;padding:1px 6px}.md-st{font-size:12px}}
 /* club page: my club star */
+.crumb .back{white-space:nowrap}
 .mystar{margin-left:auto;background:color-mix(in srgb,#000 22%,transparent);border:1.5px solid color-mix(in srgb,#fff 55%,transparent);color:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
 .mystar[aria-pressed="true"]{background:#fff;color:var(--p-bg);border-color:#fff}
 
@@ -980,7 +981,7 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
       <button class="tab" role="tab" id="t-club" aria-selected="true" data-tab="club">Club &amp; Records</button>
       <button class="tab" role="tab" id="t-season" aria-selected="false" data-tab="season">This Season</button>
       <button class="tab" role="tab" id="t-squad" aria-selected="false" data-tab="squad">Squad Picker</button>
-      <button class="tab" role="tab" id="t-match" aria-selected="false" data-tab="match">Match Analysis</button>
+      <button class="tab" role="tab" id="t-match" aria-selected="false" data-tab="match">Predict</button>
     </nav>
   </div>
 </header>
@@ -1039,8 +1040,8 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 
 <section class="panel" id="p-match" role="tabpanel" aria-labelledby="t-match" hidden>
   <div class="card">
-    <h2>Analyze a Match</h2>
-    <p class="lede">Choose the opponent and venue, then play the match. It uses your starting XI and bench from the Squad Picker and shows the score, the chances and who scores in which minute.</p>
+    <h2>Predict a Match</h2>
+    <p class="lede">Pick the opponent and venue and press play. Your team is the one from the Squad Picker (the usual XI unless you change it), and you get the score, the chances and who scores in which minute.</p>
     <div class="matchbar" style="margin-top:14px">
       <div class="field"><label for="opp">Opponent</label><select id="opp"></select></div>
       <div class="field" id="oppOtherWrap" hidden><label for="oppOther">Team name</label><input type="text" id="oppOther" placeholder="e.g. Real Madrid" maxlength="40"></div>
@@ -1286,9 +1287,10 @@ for(const c of Object.values(CLUBS))c.full=true; // hand-written clubs carry eve
 for(const [id,c] of Object.entries(typeof EXTRA!=='undefined'?EXTRA:{})){if(CLUBS[id])continue;c.seasons=c.seasons?parseSeasons(c.seasons):[];c.squad=c.squad?parseSquad(c.squad):[];c.pref=c.pref||{};c.starters=c.starters||[];c.full=!!c.records;CLUBS[id]=c}
 // Speed: each league's full club data (history, records, squads) is a separate file, fetched the first time it is needed.
 const leagueLoads={};
+const leagueReady=lg=>Object.values(CLUBS).every(c=>c.league!==lg||c.full)||!(typeof LEAGUE_DATA!=='undefined'&&LEAGUE_DATA[lg]);
 function ensureLeague(lg){
   const files=typeof LEAGUE_DATA!=='undefined'?LEAGUE_DATA:{};
-  if(!files[lg]||Object.values(CLUBS).every(c=>c.league!==lg||c.full))return Promise.resolve();
+  if(leagueReady(lg))return Promise.resolve();
   return leagueLoads[lg]||(leagueLoads[lg]=fetch(files[lg]).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(d=>{
     for(const [id,h] of Object.entries(d)){const c=CLUBS[id];if(!c||c.full)continue;Object.assign(c,h);c.seasons=h.seasons?parseSeasons(h.seasons):[];c.squad=parseSquad(h.squad||[]);c.full=true}
   }).catch(e=>{delete leagueLoads[lg];throw e}));
@@ -1549,11 +1551,11 @@ function clubHeader(c){
   const L=LEAGUES.find(l=>l.id===c.league);
   $('#crumbLeague').textContent=L.name+' 2026/27';
   $('#crest').replaceChildren(bigShirtSvg(c));fitTitle($('#clubName'),c.name);$('#clubMeta').replaceChildren(...c.meta.split(' · ').map(t=>el('span',{text:t})));
-  const id=Object.keys(CLUBS).find(k=>CLUBS[k]===c),b=$('#myBtn'),draw=()=>{const on=myClub()===id;b.setAttribute('aria-pressed',String(on));b.textContent=on?'★ My club':'☆ Make it my club'};
+  const id=Object.keys(CLUBS).find(k=>CLUBS[k]===c),b=$('#myBtn'),draw=()=>{const on=myClub()===id;b.setAttribute('aria-pressed',String(on));b.textContent=on?'★ My club':'☆ My club';b.title=on?'Your club. Tap to remove.':'Make this my club'};
   draw();b.onclick=()=>{setMyClub(myClub()===id?null:id);draw()};
 }
 function openClub(id,tab){
-  if(!CLUBS[id].full){ // show the header straight away, fill the tabs once the league file is in
+  if(!leagueReady(CLUBS[id].league)){ // show the header straight away, fill the tabs once the league file (club + opponents) is in
     CID=null;C=null;
     $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');
     paintClub(CLUBS[id]);clubHeader(CLUBS[id]);window.scrollTo(0,0);
@@ -1568,12 +1570,13 @@ function openClub(id,tab){
   if(back){document.title=C.name+' | Club Hub';$('#matchPage').hidden=true;$('#clubPage').hidden=false;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
     showTab(tab);requestAnimationFrame(()=>window.scrollTo(0,clubScroll));return}
   if(CID!==id){
-    CID=id;C=CLUBS[id];applyColors(C);
+    CID=id;C=CLUBS[id];applyColors(C);document.documentElement.style.setProperty('--c-ink',textOn(okHex(C.colors.s1)));
     $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
     clubHeader(C);
     $('#squadEyebrow').textContent=`${C.squadNote.replace(/ · /g,'. ')}. Coach: ${C.coach}`;
-    state=store.get('lineup-'+id,null)||{formation:'4-2-3-1',xi:{},bench:[]};state.bench=(state.bench||[]).slice(0,9);
-    renderClubTab();renderFormationSelect();renderPitch();renderOpp();$('#p-season').innerHTML='';seasonFor=null;
+    const savedXI=store.get('lineup-'+id,null);state=savedXI||{formation:'4-2-3-1',xi:{},bench:[]};state.bench=(state.bench||[]).slice(0,9);
+    renderClubTab();renderFormationSelect();renderPitch();if(!savedXI)$('#autofill').onclick(); // start from the usual XI and bench
+    renderOpp();$('#p-season').innerHTML='';seasonFor=null;
     $('#out').innerHTML='';sampleNotice();
     window.scrollTo(0,0);
   }
@@ -2037,6 +2040,7 @@ function loadOpp(){
   if(!FORMATIONS[ost.formation])ost.formation='4-2-3-1';
   $('#oppFormation').value=ost.formation;
   renderOppPitch();
+  if(!oppAll[oppKey]&&oppClub()){$('#oppStatus').textContent='';$('#oppUsual').onclick()}
 }
 function saveOpp(){oppAll[oppKey]=ost;store.set('opp-'+CID,oppAll)}
 function oppPlayer(i){const v=ost.xi[i];if(!v)return null;const oc=oppClub();const p=oc&&oc.squad.find(p=>p.id===v);return p||{name:v,no:''}}
@@ -2046,7 +2050,7 @@ function renderOppPitch(){
   $('#oppLede').textContent=oc?`Tap a shirt to pick from the ${oc.name} squad. Optional: if you leave it empty, the AI assumes their usual strongest team.`
     :`Tap a shirt and type a player's name, or let the AI suggest their likely XI. Optional: if you leave it empty, the AI assumes their usual strongest team.`;
   const pitch=$('#oppPitch');
-  if(oc){pitch.style.setProperty('--o1',oc.colors.s1);pitch.style.setProperty('--o2',oc.colors.s2)}else{pitch.style.removeProperty('--o1');pitch.style.removeProperty('--o2')}
+  if(oc){pitch.style.setProperty('--o1',oc.colors.s1);pitch.style.setProperty('--o2',oc.colors.s2);pitch.style.setProperty('--o-ink',textOn(okHex(oc.colors.s1)))}else{pitch.style.removeProperty('--o1');pitch.style.removeProperty('--o2');pitch.style.removeProperty('--o-ink')}
   drawSlots(pitch,ost.formation,oppPlayer,(i,role)=>openPicker({kind:'opp',index:i,role}));
   const chips=$('#oppChips');chips.innerHTML='';
   const filled=FORMATIONS[ost.formation].map((s,i)=>[s[0],oppPlayer(i)]).filter(x=>x[1]);
@@ -2606,7 +2610,7 @@ function fzSlotEl(S,i,o){
   const b=el('button',{class:'slot'+(p?'':' empty')+(fzSel===i?' sel':'')+(o.open&&!p?' open':'')+(fzSel!=null&&fzSel!==i&&S[fzSel]&&fzP(S[fzSel]).pos===s.grp?' swap':''),
     'aria-label':p?`${p.name}, ${s.bench?'sub '+POS_LONG[s.grp]:ROLE_NAMES[s.role]}`:`Empty: ${s.bench?'sub '+POS_LONG[s.grp]:ROLE_NAMES[s.role]}`});
   if(!s.bench){b.style.left=s.x+'%';b.style.top=s.y+'%'}
-  if(p){const c=CLUBS[p.cid];b.style.setProperty('--c-s1',c.colors.s1);b.style.setProperty('--c-s2',c.colors.s2)}
+  if(p){const c=CLUBS[p.cid];b.style.setProperty('--c-s1',c.colors.s1);b.style.setProperty('--c-s2',c.colors.s2);b.style.setProperty('--c-ink',textOn(okHex(c.colors.s1)))}
   b.append(el('span',{class:'shirt',text:p?(p.no||initials(p.name)):'+'}),el('span',{class:'nm',text:p?shortName(p.name):(s.bench?POS_LONG[s.grp]:s.role)}),
     el('span',{class:'rl',text:p?(s.bench?'Sub '+p.pos:CLUBS[p.cid].short):(s.bench?'SUB':'')}),
     ...(st&&(st.g||st.a)?[el('span',{class:'badge',text:[st.g?'⚽'+st.g:'',st.a?'A'+st.a:''].filter(Boolean).join(' ')})]:[]));
@@ -2629,7 +2633,7 @@ function openFzPicker(i){
     const qs=pnorm(q.value).join(' '),taken=fzTaken();
     const ps=fzPoolBuild().filter(p=>p.pos===s.grp&&!taken.has(p.pid)&&(!qs||pnorm(p.name+' '+CLUBS[p.cid].name).join(' ').includes(qs)))
       .map(p=>[p,s.bench||p.roles.includes(s.role)?1:0]).sort((a,b)=>b[1]-a[1]||fzValue(b[0])-fzValue(a[0])).slice(0,80);
-    list.replaceChildren(...ps.map(([p,fit])=>{const c=CLUBS[p.cid],no=el('span',{class:'no',text:p.no||''});no.style.setProperty('--c-s1',c.colors.s1);no.style.setProperty('--c-s2',c.colors.s2);
+    list.replaceChildren(...ps.map(([p,fit])=>{const c=CLUBS[p.cid],no=el('span',{class:'no',text:p.no||''});no.style.setProperty('--c-s1',c.colors.s1);no.style.setProperty('--c-s2',c.colors.s2);no.style.setProperty('--c-ink',textOn(okHex(c.colors.s1)));
       return el('button',{class:'opt',onclick:()=>{closePicker();if(fzPick(p.pid,i)){fzRender();fzRunBots()}}},no,
         el('span',{},el('b',{text:p.name}),el('span',{class:'r',text:`${c.name}, ${p.roles.join('/')}${p.stats?`, this season ${p.stats.goals} G, ${p.stats.assists} A`:''}`})),
         el('span',{class:'tag',text:!fit?'Out of position':p.starter?'Regular':'Squad'}))}));
@@ -2686,7 +2690,7 @@ function fzTable(){
 const fzLeaders=(k,n=5)=>Object.entries(FZ.stats).filter(([,s])=>s[k]>0).sort((a,b)=>b[1][k]-a[1][k]||a[1].apps-b[1].apps).slice(0,n).map(([pid,s])=>({p:fzP(pid),v:s[k],pid})).filter(x=>x.p);
 // ----- views
 function renderFantasy(m){
-  if(!Object.values(CLUBS).every(c=>c.league!=='tur'||c.full)){m.append(loadingEl('Loading the Süper Lig squads…'));
+  if(!leagueReady('tur')){m.append(loadingEl('Loading the Süper Lig squads…'));
     ensureLeague('tur').then(()=>{if(location.hash==='#fantasy'){m.innerHTML='';renderFantasy(m)}}).catch(()=>{m.innerHTML='';m.append(liveError(()=>{m.innerHTML='';renderFantasy(m)},'The squads could not be loaded. Check your connection and try again.'))});return}
   fzPoolBuild();fzLoad();fzSel=null;m.append(el('div',{id:'fzRoot',class:'panel'}));fzRender();if(FZ&&FZ.stage==='draft')fzRunBots();
   fzLoadLive().then(ok=>{if(ok&&document.getElementById('fzRoot')&&(!FZ||FZ.stage==='draft'))fzRender()})}
