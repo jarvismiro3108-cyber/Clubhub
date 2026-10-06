@@ -74,6 +74,15 @@ position weights (`GOAL_W`). The AI is told to stay within one goal of the simul
   `.claude/skills/impeccable/scripts/impeccable detect --json src/template.html` after UI changes),
   `make-interfaces-feel-better` (MIT; small polish details) and `web-design-guidelines` (our wrapper that fetches
   Vercel's MIT-licensed Web Interface Guidelines and audits `src/template.html`).
+- Also installed: `ui-ux-pro-max` and its companions `design`, `design-system`, `brand`, `ui-styling`, `slides`,
+  `banner-design` (MIT, via `npx ui-ux-pro-max-cli init --ai claude`; search with
+  `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>"`), `frontend-design` (Anthropic, Apache-2.0) and
+  `tailwindcss`, `react-three-fiber`, `motion-framer` (pasted by the owner; their bundled reference files are not
+  included).
+- **Precedence:** `DESIGN.md` and `PRODUCT.md` win over any skill's generic defaults (suggested palettes, fonts, "no
+  uppercase labels" rules, etc.). Club Hub is one vanilla HTML/CSS/JS file: the Tailwind, shadcn/ui, React Three Fiber
+  and Motion (Framer) skills only apply if the owner decides to move to that stack. Never add Tailwind, React or a
+  framework just to follow a skill.
 
 ## Private site
 Every request goes through a Basic-Auth check in `worker.js` (`PW_HASH` = SHA-256 of `clubhub:<password>`;
