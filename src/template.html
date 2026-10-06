@@ -209,6 +209,9 @@ body.on-home{background:var(--p-deep);transition:background-color .5s cubic-bezi
 #home main .dot{background:#fff}
 #home main .ltable td.pts,#home main .ltable td.team a{color:#fff}
 #home main .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-deep))}
+body.on-home #scrim{color-scheme:dark;--bg:var(--p-deep);--fg:#ffffff;--fg2:color-mix(in srgb,#fff 84%,var(--p-deep));--muted:color-mix(in srgb,#fff 72%,var(--p-deep));
+  --surface:color-mix(in srgb,#fff 9%,var(--p-deep));--surface2:color-mix(in srgb,#fff 15%,var(--p-deep));--line:color-mix(in srgb,#fff 18%,var(--p-deep));--c-hi:#ffffff;--c-hi-ink:var(--p-deep)}
+body.on-home .sheet{background:var(--p-deep)}body.on-home .sheet-head{background:var(--p-bg)}
 body.on-home .sitefoot,body:is(.on-club,.on-x) .sitefoot{color:color-mix(in srgb,#fff 74%,var(--p-deep));border-top-color:color-mix(in srgb,#fff 16%,var(--p-deep))}
 body.on-home .sitefoot a,body.on-home .sitefoot b,body:is(.on-club,.on-x) .sitefoot a,body:is(.on-club,.on-x) .sitefoot b{color:#fff}
 
@@ -903,6 +906,48 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 .mystar{margin-left:auto;background:color-mix(in srgb,#000 22%,transparent);border:1.5px solid color-mix(in srgb,#fff 55%,transparent);color:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
 .mystar[aria-pressed="true"]{background:#fff;color:var(--p-bg);border-color:#fff}
 
+/* search */
+.srch-bar{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 18px;padding:12px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg2);font:inherit;font-size:15px;cursor:pointer;text-align:left}
+.srch-bar:hover{border-color:color-mix(in srgb,#fff 55%,var(--p-deep));color:var(--fg)}
+.srch-bar svg,.sbtn svg{width:18px;height:18px;flex:none}
+.sbtn{display:inline-grid;place-items:center;width:34px;height:34px;flex:none;border-radius:50%;border:1.5px solid color-mix(in srgb,#fff 55%,transparent);background:color-mix(in srgb,#000 22%,transparent);color:#fff;cursor:pointer;padding:0}
+.sbtn:hover{border-color:#fff}
+.sbtn-push{margin-left:auto}
+.srch{display:grid;gap:6px}
+a.opt{text-decoration:none}
+.opt .no.num{font-size:14px}
+.share-img{display:block;width:100%;max-width:360px;margin:0 auto;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+/* player page */
+.pl-club{color:#fff;font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:.03em;text-transform:uppercase;text-decoration:none}
+.pl-club:hover{text-decoration:underline}
+#playerPage .crumb .mystar{margin-left:auto}
+#plMeta{display:flex;flex-wrap:wrap;gap:3px 22px}
+.plgoals{display:grid;gap:6px}
+.plg{display:grid;grid-template-columns:90px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;background:var(--surface2);color:var(--fg);text-decoration:none}
+a.plg:hover{background:color-mix(in srgb,#fff 8%,var(--surface2))}
+.plg .d{font-size:13px;color:var(--fg2)}.plg b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plg .sc{font-family:var(--display);font-weight:900;font-size:20px}.plg .m{font-size:13px;color:var(--fg2);text-align:right}
+@media (max-width:520px){.plg{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"b sc" "d m"}.plg b{grid-area:b}.plg .sc{grid-area:sc}.plg .d{grid-area:d}.plg .m{grid-area:m}}
+.pl-dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 20px;margin:0}
+.pl-dl dt{color:var(--fg2);font-size:14px}.pl-dl dd{margin:0;font-weight:600}
+.pl-chip{text-decoration:none;color:var(--fg)}.pl-chip:hover{background:color-mix(in srgb,#fff 22%,var(--p-page))}
+a.pc{color:inherit;text-decoration:none;transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s}
+a.pc:hover{transform:translateY(-3px);border-color:color-mix(in srgb,#fff 45%,var(--p-page))}
+a.lp{color:inherit;text-decoration:none}
+/* match preview */
+.pv-key{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;font-size:13px;color:var(--fg2);margin-top:6px}.pv-key span:last-child{text-align:right}
+.pv-teams{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pv-team{background:var(--surface2);border-radius:12px;padding:12px 14px;display:grid;gap:8px;align-content:start}
+.pv-team>b{font-family:var(--display);font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.02em}
+.pv-pos{display:flex;align-items:baseline;gap:8px}.pv-pos span{font-family:var(--display);font-weight:900;font-size:40px;line-height:1}.pv-pos small{font-size:13px;color:var(--fg2)}
+.pv-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-bottom:12px}
+.pv-sum div{background:var(--surface2);border-radius:12px;padding:10px 6px}.pv-sum b{display:block;font-family:var(--display);font-weight:900;font-size:40px;line-height:1}.pv-sum span{font-size:12.5px;color:var(--fg2)}
+.pv-list{display:grid;gap:4px}
+.pv-h2h{display:grid;grid-template-columns:96px minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center;padding:8px 4px;border-top:1px solid var(--line);font-size:14px}
+.pv-h2h .d{font-size:12.5px;color:var(--fg2)}.pv-h2h .h{text-align:right}.pv-h2h b{font-family:var(--display);font-weight:900;font-size:19px}
+.pv-h2h .h,.pv-h2h .a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:520px){.pv-teams{grid-template-columns:1fr}.pv-h2h{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"d d d" "h b a"}.pv-h2h .d{grid-area:d}.pv-h2h .h{grid-area:h}.pv-h2h b{grid-area:b}.pv-h2h .a{grid-area:a}}
+
 </style>
 
 <a class="skip" href="#" id="skipLink">Skip to content</a>
@@ -933,6 +978,7 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
     </div>
   </header>
   <main>
+    <button class="srch-bar" type="button" data-search><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search clubs and players</button>
     <section id="myClub" aria-label="My club"></section>
     <section id="matchday" aria-label="Matchday"></section>
     <nav class="plays" id="siteNav" aria-label="Games and competitions"></nav>
@@ -948,7 +994,7 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 <header class="top club-top">
   <div class="p-curve" aria-hidden="true"></div>
   <div class="top-in">
-    <div class="crumb"><button class="back" id="xBack">← All leagues</button><span>Club Hub 2026/27</span></div>
+    <div class="crumb"><button class="back" id="xBack">← All leagues</button><span>Club Hub 2026/27</span><button class="sbtn sbtn-push" type="button" data-search aria-label="Search clubs and players"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
     <div class="brand">
       <div class="ct-name"><h1 id="xTitle"></h1></div>
       <small id="xSub"></small>
@@ -966,12 +1012,18 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 <main><div class="panel" id="mMain"></div></main>
 </div>
 
+<!-- PLAYER PAGE -->
+<div id="playerPage" hidden>
+<header class="top club-top"><div class="p-curve" aria-hidden="true"></div><div class="top-in" id="plHead"></div></header>
+<main><div class="panel" id="plMain"></div></main>
+</div>
+
 <!-- CLUB PAGE -->
 <div id="clubPage" hidden>
 <header class="top club-top">
   <div class="p-curve" aria-hidden="true"></div>
   <div class="top-in">
-    <div class="crumb"><button class="back" id="backBtn">← All clubs</button><span id="crumbLeague"></span><button class="mystar" id="myBtn" type="button" aria-pressed="false"></button></div>
+    <div class="crumb"><button class="back" id="backBtn">← All clubs</button><span id="crumbLeague"></span><button class="mystar" id="myBtn" type="button" aria-pressed="false"></button><button class="sbtn" type="button" data-search aria-label="Search clubs and players"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
     <div class="brand">
       <div class="ct-name"><h1 id="clubName"></h1></div>
       <small id="clubMeta"></small>
@@ -1502,6 +1554,8 @@ function route(){
   if(XPAGES[h])return showX(h);
   const mm=h.match(/^match-(eng|esp|ita|ger|fra|tur|ucl|uel)-(\d{1,12})$/);
   if(mm)return showMatch(mm[1],mm[2]);
+  const pm=h.match(/^player-([a-z0-9]+)-([a-z0-9]+)$/);
+  if(pm&&CLUBS[pm[1]])return showPlayer(pm[1],pm[2]);
   const m=h.match(/^([a-z0-9]+?)(squad|match|season)?$/);
   if(m&&CLUBS[m[1]])openClub(m[1],m[2]||store.get('tab-'+m[1],'club'));
   else showHome();
@@ -1514,7 +1568,7 @@ window.addEventListener('hashchange',route);
 let curLeague=store.get('league','tur');
 function showHome(){
   C=null;CID=null;applyColors(null);document.title='Club Hub';
-  $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;$('#matchPage').hidden=true;closePicker(true);document.body.classList.remove('on-club','on-x');document.body.classList.add('on-home');
+  $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;$('#matchPage').hidden=true;$('#playerPage').hidden=true;closePicker(true);document.body.classList.remove('on-club','on-x');document.body.classList.add('on-home');
   const sn=$('#siteNav');sn.innerHTML='';
   Object.entries(XPAGES).forEach(([k,[t]])=>{const pic=el('span',{class:'pic','aria-hidden':'true'});pic.innerHTML=PLAY_ART[k];
     sn.append(el('a',{class:'play',href:'#'+k},pic,el('span',{},el('b',{text:t}),el('small',{text:PLAY_TEXT[k]})),chevSvg()))});
@@ -1557,7 +1611,7 @@ function clubHeader(c){
 function openClub(id,tab){
   if(!leagueReady(CLUBS[id].league)){ // show the header straight away, fill the tabs once the league file (club + opponents) is in
     CID=null;C=null;
-    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');
+    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;$('#playerPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');
     paintClub(CLUBS[id]);clubHeader(CLUBS[id]);window.scrollTo(0,0);
     ['club','season','squad','match'].forEach(n=>$('#p-'+n).hidden=true);
     const ld=$('#clubLoading');ld.hidden=false;ld.replaceChildren(loadingEl('Loading the club…'));
@@ -1566,12 +1620,12 @@ function openClub(id,tab){
     return;
   }
   $('#clubLoading').hidden=true;
-  const back=CID===id&&!$('#matchPage').hidden; // coming back from a match page: keep the club page as it was
-  if(back){document.title=C.name+' | Club Hub';$('#matchPage').hidden=true;$('#clubPage').hidden=false;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
+  const back=CID===id&&(!$('#matchPage').hidden||!$('#playerPage').hidden); // coming back from a match page: keep the club page as it was
+  if(back){document.title=C.name+' | Club Hub';$('#matchPage').hidden=true;$('#playerPage').hidden=true;$('#clubPage').hidden=false;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
     showTab(tab);requestAnimationFrame(()=>window.scrollTo(0,clubScroll));return}
   if(CID!==id){
     CID=id;C=CLUBS[id];applyColors(C);document.documentElement.style.setProperty('--c-ink',textOn(okHex(C.colors.s1)));
-    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
+    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;$('#playerPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
     clubHeader(C);
     $('#squadEyebrow').textContent=`${C.squadNote.replace(/ · /g,'. ')}. Coach: ${C.coach}`;
     const savedXI=store.get('lineup-'+id,null);state=savedXI||{formation:'4-2-3-1',xi:{},bench:[]};state.bench=(state.bench||[]).slice(0,9);
@@ -1777,7 +1831,7 @@ function seasonView(club,cid,L,t,row,d){
     el('p',{class:'lede',style:'margin:-6px 0 12px',text:res.length?`Every finished match this season, newest first.${nextTxt?' '+nextTxt+'.':''}`:`No finished matches yet this season.${nextTxt?' '+nextTxt+'.':''}`}),
     res.length?el('div',{class:'fixtures'},...res.map(e=>fixtureEl(e,row.id,t,cid,L.id))):null);
   const table=el('div',{class:'card'},el('h2',{text:L.name+' Table'}),tableEl(t,cid));
-  return [board,results,playersCard(d),table,el('p',{class:'note',style:'margin:0',text:'Live data from ESPN, refreshed every few minutes.'})];
+  return [board,results,playersCard(d,cid),table,el('p',{class:'note',style:'margin:0',text:'Live data from ESPN, refreshed every few minutes.'})];
 }
 function fixtureEl(e,myId,t,cid,lg){
   const home=e.home.id===myId,us=home?e.home:e.away,them=home?e.away:e.home;
@@ -1798,7 +1852,7 @@ function fixtureEl(e,myId,t,cid,lg){
     el('span',{class:'r f'+r,title:res,'aria-label':res,text:r}),
     gh||ga?el('div',{class:'g'},el('span',{text:gh}),el('span'),el('span',{text:ga})):null);
 }
-function playersCard(d){
+function playersCard(d,cid){
   const P=(d.players||[]).filter(p=>p.name);
   const card=el('div',{class:'card'},el('h2',{text:'Player Stats'}));
   if(!P.length||d.statsFrom==='none'){card.append(el('p',{class:'lede',text:'Player stats are not available right now. Please check back later.'}));return card}
@@ -1834,7 +1888,7 @@ function playersCard(d){
     const list=P.filter(p=>!pos||p.pos===pos).sort((a,b)=>idle(a)-idle(b)||ga(b)-ga(a)||n(b.apps)-n(a.apps)||(a.pos==='GK'&&b.pos==='GK'?n(b.saves)-n(a.saves):0));
     const shown=all?list:list.filter(p=>!idle(p)),hidden=list.length-shown.length;
     grid.replaceChildren(...shown.map(p=>{const gk=p.pos==='GK',stats=gk?[['Apps',p.apps],['Saves',p.saves],['Clean',p.cs]]:[['Apps',p.apps],['Goals',p.goals],['Assists',p.assists]];
-      const c=el('div',{class:'pc'+(idle(p)?' idle':''),style:`--pcol:${PCOL[p.pos]||'#9aa3c0'}`},el('div',{class:'pc-art','aria-hidden':'true'},kit(p)),
+      const c=el(cid?'a':'div',{class:'pc'+(idle(p)?' idle':''),style:`--pcol:${PCOL[p.pos]||'#9aa3c0'}`,...(cid?{href:`#player-${cid}-${slug(p.name)}`,'aria-label':p.name}:{})},el('div',{class:'pc-art','aria-hidden':'true'},kit(p)),
         el('div',{class:'pc-body'},el('span',{class:'pp',text:PN[p.pos]||'Player'}),el('b',{class:'pnm',text:p.name}),
           el('div',{class:'pst'},...stats.map(([l,v])=>el('div',{},el('strong',{class:'num'+(v?'':' z'),text:v??'–'}),el('span',{text:l}))))),
         !gk&&ga(p)>=4?el('span',{class:'hot',text:'On fire'}):null);return c}));
@@ -2299,7 +2353,7 @@ function cupFig(){return el('div',{class:'x-cup'},trophyEl())}
 function mysteryShirt(){return bigShirtSvg({name:'',colors:{s1:'#ffffff',s2:'#ffd200'}},{name:'Champion',num:'?'})}
 function showX(name){
   C=null;CID=null;applyColors(null);closePicker(true);
-  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=false;$('#matchPage').hidden=true;document.body.classList.remove('on-home','on-club');document.body.classList.add('on-x');
+  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=false;$('#matchPage').hidden=true;$('#playerPage').hidden=true;document.body.classList.remove('on-home','on-club');document.body.classList.add('on-x');
   document.title=XPAGES[name][0]+' | Club Hub';
   fitTitle($('#xTitle'),XPAGES[name][0]);$('#xSub').textContent=XPAGES[name][1];
   xPaint(name==='europe'?'ucl':name);
@@ -2470,7 +2524,8 @@ function renderBracketSim(m){
     if(res){
       const c=CLUBS[res.champ],fin=res.rounds[3][0],ru=fin.win===fin.a.sid?fin.b.sid:fin.a.sid;
       const card=el('div',{class:'champ-card'+(res.fresh?' anim':'')},trophyEl(),el('div',{},el('div',{class:'eyebrow',text:'Champions'}),el('h2',{text:c.name}),
-        el('p',{style:'margin:6px 0 0;opacity:.88',text:`Beat ${CLUBS[ru].name} ${Math.max(fin.sa,fin.sb)}–${Math.min(fin.sa,fin.sb)} in the final${fin.note?' ('+fin.note.toLowerCase()+')':''}.`})));
+        el('p',{style:'margin:6px 0 0;opacity:.88',text:`Beat ${CLUBS[ru].name} ${Math.max(fin.sa,fin.sb)}–${Math.min(fin.sa,fin.sb)} in the final${fin.note?' ('+fin.note.toLowerCase()+')':''}.`}),
+        el('button',{class:'btn primary',type:'button',style:'margin-top:14px',text:'Share the winner',onclick:()=>openShare({c,kicker:'Bracket Simulator champions',title:c.name,sub:`Beat ${CLUBS[ru].name} ${Math.max(fin.sa,fin.sb)}–${Math.min(fin.sa,fin.sb)} in the final`,stats:[[res.rounds.flat().filter(t=>t.win===res.champ).length,'ties won'],[res.rounds.flat().filter(t=>t.a.sid===res.champ).reduce((n,t)=>n+t.sa,0)+res.rounds.flat().filter(t=>t.b.sid===res.champ).reduce((n,t)=>n+t.sb,0),'goals scored']],shirts:[{c,name:c.name,num:'1'}],foot:shortFoot},'Bracket champions')})));
       banner.replaceChildren(card);
     }else banner.replaceChildren();
     if(res)res.fresh=false;
@@ -2787,7 +2842,7 @@ function fzSeasonView(){
   out.push(el('div',{class:'clock'+(done?' gold':'')},el('div',{class:'k',text:done?'Final whistle':`${FZ.managers.length}-team draft league`}),
     el('div',{class:'who',text:done?`${T[0].name} are champions!`:`Matchday ${FZ.md+1} of ${total}`}),
     el('div',{class:'bar'},el('i',{style:`width:${(FZ.md/total*100).toFixed(1)}%`})),
-    el('div',{class:'row',style:'margin-top:12px;display:flex;gap:8px;flex-wrap:wrap'},...(done?[el('button',{class:'btn primary',text:'New draft',onclick:fzReset})]:
+    el('div',{class:'row',style:'margin-top:12px;display:flex;gap:8px;flex-wrap:wrap'},...(done?[el('button',{class:'btn primary',text:'Share the title',onclick:()=>{const T=fzTable(),top=fzLeaders('g',1)[0],k=fzKit();openShare({c:k,opt:{accFirst:true},kicker:'Süper Lig draft league champions',title:T[0].name,sub:top?`Golden Boot: ${top.p.name}, ${top.v} goals`:'',stats:[[T[0].pts,'points'],[`${T[0].w}-${T[0].d}-${T[0].l}`,'won, drawn, lost'],[`${T[0].gf}–${T[0].ga}`,'goals']],shirts:[{c:{name:T[0].name,colors:k.colors},name:T[0].name,num:'11'}],foot:shortFoot},'Fantasy champions')}}),el('button',{class:'btn',text:'New draft',onclick:fzReset})]:
       [el('button',{class:'btn primary',text:'Play matchday',onclick:()=>play(1)}),el('button',{class:'btn',text:'Play the rest',onclick:()=>play(total)})]))));
   if(done){
     const aw=[['Golden Boot','g','goals'],['Assist King','a','assists'],['Golden Glove','cs','clean sheets'],['Most Yellow Cards','yc','yellows'],['Most Red Cards','rc','reds']].map(([t,k,u])=>{const x=fzLeaders(k,1)[0];
@@ -2831,18 +2886,22 @@ function teamLook(t,map){ // our club's colours when we know the club, ESPN's te
   const s1=t.color||'#5b6b9a',s2=t.alt&&t.alt.toLowerCase()!==s1.toLowerCase()?t.alt:'#ffffff';
   return {sid:null,c:{name:t.name,colors:{s1,s2}},name:t.name,s1,s2};
 }
-async function showMatch(lg,id){
-  const from=!$('#clubPage').hidden?CID:null;
-  if(from)clubScroll=window.scrollY;
-  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=true;$('#matchPage').hidden=false;closePicker(true);
+let mFrom=null,mLive=null,mCtx=null;
+async function showMatch(lg,id,refresh){
+  clearTimeout(mLive);
+  const from=refresh?mFrom:(!$('#clubPage').hidden?CID:null);mFrom=from;
+  if(from&&!refresh)clubScroll=window.scrollY;
+  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=true;$('#matchPage').hidden=false;$('#playerPage').hidden=true;closePicker(true);
   document.body.classList.remove('on-home','on-club');document.body.classList.add('on-x');
-  const head=$('#mHead'),main=$('#mMain'),my=++mReq;mTab='facts';
+  const head=$('#mHead'),main=$('#mMain'),my=++mReq;
   const backBtn=el('button',{class:'back',text:'← Back',onclick:()=>{if(from)location.hash=from+'season';else if(history.length>1)history.back();else location.hash='home'}});
-  head.replaceChildren(el('div',{class:'crumb'},backBtn,el('span',{text:'Match centre'})));
-  main.replaceChildren(loadingEl('Loading the match…'));window.scrollTo(0,0);document.title='Match | Club Hub';
+  if(!refresh){head.replaceChildren(el('div',{class:'crumb'},backBtn,el('span',{text:'Match centre'}),searchBtn(true)));
+    main.replaceChildren(loadingEl('Loading the match…'));window.scrollTo(0,0);document.title='Match | Club Hub'}
   try{
     const [d,tb]=await Promise.all([getLive(`/api/live/match?league=${lg}&id=${id}`),liveTable(lg).catch(()=>null)]);
     if(my!==mReq)return;
+    if(!refresh)mTab=d.state==='pre'?'preview':'facts';
+    mCtx={lg,tb};
     const map=tb?tb.map:null,H=teamLook(d.home,map),A=teamLook(d.away,map);
     const own=[H,A].find(x=>x.sid&&x.sid===from)||[H,A].find(x=>x.sid);
     if(own)paintClub(CLUBS[own.sid]);else paintClub({colors:XPAL[lg]||XPAL.ucl});
@@ -2850,29 +2909,34 @@ async function showMatch(lg,id){
     if(okl.contrast(H.s1,A.s1)<1.6){A.s1b=okl.contrast(A.s2,H.s1)>=1.6?A.s2:'#ffffff'}
     H.col=H.s1;A.col=A.s1b||A.s1;
     document.title=`${H.name} ${d.home.score??''}–${d.away.score??''} ${A.name} | Club Hub`;
-    head.replaceChildren(el('div',{class:'crumb'},backBtn,el('span',{text:[d.comp,fmtDate(new Date(d.date))].filter(Boolean).join(', ')})),matchBoard(d,H,A),matchTabs(d,H,A,main));
+    const share=d.done?el('button',{class:'mystar',type:'button',text:'Share',onclick:()=>shareMatch(d,H,A)}):null;
+    head.replaceChildren(el('div',{class:'crumb'},backBtn,el('span',{text:[d.comp,fmtDate(new Date(d.date))].filter(Boolean).join(', ')}),share,searchBtn(!share)),matchBoard(d,H,A),matchTabs(d,H,A,main));
     renderMatchTab(d,H,A,main);
-  }catch(e){if(my!==mReq)return;main.replaceChildren(liveError(()=>showMatch(lg,id),'This match could not be loaded right now. Please try again in a minute.'))}
+    if(d.state==='in')mLive=setTimeout(function tick(){ // live: refresh every minute while this match is on screen
+      if(location.hash!==`#match-${lg}-${id}`||$('#matchPage').hidden)return;
+      if(document.visibilityState!=='visible'){mLive=setTimeout(tick,15000);return}
+      showMatch(lg,id,true)},60000);
+  }catch(e){if(my!==mReq)return;if(refresh){mLive=setTimeout(()=>showMatch(lg,id,true),60000);return}main.replaceChildren(liveError(()=>showMatch(lg,id),'This match could not be loaded right now. Please try again in a minute.'))}
 }
 function matchBoard(d,H,A){
   const shirt=(T,side)=>{const x=el('span',{class:'mb-shirt','aria-hidden':'true'},bigShirtSvg(T.c,{name:T.c.name,num:''}));return x};
   const team=(T,side)=>{const name=T.sid?el('a',{href:'#'+T.sid,text:T.name}):el('span',{text:T.name});return el('div',{class:'mb-team mb-'+side},shirt(T,side),el('b',{style:`--n:${Math.max(6,...T.name.split(/\s+/).map(w=>w.length))}`},name))};
   const goals=tid=>d.events.filter(e=>e.k==='goal'&&e.team===tid).map(e=>`${shortName(e.name)} ${e.min}${e.pen?' (pen)':''}${e.og?' (og)':''}`);
-  const sc=d.home.score==null?'–':`${d.home.score} – ${d.away.score}`;
-  const status=d.done?(d.home.pens!=null&&d.away.pens!=null?`Full time, ${d.home.pens}–${d.away.pens} on pens`:'Full time'):d.state==='in'?d.detail||'Live':d.date?'Kick-off '+fmtTime(d.date):'';
+  const sc=d.state==='pre'?(d.date?new Date(d.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'–'):d.home.score==null?'–':`${d.home.score} – ${d.away.score}`;
+  const status=d.state==='pre'&&d.date?'Kick-off '+fmtDate(new Date(d.date)):d.done?(d.home.pens!=null&&d.away.pens!=null?`Full time, ${d.home.pens}–${d.away.pens} on pens`:'Full time'):d.state==='in'?d.detail||'Live':d.date?'Kick-off '+fmtTime(d.date):'';
   const gl=(tid,side)=>el('ul',{class:'mb-goals mb-'+side},...goals(tid).map(t=>el('li',{text:t})));
   return el('div',{class:'mboard'},team(H,'h'),el('div',{class:'mb-mid'},el('div',{class:'mb-score num',text:sc}),el('div',{class:'mb-status'+(d.state==='in'?' live':''),text:status})),team(A,'a'),
     gl(d.home.id,'h'),el('span'),gl(d.away.id,'a'),
     d.venue?el('p',{class:'mb-venue',text:d.venue+(d.city?', '+d.city:'')+(d.attendance?`. Crowd ${d.attendance.toLocaleString('en-GB')}`:'')}):null);
 }
 function matchTabs(d,H,A,main){
-  const tabs=[['facts','Facts'],['lineups','Line-ups'],['stats','Stats']];
+  const tabs=d.state==='pre'?[['preview','Preview'],['lineups','Line-ups']]:[['facts','Facts'],['lineups','Line-ups'],['stats','Stats']];
   const nav=el('nav',{class:'tabs',role:'tablist','aria-label':'Match'});
   const draw=()=>nav.replaceChildren(...tabs.map(([k,t])=>el('button',{class:'tab',role:'tab','aria-selected':String(k===mTab),text:t,onclick:()=>{mTab=k;draw();renderMatchTab(d,H,A,main)}})));
   draw();return nav;
 }
 function renderMatchTab(d,H,A,main){
-  const v=mTab==='lineups'?matchLineups(d,H,A):mTab==='stats'?matchStats(d,H,A):matchFacts(d,H,A);
+  const v=mTab==='lineups'?matchLineups(d,H,A):mTab==='stats'?matchStats(d,H,A):mTab==='preview'?matchPreview(d,H,A):matchFacts(d,H,A);
   main.replaceChildren(...v,el('p',{class:'note',style:'margin:0',text:'Live data from ESPN. Player ratings and xG are Club Hub estimates worked out from the match stats, not official figures.'}));
 }
 const ratingClass=r=>r==null?'':r>=8?'r-top':r>=7?'r-good':r>=6?'r-ok':'r-low';
@@ -2929,7 +2993,7 @@ function matchLineups(d,H,A){
   const cardOf=(tid,p)=>{const c=d.events.filter(e=>(e.k==='yellow'||e.k==='red')&&e.team===tid&&(e.pid&&e.pid===p.pid||e.name===p.name));return c.some(e=>e.k==='red')?'r':c.length?'y':''};
   const chip=(p,T,tid)=>{const g=goalsOf(tid,p),cd=cardOf(tid,p);
     const sh=el('span',{class:'lp-shirt num',style:`--a:${T.col};--b:${T.s2};color:${textOn(T.col)}`,text:p.no??''});
-    return el('div',{class:'lp'},el('span',{class:'lp-top'},sh,ratingEl(p.rating,best!=null&&p.rating===best),
+    return el(T.sid?'a':'div',{class:'lp',...(T.sid?{href:`#player-${T.sid}-${slug(p.name)}`,'aria-label':p.name}:{})},el('span',{class:'lp-top'},sh,ratingEl(p.rating,best!=null&&p.rating===best),
         g?el('span',{class:'lp-goal',title:g+' goal'+(g>1?'s':''),text:g>1?'⚽'+g:'⚽'}):null,cd?el('span',{class:'lp-card '+cd,'aria-label':cd==='r'?'Red card':'Yellow card'}):null,
         p.subOut?el('span',{class:'lp-off',title:'Subbed off '+(p.outMin||''),text:p.outMin?p.outMin:'↓'}):null),
       el('span',{class:'lp-name',text:p.short||p.name}))};
@@ -2963,6 +3027,203 @@ function matchStats(d,H,A){
   if(!rows.length&&!poss)return [el('div',{class:'card'},el('h2',{text:'Stats'}),el('p',{class:'lede',text:'Team stats appear once the match has started.'}))];
   return [el('div',{class:'card mstats'},el('div',{class:'mst-head'},el('span',{},el('i',{style:`background:${H.col}`}),H.name),el('h2',{text:'Team Stats'}),el('span',{},A.name,el('i',{style:`background:${A.col}`}))),
     poss,...rows,el('p',{class:'note',text:'* xG is estimated from the number and type of shots (penalties, shots on target, off target and blocked).'}))];
+}
+
+// =====================================================================
+// SEARCH: any club or player (squad index loads the first time search opens)
+// =====================================================================
+const SEARCH_SVG='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function searchBtn(push){const b=el('button',{class:'sbtn'+(push?' sbtn-push':''),type:'button','data-search':'','aria-label':'Search clubs and players'});b.innerHTML=SEARCH_SVG;return b}
+let playerIdx=null,playerIdxLoad=null;
+function loadPlayerIndex(){
+  if(playerIdx)return Promise.resolve(playerIdx);
+  const f=typeof LEAGUE_DATA!=='undefined'&&LEAGUE_DATA.players;
+  return playerIdxLoad||(playerIdxLoad=(f?fetch(f).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}):Promise.resolve([])).then(rows=>{
+    const have=new Set(rows.map(r=>r[1]));
+    for(const [cid,c] of Object.entries(CLUBS))if(c.full&&!have.has(cid))for(const p of c.squad)rows.push([p.name,cid,p.grp,p.no]);
+    return playerIdx=rows.filter(r=>CLUBS[r[1]]).map(([name,cid,pos,no])=>({name,cid,pos,no,k:pnorm(name).join(' ')}));
+  }).catch(e=>{playerIdxLoad=null;throw e}));
+}
+const POS_NAME={GK:'Goalkeeper',DEF:'Defender',MID:'Midfielder',FWD:'Forward'};
+function openSearch(){
+  lastFocus=document.activeElement;
+  $('#sheetEyebrow').textContent='Search';$('#sheetTitle').textContent='Clubs and players';
+  const body=$('#sheetBody');body.innerHTML='';
+  const q=el('input',{type:'search',placeholder:'Club or player name','aria-label':'Search clubs and players',autocomplete:'off',spellcheck:'false',enterkeyhint:'search',style:'width:100%;font-size:16px;padding:11px 12px'});
+  const list=el('div',{class:'srch',role:'region','aria-live':'polite'});
+  const go=()=>closePicker(true);
+  const clubRow=([id,c])=>el('a',{class:'opt',href:'#'+id,onclick:go},mini(id),el('span',{},el('b',{text:c.name}),el('span',{class:'r',text:(LEAGUES.find(l=>l.id===c.league)||{}).name||''})),el('span',{class:'tag',text:'Club'}));
+  const playerRow=p=>{const c=CLUBS[p.cid],no=el('span',{class:'no num',text:p.no??''});no.style.setProperty('--c-s1',c.colors.s1);no.style.setProperty('--c-s2',c.colors.s2);no.style.setProperty('--c-ink',textOn(okHex(c.colors.s1)));
+    return el('a',{class:'opt',href:`#player-${p.cid}-${slug(p.name)}`,onclick:go},no,el('span',{},el('b',{text:p.name}),el('span',{class:'r',text:`${c.name}, ${(POS_NAME[p.pos]||'player').toLowerCase()}`})),el('span',{class:'tag',text:'Player'}))};
+  const draw=()=>{
+    const t=pnorm(q.value).join(' ');
+    if(t.length<2){list.replaceChildren(el('p',{class:'note',text:'Type at least two letters of a club or player.'}));return}
+    const rank=k=>k.startsWith(t)?0:k.split(' ').some(w=>w.startsWith(t))?1:2;
+    const clubs=Object.entries(CLUBS).map(([id,c])=>[id,c,pnorm(c.name).join(' ')]).filter(x=>x[2].includes(t)).sort((a,b)=>rank(a[2])-rank(b[2])||a[1].name.localeCompare(b[1].name)).slice(0,6);
+    const pl=(playerIdx||[]).filter(p=>p.k.includes(t)).sort((a,b)=>rank(a.k)-rank(b.k)||a.name.localeCompare(b.name)).slice(0,30);
+    const out=[];
+    if(clubs.length)out.push(el('h4',{text:'Clubs'}),...clubs.map(([id,c])=>clubRow([id,c])));
+    if(pl.length)out.push(el('h4',{text:'Players'}),...pl.map(playerRow));
+    if(!playerIdx)out.push(el('p',{class:'note',text:'Loading players…'}));
+    if(!out.length)out.push(el('p',{class:'note',text:`Nothing found for “${q.value.trim()}”. Check the spelling, or try part of the name.`}));
+    list.replaceChildren(...out);
+  };
+  let tm=null;q.addEventListener('input',()=>{clearTimeout(tm);tm=setTimeout(draw,90)});
+  body.append(q,list);draw();
+  $('#scrim').hidden=false;body.scrollTop=0;q.focus();
+  loadPlayerIndex().then(()=>{if(!$('#scrim').hidden&&body.contains(q))draw()}).catch(()=>{if(body.contains(list))list.append(el('p',{class:'note',text:'Players could not be loaded right now; clubs still work.'}))});
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-search]');if(b){e.preventDefault();openSearch()}});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')&&$('#scrim').hidden){e.preventDefault();openSearch()}});
+
+// =====================================================================
+// PLAYER PAGES (#player-<club>-<name slug>): profile from our squad data + this season from ESPN
+// =====================================================================
+const surnameOf=n=>{const w=String(n).trim().split(/\s+/);return w.length>1&&w[w.length-1].length<3?w.slice(-2).join(' '):w[w.length-1]};
+const sameName=(a,b)=>{const x=pnorm(a),y=pnorm(b);if(!x.length||!y.length)return false;if(x.join(' ')===y.join(' '))return true;
+  return x[x.length-1]===y[y.length-1]&&(x.length===1||y.length===1||x[0][0]===y[0][0])};
+let plReq=0;
+async function showPlayer(cid,ps){
+  const c=CLUBS[cid],from=!$('#clubPage').hidden?CID:null;if(from)clubScroll=window.scrollY;clearTimeout(mLive);
+  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=true;$('#matchPage').hidden=true;$('#playerPage').hidden=false;closePicker(true);
+  document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(c);
+  const head=$('#plHead'),main=$('#plMain'),my=++plReq;
+  const back=el('button',{class:'back',text:'← '+c.name,onclick:()=>{if(from)location.hash=from+store.get('tab-'+from,'club').replace('club','');else location.hash=cid}});
+  head.replaceChildren(el('div',{class:'crumb'},back,el('span',{text:(LEAGUES.find(l=>l.id===c.league)||{}).name||''}),searchBtn(true)));
+  main.replaceChildren(loadingEl('Loading the player…'));window.scrollTo(0,0);
+  try{await ensureLeague(c.league)}catch(e){if(my===plReq)main.replaceChildren(liveError(()=>showPlayer(cid,ps)));return}
+  if(my!==plReq)return;
+  const sp=c.squad.find(p=>slug(p.name)===ps)||c.squad.find(p=>pnorm(p.name).join('')===ps);
+  let live=null,row=null,t=null;
+  try{t=await liveTable(c.league);row=t.map.bySlug[cid];if(row)live=await liveClubData(c.league,row.id)}catch(e){}
+  if(my!==plReq)return;
+  const lp=live?(live.players||[]).find(x=>sp?sameName(x.name,sp.name):slug(x.name)===ps):null;
+  if(!sp&&!lp){main.replaceChildren(el('div',{class:'card'},el('h2',{text:'Player not found'}),el('p',{class:'lede',text:`We could not find this player in the ${c.name} squad.`}),el('a',{class:'btn',href:'#'+cid,text:'Open '+c.name})));return}
+  const name=sp?sp.name:lp.name,no=sp?.no??lp?.no??'',grp=sp?.grp||lp?.pos||'',gk=grp==='GK';
+  document.title=name+' | Club Hub';
+  const shirt=el('div',{class:'ct-shirt','aria-hidden':'true'},bigShirtSvg(c,{name:surnameOf(name),num:no}));
+  const h1=el('h1');fitTitle(h1,name);
+  const facts=[POS_NAME[grp]||'',no!==''?`Shirt ${no}`:'',sp?.age?`Age ${sp.age}`:'',sp?.nat||''].filter(Boolean);
+  const meta=el('small',{id:'plMeta'},...facts.map(t=>el('span',{text:t})));
+  const share=el('button',{class:'mystar',type:'button',text:'Share',onclick:()=>sharePlayer(c,name,no,grp,lp)});
+  head.replaceChildren(el('div',{class:'crumb'},back,el('a',{class:'pl-club',href:'#'+cid,text:c.name}),share,searchBtn(false)),el('div',{class:'brand'},el('div',{class:'ct-name'},h1),meta,shirt));
+  const out=[];
+  // this season
+  const stat=(b,l)=>el('div',{class:'stat'},el('b',{class:'num',text:b??'–'}),el('span',{text:l}));
+  if(lp){const tiles=gk?[[lp.apps,'appearances'],[lp.saves,'saves'],[lp.cs,'clean sheets'],[lp.conceded,'goals conceded']]:[[lp.apps,'appearances'],[lp.goals,'goals'],[lp.assists,'assists'],[(lp.goals??0)+(lp.assists??0),'goals + assists']];
+    out.push(el('div',{},el('div',{class:'eyebrow',text:`This season, ${(LEAGUES.find(l=>l.id===c.league)||{}).name} ${t&&t.season?fmtS(t.season):'2026/27'}`}),el('div',{class:'board',style:'margin-top:8px'},...tiles.filter(([v])=>v!=null).map(([v,l])=>stat(v,l)))))}
+  else out.push(el('div',{class:'card'},el('h2',{text:'This Season'}),el('p',{class:'lede',text:live?'No match stats for this player yet this season.':'Live stats are not available right now.'})));
+  // goals, match by match
+  if(live&&row){
+    const goals=(live.results||[]).flatMap(e=>e.goals.filter(g=>g.team===row.id&&!g.og&&g.name&&sameName(g.name,name)).map(g=>({e,g})));
+    if(goals.length){const byMatch=new Map();goals.forEach(({e,g})=>{const k=e.id;if(!byMatch.has(k))byMatch.set(k,{e,m:[]});byMatch.get(k).m.push(g.min+(g.pen?' (pen)':''))});
+      out.push(el('div',{class:'card'},el('h2',{text:`Goals This Season (${goals.length})`}),el('div',{class:'plgoals'},...[...byMatch.values()].map(({e,m})=>{
+        const home=e.home.id===row.id,them=home?e.away:e.home,us=home?e.home:e.away;
+        return el(/^\d+$/.test(e.id)?'a':'div',{class:'plg',...(/^\d+$/.test(e.id)?{href:`#match-${c.league}-${e.id}`}:{})},el('span',{class:'d',text:fmtDate(new Date(e.date))}),
+          el('b',{text:`${home?'vs':'at'} ${clubLabel(t.map.byId[them.id],them.name)}`}),el('span',{class:'sc num',text:`${us.score}–${them.score}`}),el('span',{class:'m',text:m.join(', ')}))}))))}
+  }
+  // profile
+  if(sp){const reg=(c.starters||[]).includes(sp.id);
+    out.push(el('div',{class:'card'},el('h2',{text:'Profile'}),el('dl',{class:'pl-dl'},
+      ...[['Position',POS_NAME[grp]||'–'],['Plays as',(sp.roles||[]).map(r=>ROLE_NAMES[r]||r).join(', ')||'–'],['Shirt number',no||'–'],['Age',sp.age||'–'],['Nationality',sp.nat||'–'],['In the usual XI',reg?'Yes, a regular starter':'Squad player']]
+        .flatMap(([k,v])=>[el('dt',{text:k}),el('dd',{text:String(v)})]))));
+    const mates=c.squad.filter(p=>p.grp===grp&&p.name!==name);
+    if(mates.length)out.push(el('div',{class:'card'},el('h2',{text:`Other ${(POS_NAME[grp]||'players').toLowerCase()}s at ${c.name}`}),el('div',{class:'chips'},...mates.map(p=>el('a',{class:'chip pl-chip',href:`#player-${cid}-${slug(p.name)}`,text:p.name})))));
+  }
+  out.push(el('p',{class:'note',style:'margin:0',text:'Squad details from Club Hub’s 2026/27 squad lists; season numbers from ESPN.'}));
+  main.replaceChildren(...out);
+}
+
+// =====================================================================
+// SHARE CARDS: a 1080×1350 image (poster style) to send to friends
+// =====================================================================
+async function shirtImg(c){const svg=bigShirtSvg(c,{name:'',num:''});svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width','600');svg.setAttribute('height','660');
+  const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg.outerHTML);await img.decode();return img}
+function drawShirt(x,img,c,cx,cy,w,name,num,rot){
+  const h=w*1.1,s=w/300,a=okHex(c.colors.s1),b=okHex(c.colors.s2),ink=okl.contrast(b,a)>=3?b:okl.contrast('#ffffff',a)>=okl.contrast('#111111',a)?'#ffffff':'#111111';
+  x.save();x.translate(cx,cy);x.rotate(rot||0);x.translate(-w/2,-h/2);x.shadowColor='rgba(0,0,0,.35)';x.shadowBlur=40*s;x.shadowOffsetY=24*s;x.drawImage(img,0,0,w,h);x.shadowColor='transparent';
+  x.fillStyle=ink;x.textAlign='center';
+  if(name){x.font=`800 ${30*s}px "Big Shoulders Display"`;x.fillText(name.toUpperCase(),150*s,94*s,Math.min(name.length*14.5,112)*s)}
+  if(num!==''&&num!=null){x.font=`900 ${92*s}px "Big Shoulders Display"`;x.fillText(String(num),150*s,236*s,Math.min(String(num).length*52,112)*s)}
+  x.restore()}
+function fitText(x,txt,max,start,min,weight){let size=start;do{x.font=`${weight||900} ${size}px "Big Shoulders Display"`;if(x.measureText(txt).width<=max)break;size-=4}while(size>min);return size}
+async function makeCard(o){ // o: {c (palette club), kicker, title, sub, stats:[[value,label]], shirts:[{c,name,num}], score, foot}
+  await Promise.all(['900 100px "Big Shoulders Display"','800 40px "Big Shoulders Display"','500 30px "Libre Franklin"','700 30px "Libre Franklin"'].map(f=>document.fonts.load(f)));
+  const pal=posterPalette(o.c,o.opt||{}),W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  x.fillStyle=pal.bg;x.fillRect(0,0,W,H);
+  x.globalAlpha=.55;x.fillStyle=pal.deep;x.beginPath();x.arc(W*1.02,H*1.08,980,0,Math.PI*2);x.fill();x.globalAlpha=1;
+  const g=x.createLinearGradient(0,H-300,0,H);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.28)');x.fillStyle=g;x.fillRect(0,H-300,W,300);
+  x.fillStyle='#fff';x.textBaseline='alphabetic';x.textAlign='left';
+  x.font='900 46px "Big Shoulders Display"';x.fillText('CLUB HUB',72,104);
+  x.font='800 34px "Big Shoulders Display"';x.textAlign='right';x.fillText((o.when||'2026/27').toUpperCase(),W-72,104);x.textAlign='left';
+  const imgs=await Promise.all(o.shirts.map(sh=>shirtImg(sh.c)));
+  if(o.shirts.length===1)drawShirt(x,imgs[0],o.shirts[0].c,W*.62,420,560,o.shirts[0].name,o.shirts[0].num,-.07);
+  else{drawShirt(x,imgs[0],o.shirts[0].c,W*.27,400,400,o.shirts[0].name,o.shirts[0].num,-.08);drawShirt(x,imgs[1],o.shirts[1].c,W*.73,400,400,o.shirts[1].name,o.shirts[1].num,.08);
+    if(o.score){x.textAlign='center';x.font='900 210px "Big Shoulders Display"';x.shadowColor='rgba(0,0,0,.3)';x.shadowBlur=30;x.fillText(o.score,W/2,860);x.shadowColor='transparent';x.textAlign='left'}}
+  let y=o.shirts.length===1?850:960;
+  x.fillStyle=pal.acc;x.font='800 44px "Big Shoulders Display"';x.fillText((o.kicker||'').toUpperCase(),72,y);
+  x.fillStyle='#fff';const t=(o.title||'').toUpperCase(),ts=fitText(x,t,W-144,190,70);x.shadowColor='rgba(0,0,0,.25)';x.shadowBlur=24;x.fillText(t,72,y+ts*.9);x.shadowColor='transparent';y+=ts*.9+20;
+  if(o.sub){x.font='500 36px "Libre Franklin"';let s2=o.sub;while(x.measureText(s2).width>W-144&&s2.length>10)s2=s2.slice(0,-2);if(s2!==o.sub)s2=s2.trim()+'…';x.fillText(s2,72,y+44);y+=70}
+  if(o.stats&&o.stats.length){const n=o.stats.length,gap=18,bw=(W-144-gap*(n-1))/n,by=Math.max(y+20,H-300);
+    o.stats.forEach(([v,l],i)=>{const bx=72+i*(bw+gap);x.fillStyle='rgba(0,0,0,.24)';x.beginPath();x.roundRect(bx,by,bw,150,22);x.fill();
+      x.fillStyle='#fff';x.font=`900 ${fitText(x,String(v),bw-40,84,40)}px "Big Shoulders Display"`;x.fillText(String(v),bx+22,by+92);x.font='600 26px "Libre Franklin"';x.fillText(l,bx+22,by+130,bw-40)})}
+  x.fillStyle='#fff';x.font='500 26px "Libre Franklin"';x.fillText(o.foot||'clubhub.jarvismiro3108.workers.dev',72,H-46);
+  return await new Promise(r=>cv.toBlob(r,'image/png'));
+}
+async function openShare(o,title){
+  lastFocus=document.activeElement;
+  $('#sheetEyebrow').textContent='Share';$('#sheetTitle').textContent=title;
+  const body=$('#sheetBody');body.replaceChildren(loadingEl('Making your card…'));$('#scrim').hidden=false;
+  let blob;try{blob=await makeCard(o)}catch(e){body.replaceChildren(el('p',{class:'warn',text:'The card could not be made on this device.'}));return}
+  const url=URL.createObjectURL(blob),file=new File([blob],'club-hub.png',{type:'image/png'});
+  const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
+  const save=el('a',{class:'btn',href:url,download:'club-hub.png',text:'Save image'});
+  const share=canShare?el('button',{class:'btn primary',type:'button',text:'Share',onclick:async()=>{try{await navigator.share({files:[file],title:'Club Hub'})}catch(e){}}}):null;
+  body.replaceChildren(el('img',{class:'share-img',src:url,alt:title}),el('div',{class:'row',style:'display:flex;gap:8px;flex-wrap:wrap;margin-top:6px'},share,save),
+    el('p',{class:'note',text:canShare?'Share sends the picture to any app on your phone.':'Save the picture, then send it from your photos.'}));
+}
+const shortFoot='Made on Club Hub. Just for fun, not betting advice.';
+function shareMatch(d,H,A){
+  const sc=id=>{const g=new Map();d.events.filter(e=>e.k==='goal'&&e.team===id).forEach(e=>{const n=e.og?'OG':shortName(e.name);g.set(n,[...(g.get(n)||[]),e.min+(e.pen?' p':'')])});return [...g].map(([n,m])=>n+' '+m.join(', ')).join('; ')};
+  const scorers=[sc(d.home.id),sc(d.away.id)].filter(Boolean).join('  |  ');
+  openShare({c:(H.sid?CLUBS[H.sid]:A.sid?CLUBS[A.sid]:{colors:XPAL.ucl}),when:fmtDate(new Date(d.date)),kicker:d.comp||'Full time',title:`${H.name} ${d.home.score}–${d.away.score} ${A.name}`,
+    sub:scorers,shirts:[{c:H.c,name:H.name,num:''},{c:A.c,name:A.name,num:''}],score:`${d.home.score} – ${d.away.score}`,foot:'Full-time result on Club Hub'},'Match result');
+}
+function sharePlayer(c,name,no,grp,lp){
+  const st=lp?(grp==='GK'?[[lp.apps??0,'Apps'],[lp.saves??0,'Saves'],[lp.cs??0,'Clean sheets']]:[[lp.apps??0,'Apps'],[lp.goals??0,'Goals'],[lp.assists??0,'Assists']]):[];
+  openShare({c,kicker:`${c.name}, ${(POS_NAME[grp]||'player').toLowerCase()}`,title:name,sub:lp?'This season so far':'2026/27 squad',stats:st,shirts:[{c,name:surnameOf(name),num:no}],foot:'Player stats on Club Hub'},name);
+}
+
+// =====================================================================
+// MATCH PREVIEW (before kick-off): prediction, form and table, head-to-head
+// =====================================================================
+function previewOdds(hc,ac){
+  const D=teamRating(hc)-teamRating(ac)+.3,T=2.6+.3*Math.abs(D),lf=Math.max(.15,(T+D)/2),la=Math.max(.15,(T-D)/2);
+  let w=0,dr=0,l=0,best=[0,0,0];
+  for(let a=0;a<=9;a++)for(let b=0;b<=9;b++){const p=pois(a,lf)*pois(b,la);if(a>b)w+=p;else if(a===b)dr+=p;else l+=p;if(p>best[2])best=[a,b,p]}
+  return {w:w*100,d:dr*100,l:l*100,best,lf,la};
+}
+function matchPreview(d,H,A){
+  const out=[],tb=mCtx&&mCtx.tb;
+  if(H.sid&&A.sid){const o=previewOdds(CLUBS[H.sid],CLUBS[A.sid]),r=v=>Math.round(v);
+    out.push(el('div',{class:'card'},el('h2',{text:'Prediction'}),
+      el('div',{class:'mposs-bar',role:'img','aria-label':`${H.name} win ${r(o.w)}%, draw ${r(o.d)}%, ${A.name} win ${r(o.l)}%`},
+        el('span',{style:`flex:${o.w} 1 0;background:${H.col};color:${textOn(H.col)}`,text:r(o.w)+'%'}),el('span',{style:`flex:${o.d} 1 0;background:#5b6178;color:#fff`,text:r(o.d)+'%'}),el('span',{style:`flex:${o.l} 1 0;background:${A.col};color:${textOn(A.col)}`,text:r(o.l)+'%'})),
+      el('div',{class:'pv-key'},el('span',{text:H.name+' win'}),el('span',{text:'Draw'}),el('span',{text:A.name+' win'})),
+      el('p',{class:'lede',style:'margin-top:12px',text:`Most likely score ${o.best[0]}–${o.best[1]} (${r(o.best[2]*100)}%). Expected goals ${o.lf.toFixed(1)} to ${o.la.toFixed(1)}. Based on the last three seasons, league strength and home advantage.`}),
+      el('a',{class:'btn',href:'#'+H.sid+'match',style:'margin-top:4px;display:inline-block',text:'Play it out in Predict'})))}
+  if(tb){const rw=id=>tb.rows.find(x=>x.id===id),side=(T,t)=>{const x=rw(t.id);return x?el('div',{class:'pv-team'},el('b',{text:T.name}),
+      el('div',{class:'pv-pos'},el('span',{class:'num',text:ordinal(x.pos)}),el('small',{text:`${x.pts} pts from ${x.p}`})),x.form?formEl(x.form):null):null};
+    const a=side(H,d.home),b=side(A,d.away);if(a||b)out.push(el('div',{class:'card'},el('h2',{text:'Form and Table'}),el('div',{class:'pv-teams'},a,b),el('p',{class:'note',text:'Form: last five league matches, newest on the right.'})))}
+  const h2h=d.h2h||[];
+  if(h2h.length){let hw=0,dw=0,aw=0;
+    const rows=h2h.map(m=>{const hn=m.home===d.home.id?H.name:m.home===d.away.id?A.name:'',an=m.away===d.home.id?H.name:m.away===d.away.id?A.name:'';
+      const win=m.hs>m.as?m.home:m.hs<m.as?m.away:null;if(!win)dw++;else if(win===d.home.id)hw++;else if(win===d.away.id)aw++;
+      return el('div',{class:'pv-h2h'},el('span',{class:'d',text:m.date?new Date(m.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):''}),el('span',{class:'h',text:hn}),el('b',{class:'num',text:`${m.hs}–${m.as}`}),el('span',{class:'a',text:an}))});
+    out.push(el('div',{class:'card'},el('h2',{text:'Head-to-Head'}),el('div',{class:'pv-sum'},el('div',{},el('b',{class:'num',text:hw}),el('span',{text:H.name+' wins'})),el('div',{},el('b',{class:'num',text:dw}),el('span',{text:'Draws'})),el('div',{},el('b',{class:'num',text:aw}),el('span',{text:A.name+' wins'}))),
+      el('div',{class:'pv-list'},...rows),el('p',{class:'note',text:`Last ${h2h.length} meetings ESPN lists.`})))}
+  else out.push(el('div',{class:'card'},el('h2',{text:'Head-to-Head'}),el('p',{class:'lede',text:'No earlier meetings are listed for these two clubs.'})));
+  return out;
 }
 
 

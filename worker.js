@@ -400,10 +400,20 @@ async function liveMatch(lg, id) {
     }
     delete s.result; delete s.conceded;
   }
+  // head-to-head: earlier meetings of the two clubs (newest first, at most 10)
+  const h2h = [], seen = new Set();
+  for (const g of (Array.isArray(d?.headToHeadGames) ? d.headToHeadGames : [])) for (const e of (Array.isArray(g?.events) ? g.events : [])) {
+    const hs = n0(e.homeTeamScore), as = n0(e.awayTeamScore), eid = String(e.id || '');
+    if (hs == null || as == null || (eid && seen.has(eid)) || eid === String(id)) continue;
+    if (eid) seen.add(eid);
+    h2h.push({ id: eid, date: String(e.gameDate || e.date || ''), home: String(e.homeTeamId || '').replace(/\D/g, ''), away: String(e.awayTeamId || '').replace(/\D/g, ''),
+      hs, as, comp: str(e.leagueName || e.leagueAbbreviation || '', 40) });
+  }
+  h2h.sort((a, b) => b.date.localeCompare(a.date)); h2h.splice(10);
   const gi = d?.gameInfo || {};
   return { id: String(id), date: String(c.date || d?.header?.date || ''), done: !!st.completed, state: str(st.state, 10), detail: str(st.shortDetail || st.detail, 24),
     comp: str(d?.header?.league?.name || '', 50), venue: str(gi.venue?.fullName, 60), city: str(gi.venue?.address?.city, 40), attendance: n0(gi.attendance),
-    home, away, events, updated: new Date().toISOString() };
+    home, away, events, h2h, updated: new Date().toISOString() };
 }
 
 // ---------- matchday: every match on one date in the six leagues and the two European cups (live scores while playing)

@@ -316,6 +316,17 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Pitch shirts (Squad Picker, Predict, Fantasy):** round numbered shirts split in the club's first colour and a
   slightly darker half, ringed in the second colour, number in black or white for contrast (same family as the match
   centre's line-up chips).
+- **Search:** a full-width pill bar on the home page and a round magnifier button in every poster header; results open
+  in the bottom sheet, which takes the page colours (home included): clubs first, then players with a numbered shirt
+  circle in their club colours and a Club/Player tag.
+- **Player page:** the club page's poster header with the player's name as the giant title and his own shirt (surname
+  and number); stat tiles (apps, goals, assists or saves/clean sheets), goals match by match, a profile list and
+  teammates as chips.
+- **Share card (1080×1350 image):** poster colour with the darker curve, CLUB HUB and the date top left/right, the shirt(s)
+  as the figure, a giant Big Shoulders title, a sentence line, up to three dark stat boxes and a small footer. Always
+  says "just for fun, not betting advice" for simulations.
+- **Match preview:** prediction bar (home colour / grey draw / away colour) with the likeliest score, two form-and-table
+  tiles, head-to-head totals and the list of meetings.
 - **Kit wall (home club list):** every club is a tall tile in its own poster colour (`posterPalette()`) with the darker
   curve, its big shirt hanging at the top and its name in Big Shoulders capitals with the coach underneath; two columns
   on phones. Replaces the old identical grey list cards.

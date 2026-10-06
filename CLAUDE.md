@@ -56,6 +56,19 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
   both as Club Hub estimates. Route `#match-<league>-<id>` (`showMatch()`): poster scoreboard, Facts / Line-ups / Stats tabs,
   both XIs on one pitch (`placeXI()`: rows from the formation, left/right from codes like `CD-L`, `RB`). Every result on a
   club's This Season tab links there; Back returns to the club page at the same scroll position.
+- Search: `openSearch()` (home search bar, magnifier button in every page header, `/` key; any `[data-search]` element).
+  Clubs from `CLUBS`, players from `public/data/players-<hash>.json` (`[name, club id, position, number]`, built by
+  `build.py`; Fenerbahçe/Konyaspor added from the page), loaded on first open.
+- Player pages: `#player-<club id>-<slug(name)>` (`showPlayer()`): poster header with the player's shirt, this season from
+  `/api/live/club` player stats (names matched with `sameName()`), goals match by match from the club's results, profile
+  from our squad data, teammates in the same position. Player cards (This Season) and line-up chips (match centre) link
+  here.
+- Share cards: `makeCard()` draws a 1080×1350 PNG on a canvas in poster style (club colours, shirts, giant title, stat
+  boxes); `openShare()` shows it with Share (Web Share API with files) / Save image. Buttons on finished match pages,
+  player pages, the bracket champion and the fantasy title.
+- Match preview: before kick-off the match centre opens on a Preview tab (`matchPreview()`): win/draw/loss and likeliest
+  score from `teamRating()` + Poisson, both clubs' table position and form, head-to-head (`h2h` in `/api/live/match`, from
+  ESPN `headToHeadGames`). Live match pages refresh every 60 s.
 - The club tab formerly called Match Analysis is now **Predict** (route suffix still `match`). Squad Picker and the
   Predict opponent start from the usual XI and bench (`#autofill` / `#oppUsual`) when nothing is saved.
 - The page matches our club names to ESPN's (`matchTeams()` in the template: exact tokens first, then fuzzy, each club once;

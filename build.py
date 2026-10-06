@@ -224,6 +224,12 @@ for lg, clubs in sorted(heavy.items()):
     name = f"{lg}-{hashlib.sha1(body.encode()).hexdigest()[:10]}.json"  # content hash in the name, so browsers can keep it for good
     open(os.path.join(ddir, name), 'w', encoding='utf-8').write(body)
     files[lg] = 'data/' + name
+# search index: every squad player as [name, club id, position group, shirt number], loaded when search opens
+idx = [[p[1], cid, p[2], p[0]] for cid, d in out.items() for p in d['squad']]
+body = json.dumps(idx, ensure_ascii=False, separators=(',', ':'))
+name = f"players-{hashlib.sha1(body.encode()).hexdigest()[:10]}.json"
+open(os.path.join(ddir, name), 'w', encoding='utf-8').write(body)
+files['players'] = 'data/' + name
 data = json.dumps(lite, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 site = tpl.replace('/*EXTRA_DATA*/', 'const EXTRA=' + data + ';const LEAGUE_DATA=' + json.dumps(files) + ';')
 # optional: a copy for the private Claude artifact version (uses Google Fonts, no doctype)
