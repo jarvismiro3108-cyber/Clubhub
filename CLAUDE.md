@@ -65,6 +65,16 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
 Poisson scorelines in `modelPredict()`, one sampled result per press (`simulate()`), goalscorers by
 position weights (`GOAL_W`). The AI is told to stay within one goal of the simulated score.
 
+## Design skills and docs
+- `PRODUCT.md` (who the site is for, constraints) and `DESIGN.md` ("Floodlit Matchday": colours, type, components,
+  do's and don'ts) are the design source of truth. Read them before UI work and keep `DESIGN.md` in sync when the
+  look changes.
+- Skills in `.claude/skills/`: `impeccable` (Apache-2.0; design commands such as audit, critique, polish, layout,
+  typeset; its helper binary downloads from GitHub on first run; run
+  `.claude/skills/impeccable/scripts/impeccable detect --json src/template.html` after UI changes),
+  `make-interfaces-feel-better` (MIT; small polish details) and `web-design-guidelines` (our wrapper that fetches
+  Vercel's MIT-licensed Web Interface Guidelines and audits `src/template.html`).
+
 ## Private site
 Every request goes through a Basic-Auth check in `worker.js` (`PW_HASH` = SHA-256 of `clubhub:<password>`;
 `run_worker_first` is on so static files are protected too). Setting the Cloudflare text variable
