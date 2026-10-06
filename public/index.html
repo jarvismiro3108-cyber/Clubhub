@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0f1a3f">
 <meta name="description" content="Independent fan site: history, records, squads and match predictions for every club in the top five European leagues and the Süper Lig.">
 <title>Club Hub</title>
-<style>@font-face{font-family:'Barlow Condensed';font-weight:500;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-Medium.woff) format('woff')}@font-face{font-family:'Barlow Condensed';font-weight:600;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-SemiBold.woff) format('woff')}@font-face{font-family:'Barlow Condensed';font-weight:700;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-Bold.woff) format('woff')}@font-face{font-family:'Barlow Condensed';font-weight:800;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-ExtraBold.woff) format('woff')}@font-face{font-family:'Figtree';font-weight:300 900;font-style:normal;font-display:swap;src:url(fonts/figtree.woff) format('woff')}</style>
+<style>@font-face{font-family:'Barlow Condensed';font-weight:500;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-Medium.woff) format('woff')}@font-face{font-family:'Barlow Condensed';font-weight:600;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-SemiBold.woff) format('woff')}@font-face{font-family:'Barlow Condensed';font-weight:700;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-Bold.woff) format('woff')}@font-face{font-family:'Barlow Condensed';font-weight:800;font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-ExtraBold.woff) format('woff')}@font-face{font-family:'Figtree';font-weight:300 900;font-style:normal;font-display:swap;src:url(fonts/figtree.woff) format('woff')}@font-face{font-family:'Archivo';font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap;src:url(fonts/archivo-wdth-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Archivo';font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap;src:url(fonts/archivo-wdth-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}</style>
 <style>
 /* Layout: league + club picker home, then one club page per team (scoreboard header + Club / Squad / Match tabs).
    Each club sets its own --c-* colours; everything else is shared. */
@@ -78,22 +78,71 @@ a,button,select,input,label{touch-action:manipulation;-webkit-tap-highlight-colo
 .tab:hover{color:#fff}
 
 /* home */
-.hero{color:#fff;position:relative;overflow:hidden;isolation:isolate;
-  background:radial-gradient(70% 90% at 50% 120%,rgba(47,125,71,.35),transparent 70%),linear-gradient(180deg,#0f1a3f 0%,#091231 55%,#060b22 100%)}
-.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:conic-gradient(from 118deg at -2% -6%,transparent 0deg,rgba(255,244,214,.16) 9deg,rgba(255,244,214,.05) 20deg,transparent 30deg),
-    conic-gradient(from 212deg at 102% -6%,transparent 0deg,rgba(255,244,214,.05) 10deg,rgba(255,244,214,.16) 21deg,transparent 30deg),
-    radial-gradient(28% 40% at 0% 0%,rgba(255,246,220,.30),transparent 70%),radial-gradient(28% 40% at 100% 0%,rgba(255,246,220,.30),transparent 70%);
-  animation:lightsOn 1.6s cubic-bezier(.2,.8,.2,1) .15s both}
-@keyframes lightsOn{0%{opacity:0}18%{opacity:.55}24%{opacity:.15}40%{opacity:.9}100%{opacity:1}}
-.hero-pitch{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px;color:rgba(255,255,255,.08);z-index:-1;pointer-events:none}
-.hero .top-in{padding-block:40px 30px}
-.hero h1{font-size:clamp(52px,9vw,96px);font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:-.005em;text-shadow:0 4px 30px rgba(0,0,0,.35)}
-.hero h1 em{font-style:normal;color:#ffd200}
-.hero p{color:color-mix(in srgb,#fff 82%,transparent);max-width:56ch;margin:14px 0 0;font-size:16px}
-.plays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:26px}
+/* home poster: one loud colour per league, a giant shirt as the figure, wide heavy headline */
+.poster{--p-bg:#d4122a;--p-deep:#8e0a1b;--p-ink:#fff;--p-acc:#ffd200;position:relative;overflow:hidden;isolation:isolate;color:var(--p-ink);background:var(--p-bg);transition:background-color .5s cubic-bezier(.2,.8,.2,1),color .3s}
+.p-curve{position:absolute;z-index:-1;width:150vmax;height:150vmax;border-radius:50%;left:46%;top:58%;background:color-mix(in srgb,var(--p-deep) 55%,var(--p-bg));transition:background-color .5s}
+.p-wrap{max-width:1180px;margin:0 auto;padding:44px 88px 34px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);grid-template-areas:"text fig" "foot fig" "lg lg";align-items:end;column-gap:8px;min-height:min(720px,94vh);position:relative}
+.p-text{grid-area:text;position:relative;z-index:3;align-self:end;min-width:0}
+.p-leagues{grid-area:lg;position:relative;z-index:3;min-width:0}
+.p-figure{grid-area:fig;position:relative;z-index:1;align-self:center;justify-self:center;width:min(500px,40vw);margin-left:-150px;min-width:0}
+.p-foot{grid-area:foot;position:relative;z-index:3;align-self:start;min-width:0}
+.p-kicker{font-family:'Archivo',var(--display);font-stretch:125%;font-weight:800;font-size:clamp(16px,2vw,26px);text-transform:uppercase;letter-spacing:.01em;line-height:1;margin-bottom:6px}
+.p-title{margin:0;font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.84;letter-spacing:-.02em;display:grid}
+.p-title .p-a{font-size:clamp(76px,11.2vw,164px)}
+.p-title .p-b{font-size:clamp(76px,11.2vw,164px);padding-left:.62em}
+.p-title .p-c{font-size:clamp(30px,4.1vw,58px);color:var(--p-acc);justify-self:end;margin-top:.12em;transition:color .4s}
+.p-lede{max-width:40ch;margin:22px 0 0;font-size:16px;line-height:1.45;font-weight:500}
+.p-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:22px}
+.p-btn{display:inline-block;font-family:'Archivo',var(--display);font-stretch:112%;font-weight:800;font-size:19px;text-transform:uppercase;letter-spacing:.01em;
+  color:var(--p-bg);background:var(--p-ink);text-decoration:none;padding:16px 30px;border-radius:999px;box-shadow:0 6px 0 var(--p-deep),0 14px 28px -10px rgba(0,0,0,.4);
+  transition:transform .12s cubic-bezier(.2,.8,.2,1),box-shadow .12s,color .4s,background-color .4s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-btn:hover{transform:translateY(-2px);box-shadow:0 8px 0 var(--p-deep),0 18px 30px -10px rgba(0,0,0,.45)}
+.p-btn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--p-deep),0 6px 12px -8px rgba(0,0,0,.4)}
+.p-link{color:var(--p-ink);font-weight:700;font-size:15px;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.p-shirt{display:block;position:relative;filter:drop-shadow(0 30px 34px rgba(0,0,0,.35));transform-origin:50% 60%;animation:shirtIn .9s cubic-bezier(.2,.8,.2,1) both}
+.p-shirt svg{display:block;width:100%;height:auto}
+.p-shirt.out{transition:transform .22s ease-in,opacity .22s ease-in;transform:rotateY(80deg) scale(.92);opacity:0}
+.p-shirt.in{animation:shirtFlip .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes shirtIn{from{transform:translateY(60px) rotate(-8deg);opacity:0}to{transform:rotate(-3deg);opacity:1}}
+@keyframes shirtFlip{from{transform:rotateY(-80deg) scale(.92) rotate(-3deg);opacity:0}to{transform:rotate(-3deg);opacity:1}}
+.p-shirt:not(.out):not(.in){transform:rotate(-3deg)}
+.p-swap{position:absolute;top:2%;right:-4%;width:118px;height:118px;border-radius:50%;border:0;padding:0;cursor:pointer;background:#fff;color:var(--p-bg);
+  box-shadow:0 7px 0 color-mix(in srgb,#fff 55%,var(--p-deep)),0 16px 26px -10px rgba(0,0,0,.4);transform:rotate(-12deg);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .12s,color .4s;z-index:4}
+.p-swap svg{width:100%;height:100%;display:block}
+.p-swap text{font-family:'Archivo',var(--display);font-stretch:118%;font-weight:800;font-size:13.5px;letter-spacing:.06em;fill:currentColor}
+.p-swap .p-arrows{stroke:currentColor}
+.p-swap:hover{transform:rotate(-30deg) scale(1.04)}
+.p-swap:active{transform:rotate(-30deg) translateY(5px);box-shadow:0 2px 0 color-mix(in srgb,#fff 55%,var(--p-deep)),0 8px 14px -8px rgba(0,0,0,.4)}
+.p-swap.spin{transform:rotate(330deg)}
+.p-rail{position:absolute;top:50%;z-index:2;display:flex;align-items:center;gap:16px;writing-mode:vertical-rl;font-family:'Archivo',var(--display);font-stretch:118%;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;color:var(--p-ink)}
+.p-rail i{display:block;width:2px;height:56px;background:currentColor;opacity:.45}
+.p-rail-l{left:26px;transform:translateY(-50%) rotate(180deg)}
+.p-rail-r{right:26px;transform:translateY(-50%)}
+.poster .leagues{margin-top:26px}
+.poster .lg{border-color:color-mix(in srgb,var(--p-ink) 40%,transparent);color:var(--p-ink);background:color-mix(in srgb,var(--p-ink) 8%,transparent)}
+.poster .lg:hover{border-color:var(--p-ink)}
+.poster .lg[aria-pressed="true"]{background:var(--p-ink);color:var(--p-bg);border-color:var(--p-ink)}
+.poster :focus-visible{outline-color:var(--p-ink)}
+.p-text .p-a,.p-text .p-b,.p-text .p-c,.p-kicker{animation:wordIn .7s cubic-bezier(.2,.8,.2,1) both}
+.p-text .p-b{animation-delay:.08s}.p-text .p-c{animation-delay:.16s}
+@keyframes wordIn{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
+@media (max-width:1100px){.p-wrap{padding-inline:64px}.p-rail{font-size:13px}.p-rail-l{left:18px}.p-rail-r{right:18px}}
+@media (max-width:860px){
+  .p-wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"text" "fig" "foot" "lg";padding:30px 20px 24px;min-height:0;row-gap:0}
+  .p-rail{display:none}
+  .p-figure{width:min(76vw,360px);margin:-36px auto 0;justify-self:center}
+  .p-title .p-a,.p-title .p-b{font-size:clamp(64px,21vw,110px)}
+  .p-title .p-c{font-size:clamp(26px,8vw,42px)}
+  .p-swap{width:84px;height:84px;top:auto;bottom:10%;right:-6%}
+  .p-curve{left:20%;top:44%}
+  .p-lede{margin-top:16px}
+  .p-btn{font-size:17px;padding:15px 26px}
+}
+@media (prefers-reduced-motion:reduce){.p-shirt,.p-shirt.in,.p-text .p-a,.p-text .p-b,.p-text .p-c,.p-kicker{animation:none}.p-shirt.out{transition:none}.poster,.p-curve,.p-swap{transition:none}}
+.plays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.plays{margin:0 0 30px}
 .play{display:grid;grid-template-columns:56px minmax(0,1fr) 16px;gap:14px;align-items:center;padding:12px 14px 12px 12px;border-radius:14px;color:#fff;text-decoration:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.13);transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s,background-color .2s}
+  background:radial-gradient(90% 140% at 0% 0%,#1d3279,transparent 60%),linear-gradient(180deg,#121d47,#0a1230);border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 24px -14px rgba(10,20,50,.6);transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s,background-color .2s}
 .play:hover{transform:translateY(-2px);border-color:rgba(255,210,0,.55)}
 .play:active{transform:scale(.98)}
 .play .pic{width:56px;height:56px;border-radius:11px;display:grid;place-items:center;background:radial-gradient(80% 80% at 50% 0%,#1d3279,#0b1435);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
@@ -532,16 +581,32 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 <a class="skip" href="#" id="skipLink">Skip to content</a>
 <!-- HOME -->
 <div id="home">
-  <header class="hero">
-    <svg class="hero-pitch" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="219" x2="1200" y2="219"/><path d="M480 219a120 120 0 0 1 240 0"/><circle cx="600" cy="219" r="5" fill="currentColor"/><path d="M0 120h170v99M1200 120h-170v99"/></g></svg>
-    <div class="top-in">
-      <h1>Club <em>Hub</em></h1>
-      <p>The 2026/27 season for every club in Europe's top five leagues and the Süper Lig: live tables, history and records, squads and football games to play.</p>
-      <nav class="plays" id="siteNav" aria-label="Games and competitions"></nav>
-      <div class="leagues" id="leagueBar" role="group" aria-label="Leagues"></div>
+  <header class="hero poster" id="poster">
+    <div class="p-curve" aria-hidden="true"></div>
+    <div class="p-rail p-rail-l" aria-hidden="true"><span>Season 2026/27</span><i></i><span id="pRailLeague"></span></div>
+    <div class="p-rail p-rail-r" aria-hidden="true"><span>6 leagues</span><i></i><span>114 clubs</span><i></i><span>Live tables</span></div>
+    <div class="p-wrap">
+      <div class="p-text">
+        <div class="p-kicker" id="pLeague"></div>
+        <h1 class="p-title"><span class="p-a">Club</span><span class="p-b">Hub</span><span class="p-c">2026/27</span></h1>
+      </div>
+      <div class="p-figure">
+        <a class="p-shirt" id="pShirt" href="#home" aria-label="" tabindex="-1"></a>
+        <button class="p-swap" id="pSwap" type="button" aria-label="Swap to another club">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="pRing" d="M60 60m-41 0a41 41 0 1 1 82 0a41 41 0 1 1-82 0"/></defs>
+            <text><textPath href="#pRing" startOffset="0">SWAP CLUB • SWAP CLUB • SWAP CLUB •</textPath></text>
+            <path class="p-arrows" d="M50 44v32m0-32-7 8m7-8 7 8M70 76V44m0 32-7-8m7 8 7-8" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="p-foot">
+        <p class="p-lede">Every club in Europe's top five leagues and the Süper Lig: live tables, history and records, squads and football games to play.</p>
+        <div class="p-cta"><a class="p-btn" id="pOpen" href="#home"></a><a class="p-link" href="#clubGrid" id="pBrowse"></a></div>
+      </div>
+      <div class="leagues p-leagues" id="leagueBar" role="group" aria-label="Leagues"></div>
     </div>
   </header>
   <main>
+    <nav class="plays" id="siteNav" aria-label="Games and competitions"></nav>
     <div class="homehead"><div><h2 id="leagueTitle"></h2><span id="leagueCount"></span></div>
       <div class="seg" role="group" aria-label="Show"><button data-view="clubs" aria-pressed="true">Clubs</button><button data-view="table" aria-pressed="false">Table</button></div></div>
     <div class="clubgrid" id="clubGrid"></div>
@@ -900,6 +965,47 @@ const PLAY_ART={
   europe:'<svg viewBox="0 0 40 40"><defs><linearGradient id="pg1" x1="0" x2="1"><stop offset="0" stop-color="#b8860b"/><stop offset=".5" stop-color="#ffe9a8"/><stop offset="1" stop-color="#d4a017"/></linearGradient></defs><path d="M12 6h16v8c0 6-3.5 10-8 11-4.5-1-8-5-8-11z" fill="url(#pg1)"/><path d="M12 9H7c0 5 2 8 5.5 8.5M28 9h5c0 5-2 8-5.5 8.5" fill="none" stroke="url(#pg1)" stroke-width="2.2" stroke-linecap="round"/><path d="M18 25h4v6h-4z" fill="url(#pg1)"/><path d="M13 31h14l1.5 4h-17z" fill="url(#pg1)"/></svg>',
   bracket:'<svg viewBox="0 0 40 40" fill="none" stroke="#9fb2ee" stroke-width="2" stroke-linecap="round"><path d="M4 7h7v6H4M4 27h7v6H4M11 10h4v20h-4M15 20h5"/><path d="M36 7h-7v6h7M36 27h-7v6h7M29 10h-4v20h4M25 20h-5"/><circle cx="20" cy="20" r="3.4" fill="#ffd200" stroke="none"/></svg>',
   fantasy:'<svg viewBox="0 0 40 40"><rect x="7" y="4" width="26" height="32" rx="2.5" fill="#2f7d47"/><g fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.2"><rect x="7" y="4" width="26" height="32" rx="2.5"/><path d="M7 20h26"/><circle cx="20" cy="20" r="4"/></g><g fill="#ffd200"><circle cx="20" cy="31" r="2"/><circle cx="12.5" cy="25" r="2"/><circle cx="27.5" cy="25" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="24" cy="14" r="2"/><circle cx="20" cy="8.5" r="2"/></g></svg>'};
+// Home poster: each league gets its own loud colour; ink is the text colour that passes on it.
+const LEAGUE_STYLE={tur:{bg:'#d4122a',deep:'#8e0a1b',ink:'#ffffff',acc:'#ffd200'},eng:{bg:'#5a1ec8',deep:'#34107a',ink:'#ffffff',acc:'#b8ff3b'},
+  esp:{bg:'#cc3d0a',deep:'#7f2405',ink:'#ffffff',acc:'#ffe27a'},ita:{bg:'#1263d6',deep:'#0a3a85',ink:'#ffffff',acc:'#9ff4ff'},
+  ger:{bg:'#ffd100',deep:'#b98c00',ink:'#111111',acc:'#c20016'},fra:{bg:'#0d7a5f',deep:'#064a39',ink:'#ffffff',acc:'#d8ff4a'}};
+const escXml=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+let shirtUid=0;
+function bigShirtSvg(c){ // the back of a shirt: club name and the season's number
+  const a=okHex(c.colors.s1),b=okHex(c.colors.s2),id='bs'+(++shirtUid),name=c.name.toUpperCase(),tl=Math.min(name.length*14.5,112);
+  const SL='M78 30 18 78q-8 8-2 17l30 51q6 8 15 3l25-17Z',SR='M222 30l60 48q8 8 2 17l-30 51q-6 8-15 3l-25-17Z',
+    BODY='M78 30q22-12 40-16 32 12 64 0 18 4 40 16l-8 102 4 180q0 10-10 10H92q-10 0-10-10l4-180Z';
+  const w=document.createElement('span');
+  w.innerHTML=`<svg viewBox="0 0 300 330" aria-hidden="true"><defs><clipPath id="${id}c"><path d="${BODY}"/><path d="${SL}"/><path d="${SR}"/></clipPath>
+<linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".24"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient></defs>
+<path d="${SL}" fill="${b}"/><path d="${SR}" fill="${b}"/><path d="${BODY}" fill="${a}"/>
+<path d="M30 80 57 138M270 80l-27 58" stroke="${a}" stroke-width="7"/>
+<path d="M118 16q32 16 64 0" fill="none" stroke="${b}" stroke-width="8" stroke-linecap="round"/>
+<text x="150" y="94" text-anchor="middle" textLength="${tl}" lengthAdjust="spacingAndGlyphs" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="30" fill="${b}">${escXml(name)}</text>
+<text x="150" y="246" text-anchor="middle" font-family="Archivo, Barlow Condensed, sans-serif" font-weight="900" font-size="112" style="font-stretch:100%" fill="${b}">26</text>
+<g clip-path="url(#${id}c)"><rect width="300" height="330" fill="url(#${id}g)"/><path d="M112 36c-6 70-4 190 3 290M188 36c6 70 4 190-3 290" stroke="#000" stroke-opacity=".08" stroke-width="3" fill="none"/></g>
+<path d="${BODY}" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/></svg>`;
+  return w.firstChild;
+}
+let posterClub=null;
+function renderPoster(L,swap){
+  const st=LEAGUE_STYLE[L.id]||LEAGUE_STYLE.tur,P=$('#poster');
+  for(const [k,v] of Object.entries(st))P.style.setProperty('--p-'+k,v);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg);
+  $('#pLeague').textContent=L.name;$('#pRailLeague').textContent=L.name;
+  const ids=L.clubs.map(slug).filter(id=>CLUBS[id]);
+  if(swap||!posterClub||CLUBS[posterClub].league!==L.id){const pool=ids.filter(i=>i!==posterClub);posterClub=pool[Math.floor(Math.random()*pool.length)]}
+  const c=CLUBS[posterClub],sh=$('#pShirt'),open=$('#pOpen');
+  const put=()=>{sh.replaceChildren(bigShirtSvg(c));sh.href='#'+posterClub;sh.setAttribute('aria-label','Open '+c.name);open.textContent='Open '+c.name;open.href='#'+posterClub};
+  $('#pBrowse').textContent=`Browse all ${ids.length} clubs`;
+  if(swap&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    sh.classList.remove('in');sh.classList.add('out');
+    setTimeout(()=>{put();sh.classList.remove('out');void sh.offsetWidth;sh.classList.add('in')},220);
+  }else put();
+}
+$('#pSwap').onclick=()=>{const b=$('#pSwap');b.classList.add('spin');setTimeout(()=>b.classList.remove('spin'),460);
+  renderPoster(LEAGUES.find(l=>l.id===curLeague)||LEAGUES[0],true)};
+$('#pBrowse').onclick=e=>{e.preventDefault();$('#home .homehead').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})};
 const PLAY_TEXT={europe:'Champions League and Europa League tables and the knockout bracket',bracket:'Pick any 16 clubs and play out a knockout to the final',fantasy:'Draft a Süper Lig team, then play a full season of matches'};
 let C=null, CID=null; // current club
 
@@ -935,6 +1041,7 @@ function showHome(){
   LEAGUES.forEach(L=>bar.append(el('button',{class:'lg','aria-pressed':String(L.id===curLeague),onclick:()=>{curLeague=L.id;store.set('league',L.id);showHome()}},L.name)));
   const on=bar.querySelector('[aria-pressed="true"]');if(on&&bar.scrollWidth>bar.clientWidth)bar.scrollLeft=Math.max(0,on.offsetLeft-bar.offsetLeft-16);
   const L=LEAGUES.find(l=>l.id===curLeague)||LEAGUES[0];
+  renderPoster(L);
   $('#leagueTitle').textContent=L.name;
   $('#leagueCount').textContent=`${L.country}, ${L.clubs.length} clubs`;
   const g=$('#clubGrid');g.innerHTML='';

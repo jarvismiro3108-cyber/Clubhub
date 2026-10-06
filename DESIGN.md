@@ -176,6 +176,7 @@ as a club's colour, and always pair them with W/D/L text.
 ## Typography
 
 **Display Font:** Barlow Condensed (with Arial Narrow, sans-serif), self-hosted.
+**Poster Font:** Archivo at 125% width, weight 800–900, home poster only (self-hosted).
 **Body Font:** Figtree (with system-ui, sans-serif), self-hosted.
 
 **Character:** a stadium scoreboard paired with a friendly modern sans: condensed uppercase for anything you glance
@@ -251,9 +252,15 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Club shirt badge:** each club is a small shirt drawn in its colours (body = first colour, sleeves and collar =
   second), with a thin outline so white or navy shirts never vanish. Used on club cards and the club header; it
   replaces crests entirely.
-- **Floodlit hero:** the home header is a night stadium: two floodlight beams switch on once at load (static under
-  reduced motion), faint pitch markings along the bottom, the CLUB HUB wordmark with gold HUB.
-- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are glassy tiles on the hero, each with its own small
+- **Home poster:** the home header is a sports poster in the selected league's own loud colour (Süper Lig #d4122a,
+  Premier League #5a1ec8, La Liga #cc3d0a, Serie A #1263d6, Bundesliga #ffd100 with dark ink, Ligue 1 #0d7a5f; each
+  with a darker shade for the big background curve and the button's 3D edge, and an accent for "2026/27"). A giant
+  shirt seen from the back (club name, number 26) is the figure; the wide heavy CLUB HUB headline overlaps it;
+  vertical rails run down both edges; a round SWAP CLUB sticker flips the shirt to another club; a chunky white
+  pill button ("Open <club>") has a solid 6px bottom edge. All text on it passes contrast for its size. The poster
+  lettering uses **Archivo** (self-hosted, OFL) at 125% width and weight 800–900; nowhere else uses Archivo.
+  Poster accents are league colours, so the Gold Means Winning rule applies outside the poster.
+- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are night-panel tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
 - **Scoreboard:** navy block, team names either side, a dark inset score box, used for every match result.
 - **Knockout tie card:** glassy dark card, club-colour stripe per row, winner row tinted gold with a gold score.

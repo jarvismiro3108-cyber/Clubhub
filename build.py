@@ -217,6 +217,11 @@ head = '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta
 ff = ''.join(f"@font-face{{font-family:'Barlow Condensed';font-weight:{w};font-style:normal;font-display:swap;src:url(fonts/barlow-condensed-{n}.woff) format('woff')}}"
              for w, n in [(500, 'Medium'), (600, 'SemiBold'), (700, 'Bold'), (800, 'ExtraBold')])
 ff += "@font-face{font-family:'Figtree';font-weight:300 900;font-style:normal;font-display:swap;src:url(fonts/figtree.woff) format('woff')}"
+# Archivo (variable width + weight, OFL): only the home poster's wide headline uses it
+for f, rng in [('latin', 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'),
+               ('latin-ext', 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF')]:
+    ff += ("@font-face{font-family:'Archivo';font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap;"
+           f"src:url(fonts/archivo-wdth-{f}.woff2) format('woff2');unicode-range:{rng}}}")
 gl = '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap">'
 assert gl in site
 site = site.replace(gl, '<style>' + ff + '</style>')
