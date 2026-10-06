@@ -252,14 +252,17 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Club shirt badge:** each club is a small shirt drawn in its colours (body = first colour, sleeves and collar =
   second), with a thin outline so white or navy shirts never vanish. Used on club cards and the club header; it
   replaces crests entirely.
-- **Home poster:** the home header is a sports poster in the selected league's own loud colour (Süper Lig #d4122a,
-  Premier League #5a1ec8, La Liga #cc3d0a, Serie A #1263d6, Bundesliga #ffd100 with dark ink, Ligue 1 #0d7a5f; each
-  with a darker shade for the big background curve and the button's 3D edge, and an accent for "2026/27"). A giant
-  shirt seen from the back (club name, number 26) is the figure; the wide heavy CLUB HUB headline overlaps it;
-  vertical rails run down both edges; a round SWAP CLUB sticker flips the shirt to another club; a chunky white
-  pill button ("Open <club>") has a solid 6px bottom edge. All text on it passes contrast for its size. The poster
-  lettering uses **Archivo** (self-hosted, OFL) at 125% width and weight 800–900; nowhere else uses Archivo.
-  Poster accents are league colours, so the Gold Means Winning rule applies outside the poster.
+- **Home poster:** the home header is a sports poster coloured from the featured club's shirt (`posterPalette()`,
+  OKLCH): a deeper or brighter shade of the shirt colour; for yellow or white shirts the club's second colour (e.g.
+  Fenerbahçe yellow on navy); for black-and-white kits a dark slate. The first candidate where the shirt clearly
+  stands out (contrast at least 1.6 against the background) wins, and every background keeps white text at 4.6:1 or
+  more. A darker shade draws the big background curve and the button's 3D edge; "2026/27" uses the club's other
+  colour when it reads, else a light tint. A giant shirt seen from the back is the figure (club name and 26, printed
+  in the second colour or in white/black when that would not show); the wide heavy CLUB HUB headline overlaps it;
+  vertical rails run down both edges; the round SWAP CLUB sticker steps through the league's clubs in alphabetical
+  order (wrapping round) and each league remembers its last shirt; a chunky white "Open <club>" pill button has a
+  solid 6px bottom edge. The poster lettering uses **Archivo** (self-hosted, OFL) at 125% width and weight 800–900;
+  nowhere else uses Archivo. Poster accents follow the club, so the Gold Means Winning rule applies outside it.
 - **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are night-panel tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
 - **Scoreboard:** navy block, team names either side, a dark inset score box, used for every match result.

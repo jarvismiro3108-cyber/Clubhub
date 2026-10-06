@@ -965,14 +965,50 @@ const PLAY_ART={
   europe:'<svg viewBox="0 0 40 40"><defs><linearGradient id="pg1" x1="0" x2="1"><stop offset="0" stop-color="#b8860b"/><stop offset=".5" stop-color="#ffe9a8"/><stop offset="1" stop-color="#d4a017"/></linearGradient></defs><path d="M12 6h16v8c0 6-3.5 10-8 11-4.5-1-8-5-8-11z" fill="url(#pg1)"/><path d="M12 9H7c0 5 2 8 5.5 8.5M28 9h5c0 5-2 8-5.5 8.5" fill="none" stroke="url(#pg1)" stroke-width="2.2" stroke-linecap="round"/><path d="M18 25h4v6h-4z" fill="url(#pg1)"/><path d="M13 31h14l1.5 4h-17z" fill="url(#pg1)"/></svg>',
   bracket:'<svg viewBox="0 0 40 40" fill="none" stroke="#9fb2ee" stroke-width="2" stroke-linecap="round"><path d="M4 7h7v6H4M4 27h7v6H4M11 10h4v20h-4M15 20h5"/><path d="M36 7h-7v6h7M36 27h-7v6h7M29 10h-4v20h4M25 20h-5"/><circle cx="20" cy="20" r="3.4" fill="#ffd200" stroke="none"/></svg>',
   fantasy:'<svg viewBox="0 0 40 40"><rect x="7" y="4" width="26" height="32" rx="2.5" fill="#2f7d47"/><g fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.2"><rect x="7" y="4" width="26" height="32" rx="2.5"/><path d="M7 20h26"/><circle cx="20" cy="20" r="4"/></g><g fill="#ffd200"><circle cx="20" cy="31" r="2"/><circle cx="12.5" cy="25" r="2"/><circle cx="27.5" cy="25" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="24" cy="14" r="2"/><circle cx="20" cy="8.5" r="2"/></g></svg>'};
-// Home poster: each league gets its own loud colour; ink is the text colour that passes on it.
-const LEAGUE_STYLE={tur:{bg:'#d4122a',deep:'#8e0a1b',ink:'#ffffff',acc:'#ffd200'},eng:{bg:'#5a1ec8',deep:'#34107a',ink:'#ffffff',acc:'#b8ff3b'},
-  esp:{bg:'#cc3d0a',deep:'#7f2405',ink:'#ffffff',acc:'#ffe27a'},ita:{bg:'#1263d6',deep:'#0a3a85',ink:'#ffffff',acc:'#9ff4ff'},
-  ger:{bg:'#ffd100',deep:'#b98c00',ink:'#111111',acc:'#c20016'},fra:{bg:'#0d7a5f',deep:'#064a39',ink:'#ffffff',acc:'#d8ff4a'}};
+// Home poster colours come from the featured club's shirt (OKLCH maths keeps hues natural when we darken or brighten).
+const okl=(()=>{
+  const lin=v=>(v/=255)<=.04045?v/12.92:((v+.055)/1.055)**2.4, gam=v=>v<=.0031308?12.92*v:1.055*v**(1/2.4)-.055;
+  const toLCH=hex=>{let h=okHex(hex).slice(1);if(h.length===3)h=[...h].map(x=>x+x).join('');
+    const [r,g,b]=[0,2,4].map(i=>lin(parseInt(h.slice(i,i+2),16)));
+    const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+    const L=.2104542553*l+.793617785*m-.0040720468*s,A=1.9779984951*l-2.428592205*m+.4505937099*s,B=.0259040371*l+.7827717662*m-.808675766*s;
+    return {L,C:Math.hypot(A,B),h:(Math.atan2(B,A)*180/Math.PI+360)%360}};
+  const rgb=({L,C,h})=>{const A=C*Math.cos(h*Math.PI/180),B=C*Math.sin(h*Math.PI/180);
+    const l=(L+.3963377774*A+.2158037573*B)**3,m=(L-.1055613458*A-.0638541728*B)**3,s=(L-.0894841775*A-1.291485548*B)**3;
+    return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s]};
+  const toHex=o=>{o={...o};let c=rgb(o);while(c.some(v=>v<-.001||v>1.001)&&o.C>0){o.C=Math.max(0,o.C-.004);c=rgb(o)}
+    return '#'+c.map(v=>Math.round(Math.min(1,Math.max(0,gam(Math.min(1,Math.max(0,v)))))*255).toString(16).padStart(2,'0')).join('')};
+  const lum=hex=>{const h=hex.slice(1);return [0,2,4].map(i=>lin(parseInt(h.slice(i,i+2),16))).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0)};
+  const contrast=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+  return {toLCH,toHex,contrast};
+})();
+function posterPalette(c){
+  const s1=okl.toLCH(c.colors.s1),s2=okl.toLCH(c.colors.s2),shirt=okHex(c.colors.s1),chroma=o=>o.C>=.06,yellowish=o=>o.h>=65&&o.h<=120;
+  const hueGap=(x,y)=>{const d=Math.abs(x.h-y.h)%360;return Math.min(d,360-d)};
+  const fit=o=>{o={...o};let hex=okl.toHex(o);while(okl.contrast('#ffffff',hex)<4.6&&o.L>.16){o.L-=.015;hex=okl.toHex(o)}return {o,hex}};
+  // candidate backgrounds, best first; the first one where the shirt clearly stands out wins
+  const cands=[];
+  const base=chroma(s1)&&!(yellowish(s1)&&s1.L>.7)?s1:chroma(s2)&&!yellowish(s2)?s2:null;
+  if(base){const L=base===s1?(s1.L>=.55?Math.min(.44,s1.L-.24):Math.min(.56,s1.L+.2)):(s1.L>=.55?.4:.5);
+    cands.push({L:Math.min(.56,Math.max(.27,L)),C:Math.min(base.C*1.05,.2),h:base.h})}
+  if(chroma(s2)&&!yellowish(s2)&&hueGap(s1,s2)>30)cands.push({L:.46,C:Math.min(s2.C*1.05,.2),h:s2.h});
+  if(chroma(s1))cands.push({L:Math.max(.17,Math.min(.3,s1.L-.2)),C:Math.min(s1.C,.16),h:s1.h});
+  cands.push(chroma(s1)||chroma(s2)?{L:.34,C:.11,h:262}:{L:.33,C:.025,h:255},{L:.22,C:.03,h:262});
+  let pick=null,best=null;
+  for(const cd of cands){const f=fit(cd),sep=okl.contrast(shirt,f.hex);if(!best||sep>best.sep)best={...f,sep};if(sep>=1.6){pick={...f,sep};break}}
+  pick=pick||best;
+  const bg=pick.o,hex=pick.hex,deep=okl.toHex({...bg,L:Math.max(.12,bg.L-.1)});
+  // accent for "2026/27": the club's other colour if it stands out, otherwise a light tint of the background
+  let acc=[c.colors.s2,c.colors.s1].map(okHex).find(x=>okl.contrast(x,hex)>=3.2&&okl.contrast(x,'#ffffff')>1.25);
+  if(!acc)acc=okl.toHex({L:.9,C:Math.min(.14,bg.C+.04),h:bg.h});
+  return {bg:hex,deep,ink:'#ffffff',acc};
+}
 const escXml=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 let shirtUid=0;
 function bigShirtSvg(c){ // the back of a shirt: club name and the season's number
   const a=okHex(c.colors.s1),b=okHex(c.colors.s2),id='bs'+(++shirtUid),name=c.name.toUpperCase(),tl=Math.min(name.length*14.5,112);
+  // name and number print in the second colour when it shows up on the shirt, otherwise white or black
+  const ink=okl.contrast(b,a)>=3?b:okl.contrast('#ffffff',a)>=okl.contrast('#111111',a)?'#ffffff':'#111111';
   const SL='M78 30 18 78q-8 8-2 17l30 51q6 8 15 3l25-17Z',SR='M222 30l60 48q8 8 2 17l-30 51q-6 8-15 3l-25-17Z',
     BODY='M78 30q22-12 40-16 32 12 64 0 18 4 40 16l-8 102 4 180q0 10-10 10H92q-10 0-10-10l4-180Z';
   const w=document.createElement('span');
@@ -981,17 +1017,15 @@ function bigShirtSvg(c){ // the back of a shirt: club name and the season's numb
 <path d="${SL}" fill="${b}"/><path d="${SR}" fill="${b}"/><path d="${BODY}" fill="${a}"/>
 <path d="M30 80 57 138M270 80l-27 58" stroke="${a}" stroke-width="7"/>
 <path d="M118 16q32 16 64 0" fill="none" stroke="${b}" stroke-width="8" stroke-linecap="round"/>
-<text x="150" y="94" text-anchor="middle" textLength="${tl}" lengthAdjust="spacingAndGlyphs" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="30" fill="${b}">${escXml(name)}</text>
-<text x="150" y="246" text-anchor="middle" font-family="Archivo, Barlow Condensed, sans-serif" font-weight="900" font-size="112" style="font-stretch:100%" fill="${b}">26</text>
+<text x="150" y="94" text-anchor="middle" textLength="${tl}" lengthAdjust="spacingAndGlyphs" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="30" fill="${ink}">${escXml(name)}</text>
+<text x="150" y="236" text-anchor="middle" textLength="104" lengthAdjust="spacingAndGlyphs" font-family="Archivo, Barlow Condensed, sans-serif" font-weight="900" font-size="92" style="font-stretch:100%" fill="${ink}">26</text>
 <g clip-path="url(#${id}c)"><rect width="300" height="330" fill="url(#${id}g)"/><path d="M112 36c-6 70-4 190 3 290M188 36c6 70 4 190-3 290" stroke="#000" stroke-opacity=".08" stroke-width="3" fill="none"/></g>
 <path d="${BODY}" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/></svg>`;
   return w.firstChild;
 }
 let posterClub=null;
 function renderPoster(L,swap){
-  const st=LEAGUE_STYLE[L.id]||LEAGUE_STYLE.tur,P=$('#poster');
-  for(const [k,v] of Object.entries(st))P.style.setProperty('--p-'+k,v);
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg);
+  const P=$('#poster');
   $('#pLeague').textContent=L.name;$('#pRailLeague').textContent=L.name;
   // fixed order: the same alphabetical order as the club list; SWAP always moves to the next club (and wraps round)
   const ids=[...L.clubs].sort((a,b)=>a.localeCompare(b)).map(slug).filter(id=>CLUBS[id]);
@@ -999,7 +1033,8 @@ function renderPoster(L,swap){
   if(swap)posterClub=ids[(ids.indexOf(posterClub)+1)%ids.length];
   store.set('poster-'+L.id,posterClub);
   const c=CLUBS[posterClub],sh=$('#pShirt'),open=$('#pOpen');
-  const put=()=>{sh.replaceChildren(bigShirtSvg(c));sh.href='#'+posterClub;sh.setAttribute('aria-label','Open '+c.name);open.textContent='Open '+c.name;open.href='#'+posterClub};
+  const paint=()=>{const st=posterPalette(c);for(const [k,v] of Object.entries(st))P.style.setProperty('--p-'+k,v);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg)};
+  const put=()=>{paint();sh.replaceChildren(bigShirtSvg(c));sh.href='#'+posterClub;sh.setAttribute('aria-label','Open '+c.name);open.textContent='Open '+c.name;open.href='#'+posterClub};
   $('#pBrowse').textContent=`Browse all ${ids.length} clubs`;
   if(swap&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     sh.classList.remove('in');sh.classList.add('out');
