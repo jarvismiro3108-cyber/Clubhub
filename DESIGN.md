@@ -242,7 +242,7 @@ faint diagonal or vertical stripe texture, like a mown pitch or stadium stands.
   gold glow at the bottom, white text, gold accents, 20px radius (the knockout bracket).
 - **Poster tile:** the poster colour with the darker curve, white Archivo label and a giant Archivo headline
   (bracket champion card, fantasy hero, draft clock, fantasy awards with the number in the poster accent colour).
-  "Your turn" on the draft clock is a solid gold tile with navy text; season champions get a deep gold tile
+  "Your turn" on the draft clock is a solid tile in the page accent colour; season champions get a deep gold tile
   (#3d2c05 to #86650b) so white text stays readable.
 - **Spotlight card:** a mini poster in the club's poster colour with the darker curve, the player's own shirt tucked
   in the corner, white label and name, and the big stat in the poster accent colour.
@@ -281,8 +281,12 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   `posterPalette()`): Champions League royal blue and Europa League burnt orange (the page recolours when you switch
   competition; the figure is a glowing gold trophy); the Bracket Simulator night violet with a white "CHAMPION ?"
   mystery shirt until you simulate, then the whole page takes the champion's colours and the figure becomes the
-  champion's shirt (number 1) with the trophy; Fantasy Draft Süper Lig red with gold and a shirt printed with the
-  user's team name and 11.
+  champion's shirt (number 1) with the trophy; Fantasy Draft in the user's own team colours (ten two-colour kits in
+  `FZ_KITS`, Red & Gold by default, picked on the setup screen and changeable later) with a shirt printed with the
+  team name (live while typing) and 11. Kits use `posterPalette(c,{accFirst:true})`, which darkens the background until
+  the kit's second colour reads as the accent. "Your pick" highlights (draft clock, open spots on the pitch, selected
+  player, stat badges) use the page accent (`--p-acc`, with `--p-accink` for text on it; `--p-ring` falls back to white
+  when the accent would vanish on the grass), never a fixed yellow.
 - **Club pages:** every club page (Club & Records, This Season, Squad Picker, Match Analysis) uses the same colour
   world, built from that club's `posterPalette()`. The header is a poster: the poster colour with the darker curve, the
   club name in giant wide Archivo (sized from the longest word with container units so words never break), and the big

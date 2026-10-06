@@ -288,12 +288,26 @@ body.on-x .fzhero h2{font-size:clamp(34px,5.6vw,60px)}
 body.on-x .fzhero p{color:#fff}
 body.on-x .clock .who{font-size:clamp(28px,4.6vw,44px);margin-top:8px}
 body.on-x .clock .bar{background:color-mix(in srgb,#000 28%,transparent)}
-body.on-x .clock.me{background:#ffd200;color:#13235b}
-body.on-x .clock.me::before{background:#f5c400}
-body.on-x .clock.me .k{color:#13235b}
+body.on-x .clock .bar i{background:var(--p-acc)}
+body.on-x .clock.me{background:var(--p-acc);color:var(--p-accink)}
+body.on-x .clock.me::before{background:color-mix(in srgb,var(--p-accink) 9%,var(--p-acc))}
+body.on-x .clock.me .k{color:var(--p-accink)}
 body.on-x .clock.me .who{text-shadow:none}
-body.on-x .clock.me .bar{background:rgba(19,35,91,.18)}body.on-x .clock.me .bar i{background:#13235b}
-body.on-x .clock.me .btn{background:#13235b;color:#fff}
+body.on-x .clock.me .bar{background:color-mix(in srgb,var(--p-accink) 20%,transparent)}body.on-x .clock.me .bar i{background:var(--p-accink)}
+body.on-x .clock.me .btn{background:var(--p-accink);color:var(--p-acc)}
+body.on-x .slot.open .shirt{border-color:var(--p-ring);animation-name:pulseRingX}
+@keyframes pulseRingX{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--p-ring) 75%,transparent)}100%{box-shadow:0 0 0 12px transparent}}
+body.on-x .slot.sel .shirt{box-shadow:0 0 0 3px var(--p-ring),0 0 18px var(--p-ring)}
+body.on-x .slot .badge{background:var(--p-acc);color:var(--p-accink)}
+body.on-x .dugout .dlbl{color:#fff}
+.flabel{font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.04em;text-transform:uppercase}
+.kits{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:4px}
+.kit-b{--shirt-line:rgba(255,255,255,.5);display:grid;justify-items:center;gap:5px;padding:10px 6px 9px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface2);color:var(--fg);cursor:pointer;font:inherit;font-size:12px;font-weight:600;line-height:1.2;text-align:center}
+.kit-b svg{width:40px;height:40px;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.kit-b:hover{border-color:color-mix(in srgb,#fff 55%,var(--p-page))}
+.kit-b[aria-pressed="true"]{border-color:#fff;background:color-mix(in srgb,#fff 24%,var(--p-page));box-shadow:0 3px 0 color-mix(in srgb,#000 35%,var(--p-page))}
+.kit-b[aria-pressed="true"] svg{transform:scale(1.12) rotate(-4deg)}
+@media (prefers-reduced-motion:reduce){.kit-b svg{transition:none}body.on-x .slot.open .shirt{animation:none}}
 body.on-x .clock.gold{background:radial-gradient(70% 90% at 85% 0%,rgba(255,215,90,.35),transparent 60%),linear-gradient(135deg,#3d2c05,#86650b 55%,#3d2c05)}
 body.on-x .clock.gold::before{display:none}
 body.on-x .dugout{background:color-mix(in srgb,#000 30%,var(--p-page));box-shadow:inset 0 0 0 1px var(--line)}
@@ -1129,7 +1143,7 @@ const okl=(()=>{
   const contrast=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
   return {toLCH,toHex,contrast};
 })();
-function posterPalette(c){
+function posterPalette(c,opt={}){
   const s1=okl.toLCH(c.colors.s1),s2=okl.toLCH(c.colors.s2),shirt=okHex(c.colors.s1),chroma=o=>o.C>=.06,yellowish=o=>o.h>=65&&o.h<=120;
   const hueGap=(x,y)=>{const d=Math.abs(x.h-y.h)%360;return Math.min(d,360-d)};
   const fit=o=>{o={...o};let hex=okl.toHex(o);while(okl.contrast('#ffffff',hex)<4.6&&o.L>.16){o.L-=.015;hex=okl.toHex(o)}return {o,hex}};
@@ -1144,6 +1158,9 @@ function posterPalette(c){
   let pick=null,best=null;
   for(const cd of cands){const f=fit(cd),sep=okl.contrast(shirt,f.hex);if(!best||sep>best.sep)best={...f,sep};if(sep>=1.6){pick={...f,sep};break}}
   pick=pick||best;
+  // team kits (fantasy): darken the background until the second colour reads as the accent
+  if(opt.accFirst){const s2h=okHex(c.colors.s2);let o={...pick.o},h=pick.hex;
+    if(okl.contrast(s2h,'#ffffff')>1.25&&okl.contrast(s2h,'#ffffff')<okl.contrast(h,'#ffffff'))while(okl.contrast(s2h,h)<3.4&&o.L>.22){o.L-=.015;h=okl.toHex(o)}pick={...pick,o,hex:h}}
   const bg=pick.o,hex=pick.hex,deep=okl.toHex({...bg,L:Math.max(.12,bg.L-.1)});
   // accent for "2026/27": the club's other colour if it stands out, otherwise a light tint of the background
   let acc=[c.colors.s2,c.colors.s1].map(okHex).find(x=>okl.contrast(x,hex)>=3.2&&okl.contrast(x,'#ffffff')>1.25);
@@ -1153,7 +1170,8 @@ function posterPalette(c){
   // club pages: page colour dark enough that muted text (72% white) still reads on the lightest card (15% white)
   let pg={...bg,L:Math.max(.12,bg.L-.1)},page=deep;while(okl.contrast(mixW(page,.72),mixW(page,.15))<4.7&&pg.L>.1){pg.L-=.015;page=okl.toHex(pg)}
   const surf=mixW(page,.15),lift=(L,C,h)=>{let o={L,C,h},x=okl.toHex(o);while(okl.contrast(x,surf)<4.6&&o.L<.97){o.L+=.02;x=okl.toHex(o)}return x};
-  return {bg:hex,deep,page,ink:'#ffffff',acc,win:lift(.76,.17,150),draw:lift(.82,.15,85),loss:lift(.72,.17,25)};
+  const accink=okl.contrast(acc,'#ffffff')>=okl.contrast(acc,page)?'#ffffff':page,ring=okl.contrast(acc,'#2f7d47')>=2?acc:'#ffffff';
+  return {bg:hex,deep,page,ink:'#ffffff',acc,accink,ring,win:lift(.76,.17,150),draw:lift(.82,.15,85),loss:lift(.72,.17,25)};
 }
 const escXml=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 let shirtUid=0;
@@ -1177,7 +1195,7 @@ function bigShirtSvg(c,o={}){ // the back of a shirt: club name and the season's
   return w.firstChild;
 }
 function fitTitle(h,t){const up=t.toUpperCase();h.textContent=t;h.style.setProperty('--n',up.length);h.style.setProperty('--w',Math.max(...up.split(/\s+/).map(w=>w.length)))}
-function paintClub(c){const st=posterPalette(c);for(const [k,v] of Object.entries(st))document.body.style.setProperty('--p-'+k,v);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg)}
+function paintClub(c,opt){const st=posterPalette(c,opt);for(const [k,v] of Object.entries(st))document.body.style.setProperty('--p-'+k,v);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg)}
 let posterClub=null;
 function renderPoster(L,swap){
   const P=$('#poster');
@@ -2186,6 +2204,19 @@ function renderBracketSim(m){
 const FZ_Q={GK:2,DEF:5,MID:4,FWD:4},FZ_POS=['GK','DEF','MID','FWD'];
 const ROLE_GRP={GK:'GK',RB:'DEF',CB:'DEF',LB:'DEF',RWB:'DEF',LWB:'DEF',DM:'MID',CM:'MID',AM:'MID',RW:'FWD',LW:'FWD',ST:'FWD'};
 const FZ_SLOTS=[...FORMATIONS['4-3-3'].map(([role,x,y])=>({role,grp:ROLE_GRP[role],x,y})),...FZ_POS.map(g=>({role:g,grp:g,bench:true}))];
+// team colours the user can pick; the whole fantasy page takes them (posterPalette)
+const FZ_KITS=[['red','Red & Gold','#e30a17','#ffd200'],['navy','Navy & Yellow','#12245c','#ffd200'],['black','Black & White','#111111','#ffffff'],['sky','Sky & White','#4fa3e0','#ffffff'],
+  ['green','Green & White','#0f8a43','#ffffff'],['purple','Purple & Gold','#5b2a9e','#f2c230'],['orange','Orange & Black','#f26b0f','#141414'],['claret','Claret & Blue','#7a1f3d','#7cc4f0'],
+  ['royal','Royal & White','#1d4fd1','#ffffff'],['teal','Teal & Pink','#0f8f8a','#ff6fa8']].map(([id,name,s1,s2])=>({id,name,colors:{s1,s2}}));
+const fzKit=()=>{const id=(FZ&&FZ.kit)||store.get('fzKit','red');return FZ_KITS.find(k=>k.id===id)||FZ_KITS[0]};
+const fzTeamName=()=>(FZ?FZ.managers[fzMe()].name:store.get('fzName',''))||'Draft XI';
+function fzPaint(name){const k=fzKit();paintClub(k,{accFirst:true});xFig(bigShirtSvg({name:name??fzTeamName(),colors:k.colors},{num:'11'}))}
+function kitPicker(getName){
+  const wrap=el('div',{class:'kits',role:'group','aria-label':'Team colours'});
+  const draw=()=>{const cur=fzKit().id;wrap.replaceChildren(...FZ_KITS.map(k=>el('button',{class:'kit-b',type:'button','aria-pressed':String(k.id===cur),title:k.name,
+    onclick:()=>{store.set('fzKit',k.id);if(FZ){FZ.kit=k.id;fzSave()}fzPaint(getName?getName():undefined);draw()}},shirtSvg(k),el('span',{text:k.name}))))};
+  draw();return wrap;
+}
 const FZ_BOTS=['Kadıköy Kings','Bosphorus Bandits','Anatolian Eagles','Karadeniz Storm','Ege Waves','Ankara Athletic','Kapadokya Comets'];
 const ASSIST_W={AM:.6,RW:.6,LW:.6,CM:.45,ST:.35,RB:.35,LB:.35,RWB:.4,LWB:.4,DM:.2,CB:.08,GK:.02};
 const POS_LONG={GK:'Goalkeeper',DEF:'Defender',MID:'Midfielder',FWD:'Attacker'};
@@ -2231,7 +2262,7 @@ function fzNew(n,slot,name){
   const bots=[...FZ_BOTS].sort(()=>Math.random()-.5),managers=[];
   for(let i=0;i<n;i++)managers.push(i===slot?{name:name||'My Team',me:true}:{name:bots.pop()});
   const order=[];for(let r=0;r<15;r++){const row=[...Array(n).keys()];if(r%2)row.reverse();order.push(...row)}
-  FZ={v:2,stage:'draft',managers,order,picks:[],slots:{[slot]:Array(15).fill(null)},md:0,fixtures:fzFixtures(n),results:[],stats:{}};fzSel=null;fzSave();
+  FZ={v:2,kit:store.get('fzKit','red'),stage:'draft',managers,order,picks:[],slots:{[slot]:Array(15).fill(null)},md:0,fixtures:fzFixtures(n),results:[],stats:{}};fzSel=null;fzSave();
 }
 const fzMe=()=>FZ.managers.findIndex(m=>m.me);
 const fzSquad=m=>FZ.picks.filter((pid,i)=>FZ.order[i]===m);
@@ -2365,8 +2396,7 @@ function renderFantasy(m){fzPoolBuild();fzLoad();fzSel=null;m.append(el('div',{i
   fzLoadLive().then(ok=>{if(ok&&document.getElementById('fzRoot')&&(!FZ||FZ.stage==='draft'))fzRender()})}
 function fzRender(){
   const root=document.getElementById('fzRoot');if(!root)return;
-  const tn=(FZ?FZ.managers[fzMe()].name:store.get('fzName',''))||'Draft XI';
-  xFig(bigShirtSvg({name:tn,colors:XPAL.fantasy},{num:'11'}));
+  fzPaint();
   root.replaceChildren(...(!FZ?fzSetupView():FZ.stage==='draft'?fzDraftView():FZ.stage==='lineup'?fzLineupView():fzSeasonView()));
 }
 function fzReset(){if(confirm('Start over? Your draft league will be deleted.')){clearTimeout(fzTimer);FZ=null;fzSel=null;store.set('fantasy-tur',null);fzRender()}}
@@ -2382,6 +2412,7 @@ function fzHowCard(){
 }
 function fzSetupView(){
   const name=el('input',{type:'text',maxlength:'24',placeholder:'e.g. Kadıköy Dream XI',value:store.get('fzName','')});
+  const typed=()=>name.value.trim()||'Draft XI';name.addEventListener('input',()=>fzPaint(typed()));
   const n=el('select',{},...[4,6,8].map(x=>el('option',{value:x,text:x+' teams'})));n.value='6';
   const slot=el('select',{});
   const fill=()=>{slot.replaceChildren(el('option',{value:'r',text:'Random'}),...Array.from({length:+n.value},(_,i)=>el('option',{value:i,text:ordinal(i+1)+' pick'})))};fill();n.onchange=fill;
@@ -2391,7 +2422,9 @@ function fzSetupView(){
     el('div',{class:'fzhero-pitch'},fzPitch(Array(15).fill(null),{})));
   return [demo,el('div',{class:'card'},el('h2',{text:'Start a Draft League'}),
     el('div',{class:'controls',style:'margin:0'},el('div',{class:'field'},el('label',{text:'Your team name'}),name),el('div',{class:'field'},el('label',{text:'League size'}),n),
-      el('div',{class:'field'},el('label',{text:'Your draft slot'}),slot),el('button',{class:'btn primary',text:'Start draft',onclick:start}))),fzHowCard()];
+      el('div',{class:'field'},el('label',{text:'Your draft slot'}),slot)),
+    el('div',{class:'field',style:'margin-top:16px'},el('span',{class:'flabel',text:'Team colours'}),kitPicker(typed)),
+    el('div',{style:'margin-top:18px'},el('button',{class:'btn primary',text:'Start draft',onclick:start}))),fzHowCard()];
 }
 function fzDraftView(){
   const i=FZ.picks.length,n=FZ.managers.length,m=FZ.order[i],me=fzMe(),myTurn=m===me,need=fzNeed(me),taken=fzTaken();
@@ -2423,7 +2456,8 @@ function fzLineupView(){
       el('p',{style:'margin:8px 0 0;opacity:.9',text:'Tap a player, then tap a teammate in the same position to swap them. Your subs sit in the dugout.'}),
       el('div',{class:'row',style:'margin-top:12px;display:flex;gap:8px;flex-wrap:wrap'},el('button',{class:'btn primary',text:'Start the season',onclick:()=>{FZ.stage='season';fzSel=null;fzSave();fzRender();window.scrollTo(0,0)}}),
         el('button',{class:'btn',text:'Pick my best 11',onclick:()=>{FZ.slots[me]=fzAutoSlots(me);fzSel=null;fzSave();fzRender()}}))),
-    el('div',{class:'card fzone'},fzPitch(FZ.slots[me],{tap:fzTap})),fzSquadsCard(),el('div',{},el('button',{class:'linkbtn',text:'Restart draft',onclick:fzReset}))];
+    el('div',{class:'card fzone'},fzPitch(FZ.slots[me],{tap:fzTap})),
+    el('div',{class:'card'},el('h2',{text:'Team Colours'}),kitPicker()),fzSquadsCard(),el('div',{},el('button',{class:'linkbtn',text:'Restart draft',onclick:fzReset}))];
 }
 function fzTimeline(r){
   let hs=0,as=0,ht=false;const rows=[el('div',{class:'tl-row ko'},el('span',{class:'tl-min',text:"0'"}),el('span',{text:'Kick-off'}))];
@@ -2481,7 +2515,7 @@ function fzSeasonView(){
     fzLeaderCard('Top Scorers','g'),fzLeaderCard('Assists','a'),fzLeaderCard('Clean Sheets','cs'),fzLeaderCard('Yellow Cards','yc'),fzLeaderCard('Red Cards','rc'))));
   out.push(el('div',{class:'card fzone'},el('h2',{text:'Your Team'}),el('p',{class:'lede',style:'margin:-6px 0 12px',text:done?'Your season, with goals (⚽) and assists (A).':'Tap a player, then a teammate in the same position, to swap before the next matchday.'}),
     fzPitch(FZ.slots[me],{tap:done?null:fzTap,stats:true})));
-  out.push(fzSquadsCard(),fzHowCard(),el('div',{},el('button',{class:'linkbtn',text:'Delete this league and start over',onclick:fzReset})));
+  out.push(el('div',{class:'card'},el('h2',{text:'Team Colours'}),kitPicker()),fzSquadsCard(),fzHowCard(),el('div',{},el('button',{class:'linkbtn',text:'Delete this league and start over',onclick:fzReset})));
   return out;
 }
 
