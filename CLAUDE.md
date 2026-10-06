@@ -58,6 +58,8 @@ Owner: Mir Ozel. Live at https://clubhub.jarvismiro3108.workers.dev (password-pr
   double round-robin league of simulated matches (`fzMatch()`: score, scorers, assists, cards, subs). No fantasy points:
   league table + leaders (goals, assists, clean sheets, yellow, red) and end-of-season awards. State: localStorage
   `clubhub-fantasy-tur` (v2). Real 2026/27 goals/assists from `/api/live/players?league=tur` are shown while drafting.
+- Look: the three pages share the club-page poster header and colour world (`body.on-x`, palettes in `XPAL`); the
+  Bracket Simulator recolours to the champion after a simulation.
 - Club "This Season" player stats: spotlight cards, goal-contributions chart (goals `--s-g` / assists `--s-a`, validated
   palette pair; white / half-white on club pages), sticker-album player cards (own shirt with surname + number) with a
   position filter, full sortable table folded in a `<details>`. Club pages use the club's `posterPalette()` colours (`body.on-club`).

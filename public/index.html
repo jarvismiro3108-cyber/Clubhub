@@ -199,38 +199,38 @@ body.on-home{background:var(--p-deep);transition:background-color .5s cubic-bezi
 #home main .dot{background:#fff}
 #home main .ltable td.pts,#home main .ltable td.team a{color:#fff}
 #home main .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-deep))}
-body.on-home .sitefoot,body.on-club .sitefoot{color:color-mix(in srgb,#fff 74%,var(--p-deep));border-top-color:color-mix(in srgb,#fff 16%,var(--p-deep))}
-body.on-home .sitefoot a,body.on-home .sitefoot b,body.on-club .sitefoot a,body.on-club .sitefoot b{color:#fff}
+body.on-home .sitefoot,body:is(.on-club,.on-x) .sitefoot{color:color-mix(in srgb,#fff 74%,var(--p-deep));border-top-color:color-mix(in srgb,#fff 16%,var(--p-deep))}
+body.on-home .sitefoot a,body.on-home .sitefoot b,body:is(.on-club,.on-x) .sitefoot a,body:is(.on-club,.on-x) .sitefoot b{color:#fff}
 
 /* club pages live in the same colour world as the home poster: the club's own --p-* palette, no white pages */
-body.on-club{background:var(--p-page);color-scheme:dark;
+body:is(.on-club,.on-x){background:var(--p-page);color-scheme:dark;
   --bg:var(--p-page);--fg:#ffffff;--fg2:color-mix(in srgb,#fff 84%,var(--p-page));--muted:color-mix(in srgb,#fff 72%,var(--p-page));
   --surface:color-mix(in srgb,#fff 9%,var(--p-page));--surface2:color-mix(in srgb,#fff 15%,var(--p-page));--line:color-mix(in srgb,#fff 18%,var(--p-page));
   --c-hi:#ffffff;--c-hi-ink:var(--p-page);--c-deep:var(--p-bg);--c-acc:#ffffff;--strong:#ffffff;--bar2:color-mix(in srgb,#fff 56%,var(--p-page));--ch-rest:color-mix(in srgb,#fff 26%,var(--p-page));
   --win:var(--p-win);--draw:var(--p-draw);--loss:var(--p-loss);--s-g:#ffffff;--s-a:color-mix(in srgb,#fff 42%,var(--p-page))}
-body.on-club :focus-visible{outline-color:#fff}
-body.on-club .seg{background:color-mix(in srgb,#fff 12%,var(--p-page))}
-body.on-club .seg button{color:#fff}
-body.on-club .seg button[aria-pressed="true"]{background:#fff;color:var(--p-page);box-shadow:0 3px 0 color-mix(in srgb,#000 30%,var(--p-page))}
-body.on-club .card{border-radius:16px}
-body.on-club .card h2,body.on-club .subh,body.on-club .contrib h3,body.on-club .pgrid-h,body.on-club .cols h3{font-family:'Archivo',var(--display);font-stretch:118%;font-weight:900;letter-spacing:-.005em;line-height:1}
-body.on-club .card h2{font-size:clamp(21px,2.6vw,26px);margin-bottom:12px}
-body.on-club .eyebrow{color:var(--fg2)}
-body.on-club .board{background:none;border:0;gap:10px;border-radius:0;overflow:visible}
-body.on-club .stat{position:relative;overflow:hidden;isolation:isolate;background:var(--p-bg);border-radius:14px;padding:16px 16px 14px;color:#fff}
-body.on-club .stat::before{content:"";position:absolute;z-index:-1;width:200%;aspect-ratio:1;border-radius:50%;left:55%;top:40%;background:color-mix(in srgb,var(--p-page) 45%,var(--p-bg))}
-body.on-club .stat b{font-family:'Archivo',var(--display);font-weight:900;font-size:clamp(38px,4.4vw,50px);color:var(--p-acc);text-shadow:0 3px 0 rgba(0,0,0,.14)}
-body.on-club .stat span{color:#fff;font-weight:600}
-body.on-club .btn.primary{background:#fff;color:var(--p-page);font-family:'Archivo',var(--display);font-stretch:112%;font-size:17px;letter-spacing:.01em;border-radius:999px;padding:12px 24px;box-shadow:0 4px 0 color-mix(in srgb,#000 35%,var(--p-page))}
-body.on-club .btn.primary:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,#000 35%,var(--p-page))}
-body.on-club .btn:not(.primary){border-radius:999px}
-body.on-club .btn:hover{filter:brightness(1.12)}
-body.on-club .tablewrap,body.on-club .ltwrap{border-radius:12px}
-body.on-club .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-page))}
-body.on-club .sheet-head{background:var(--p-bg)}
-body.on-club .scrim{background:color-mix(in srgb,#000 55%,transparent)}
-body.on-club .tip{background:#fff;color:var(--p-page)}
-body.on-club .prob{color:var(--p-page)}
+body:is(.on-club,.on-x) :focus-visible{outline-color:#fff}
+body:is(.on-club,.on-x) .seg{background:color-mix(in srgb,#fff 12%,var(--p-page))}
+body:is(.on-club,.on-x) .seg button{color:#fff}
+body:is(.on-club,.on-x) .seg button[aria-pressed="true"]{background:#fff;color:var(--p-page);box-shadow:0 3px 0 color-mix(in srgb,#000 30%,var(--p-page))}
+body:is(.on-club,.on-x) .card{border-radius:16px}
+body:is(.on-club,.on-x) .card h2,body:is(.on-club,.on-x) .subh,body:is(.on-club,.on-x) .contrib h3,body:is(.on-club,.on-x) .pgrid-h,body:is(.on-club,.on-x) .cols h3{font-family:'Archivo',var(--display);font-stretch:118%;font-weight:900;letter-spacing:-.005em;line-height:1}
+body:is(.on-club,.on-x) .card h2{font-size:clamp(21px,2.6vw,26px);margin-bottom:12px}
+body:is(.on-club,.on-x) .eyebrow{color:var(--fg2)}
+body:is(.on-club,.on-x) .board{background:none;border:0;gap:10px;border-radius:0;overflow:visible}
+body:is(.on-club,.on-x) .stat{position:relative;overflow:hidden;isolation:isolate;background:var(--p-bg);border-radius:14px;padding:16px 16px 14px;color:#fff}
+body:is(.on-club,.on-x) .stat::before{content:"";position:absolute;z-index:-1;width:200%;aspect-ratio:1;border-radius:50%;left:55%;top:40%;background:color-mix(in srgb,var(--p-page) 45%,var(--p-bg))}
+body:is(.on-club,.on-x) .stat b{font-family:'Archivo',var(--display);font-weight:900;font-size:clamp(38px,4.4vw,50px);color:var(--p-acc);text-shadow:0 3px 0 rgba(0,0,0,.14)}
+body:is(.on-club,.on-x) .stat span{color:#fff;font-weight:600}
+body:is(.on-club,.on-x) .btn.primary{background:#fff;color:var(--p-page);font-family:'Archivo',var(--display);font-stretch:112%;font-size:17px;letter-spacing:.01em;border-radius:999px;padding:12px 24px;box-shadow:0 4px 0 color-mix(in srgb,#000 35%,var(--p-page))}
+body:is(.on-club,.on-x) .btn.primary:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,#000 35%,var(--p-page))}
+body:is(.on-club,.on-x) .btn:not(.primary){border-radius:999px}
+body:is(.on-club,.on-x) .btn:hover{filter:brightness(1.12)}
+body:is(.on-club,.on-x) .tablewrap,body:is(.on-club,.on-x) .ltwrap{border-radius:12px}
+body:is(.on-club,.on-x) .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-page))}
+body:is(.on-club,.on-x) .sheet-head{background:var(--p-bg)}
+body:is(.on-club,.on-x) .scrim{background:color-mix(in srgb,#000 55%,transparent)}
+body:is(.on-club,.on-x) .tip{background:#fff;color:var(--p-page)}
+body:is(.on-club,.on-x) .prob{color:var(--p-page)}
 
 /* club header: a poster in the club colours (giant name, the club shirt, tabs as pills) */
 .club-top{background:var(--p-bg);isolation:isolate;transition:background-color .5s cubic-bezier(.2,.8,.2,1)}
@@ -242,7 +242,7 @@ body.on-club .prob{color:var(--p-page)}
 .club-top .crumb span{color:#fff;font-family:'Archivo',var(--display);font-stretch:118%;font-weight:800;font-size:13px;letter-spacing:.02em}
 .club-top .brand{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name shirt" "meta shirt";align-items:end;gap:0 28px;margin-top:6px}
 .ct-name{grid-area:name;container-type:inline-size;min-width:0}
-.club-top #clubName{font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.02em;overflow-wrap:break-word;
+.club-top .ct-name h1{font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.02em;overflow-wrap:break-word;
   font-size:clamp(19px,min(calc(100cqi / (var(--w,8) * 1.02)),calc(200cqi / (var(--n,12) * .98))),112px);text-shadow:0 2px 0 rgba(0,0,0,.12),0 12px 34px rgba(0,0,0,.3);animation:wordIn .6s cubic-bezier(.2,.8,.2,1) both}
 .club-top .brand small{grid-area:meta;align-self:start;margin-top:14px;font-size:14.5px;font-weight:500;color:#fff;max-width:62ch}
 .club-top .ct-shirt{grid-area:shirt;width:clamp(150px,19vw,230px);align-self:end;margin-bottom:-18px;transform:rotate(-4deg);filter:drop-shadow(0 22px 26px rgba(0,0,0,.35));animation:shirtIn .8s cubic-bezier(.2,.8,.2,1) both;position:relative;z-index:1}
@@ -262,7 +262,56 @@ body.on-club .prob{color:var(--p-page)}
   .club-top .tabs{margin-top:16px;padding-bottom:18px}
   .club-top .tab{font-size:14px;padding:9px 15px}
 }
-@media (prefers-reduced-motion:reduce){.club-top #clubName,.club-top .ct-shirt{animation:none}.club-top{transition:none}}
+/* Europe, Bracket Simulator, Fantasy Draft: the same poster world, one palette per page (XPAL) */
+.x-cup{position:relative;width:78%;margin:0 auto}
+.x-cup::before{content:"";position:absolute;inset:-12% -22%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,215,90,.45),transparent 70%)}
+.x-cup .trophy,.x-champ .trophy{height:auto;display:block;position:relative}
+.x-cup .trophy svg{width:100%;height:auto;display:block}
+.x-champ{position:relative}
+.x-champ .trophy{position:absolute;left:-14%;bottom:-4%;width:42%;transform:rotate(8deg)}
+.x-champ .trophy svg{width:100%;height:auto}
+body.on-x .bwrap{--ln:color-mix(in srgb,#fff 34%,transparent);border:1px solid var(--line);border-radius:20px;
+  background:radial-gradient(90% 55% at 50% -5%,color-mix(in srgb,var(--p-bg) 80%,transparent),transparent 62%),radial-gradient(45% 35% at 50% 100%,rgba(255,200,40,.14),transparent 70%),var(--p-page)}
+body.on-x .bcol h4,body.on-x .bgh{color:color-mix(in srgb,#fff 82%,var(--p-page));font-family:'Archivo',var(--display);font-stretch:118%;font-weight:800;font-size:12.5px;letter-spacing:.03em}
+body.on-x .bt{color:#fff}
+body.on-x .bt .bs{color:#fff;font-family:'Archivo',var(--display);font-weight:900;font-size:18px}
+body.on-x .bt.w .bs{color:#ffd200}
+body.on-x .bt.l,body.on-x .bt.l .bs,body.on-x .bt .bn small,body.on-x .bnote{color:color-mix(in srgb,#fff 74%,var(--p-page))}
+body.on-x .bt.empty{color:color-mix(in srgb,#fff 84%,var(--p-page))}
+body.on-x .bchamp{font-family:'Archivo',var(--display);font-stretch:100%;font-weight:900;font-size:20px;max-width:100%;overflow-wrap:anywhere}
+body.on-x .bchamp small{color:color-mix(in srgb,#fff 82%,var(--p-page))}
+/* poster tiles: the page colour with the darker curve (champion card, fantasy hero, draft clock, awards) */
+body.on-x :is(.champ-card,.fzhero,.clock,.award){background:var(--p-bg);isolation:isolate;position:relative;overflow:hidden;border-radius:20px;box-shadow:0 14px 30px -18px rgba(0,0,0,.6)}
+body.on-x :is(.champ-card,.fzhero,.clock,.award)::before{content:"";position:absolute;z-index:-1;width:170%;aspect-ratio:1;border-radius:50%;left:46%;top:38%;background:color-mix(in srgb,var(--p-deep) 55%,var(--p-bg));pointer-events:none}
+body.on-x .clock::after{display:none}
+body.on-x :is(.champ-card,.fzhero,.clock,.award) .k,body.on-x .champ-card .eyebrow{color:#fff;font-family:'Archivo',var(--display);font-stretch:118%;font-weight:800;font-size:13px;letter-spacing:.02em}
+body.on-x :is(.champ-card h2,.fzhero h2,.clock .who){font-family:'Archivo',var(--display);font-stretch:125%;font-weight:900;letter-spacing:-.015em;line-height:.9;text-shadow:0 2px 0 rgba(0,0,0,.12),0 10px 26px rgba(0,0,0,.25)}
+body.on-x .champ-card{padding:22px 26px;min-height:160px;gap:22px}
+body.on-x .champ-card h2{font-size:clamp(34px,6.4vw,72px);overflow-wrap:anywhere}
+body.on-x .champ-card .trophy{height:110px}body.on-x .champ-card .trophy svg{height:104px}
+body.on-x .fzhero{padding:26px}
+body.on-x .fzhero h2{font-size:clamp(34px,5.6vw,60px)}
+body.on-x .fzhero p{color:#fff}
+body.on-x .clock .who{font-size:clamp(28px,4.6vw,44px);margin-top:8px}
+body.on-x .clock .bar{background:color-mix(in srgb,#000 28%,transparent)}
+body.on-x .clock.me{background:#ffd200;color:#13235b}
+body.on-x .clock.me::before{background:#f5c400}
+body.on-x .clock.me .k{color:#13235b}
+body.on-x .clock.me .who{text-shadow:none}
+body.on-x .clock.me .bar{background:rgba(19,35,91,.18)}body.on-x .clock.me .bar i{background:#13235b}
+body.on-x .clock.me .btn{background:#13235b;color:#fff}
+body.on-x .clock.gold{background:radial-gradient(70% 90% at 85% 0%,rgba(255,215,90,.35),transparent 60%),linear-gradient(135deg,#3d2c05,#86650b 55%,#3d2c05)}
+body.on-x .clock.gold::before{display:none}
+body.on-x .dugout{background:color-mix(in srgb,#000 30%,var(--p-page));box-shadow:inset 0 0 0 1px var(--line)}
+body.on-x .award .v{font-family:'Archivo',var(--display);font-weight:900;color:var(--p-acc);text-shadow:0 3px 0 rgba(0,0,0,.14)}
+body.on-x .award .v small{color:#fff;font-family:var(--body);font-weight:700}
+body.on-x .award span{opacity:1;color:#fff}
+body.on-x .award b{font-family:'Archivo',var(--display);font-stretch:106%;font-weight:800;text-transform:uppercase;font-size:15px}
+body.on-x .award.winner{background:radial-gradient(70% 90% at 85% 0%,rgba(255,215,90,.35),transparent 60%),linear-gradient(150deg,#3d2c05,#86650b 55%,#3d2c05)}
+body.on-x .award.winner::before{display:none}
+body.on-x .award.winner b{font-size:clamp(28px,5vw,46px);font-stretch:125%;font-weight:900}
+body.on-x .ltable td.pos{color:var(--fg2)}
+@media (prefers-reduced-motion:reduce){.club-top .ct-name h1,.club-top .ct-shirt{animation:none}.club-top{transition:none}}
 .homehead h2{font-size:28px;text-transform:uppercase}
 .homehead span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
 
@@ -353,6 +402,8 @@ select,input[type=text]{background-color:var(--surface);color:var(--fg);border:1
 .opt b{display:block;font-size:15px}
 .opt span.r{font-size:12px;color:var(--muted)}
 .opt .tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--surface);color:var(--fg2);white-space:nowrap}
+.opt .tag:empty{display:none}
+body:is(.on-club,.on-x) .sheet-head h3{font-family:'Archivo',var(--display);font-stretch:118%;font-weight:900;font-size:22px}
 .opt.remove{grid-template-columns:1fr;text-align:center;color:var(--loss);font-weight:700}
 
 /* analysis */
@@ -711,10 +762,15 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 
 <!-- EUROPE / BRACKET / FANTASY -->
 <div id="xPage" hidden>
-<header class="top">
+<header class="top club-top">
+  <div class="p-curve" aria-hidden="true"></div>
   <div class="top-in">
     <div class="crumb"><button class="back" id="xBack">← All leagues</button><span>Club Hub · 2026/27</span></div>
-    <div class="brand"><div><h1 id="xTitle"></h1><small id="xSub"></small></div></div>
+    <div class="brand">
+      <div class="ct-name"><h1 id="xTitle"></h1></div>
+      <small id="xSub"></small>
+      <div class="ct-shirt" id="xFig" aria-hidden="true"></div>
+    </div>
     <nav class="tabs" id="xNav" role="tablist"></nav>
   </div>
 </header>
@@ -1126,6 +1182,7 @@ function bigShirtSvg(c,o={}){ // the back of a shirt: club name and the season's
 <path d="${BODY}" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/></svg>`;
   return w.firstChild;
 }
+function fitTitle(h,t){const up=t.toUpperCase();h.textContent=t;h.style.setProperty('--n',up.length);h.style.setProperty('--w',Math.max(...up.split(/\s+/).map(w=>w.length)))}
 function paintClub(c){const st=posterPalette(c);for(const [k,v] of Object.entries(st))document.body.style.setProperty('--p-'+k,v);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',st.bg)}
 let posterClub=null;
 function renderPoster(L,swap){
@@ -1175,7 +1232,7 @@ window.addEventListener('hashchange',route);
 let curLeague=store.get('league','tur');
 function showHome(){
   C=null;CID=null;applyColors(null);document.title='Club Hub';
-  $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;closePicker(true);document.body.classList.remove('on-club');document.body.classList.add('on-home');
+  $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;closePicker(true);document.body.classList.remove('on-club','on-x');document.body.classList.add('on-home');
   const sn=$('#siteNav');sn.innerHTML='';
   Object.entries(XPAGES).forEach(([k,[t]])=>{const pic=el('span',{class:'pic','aria-hidden':'true'});pic.innerHTML=PLAY_ART[k];
     sn.append(el('a',{class:'play',href:'#'+k},pic,el('span',{},el('b',{text:t}),el('small',{text:PLAY_TEXT[k]})),chevSvg()))});
@@ -1207,12 +1264,10 @@ let state=null;
 function openClub(id,tab){
   if(CID!==id){
     CID=id;C=CLUBS[id];applyColors(C);document.title=C.name+' · Club Hub';
-    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;document.body.classList.remove('on-home');document.body.classList.add('on-club');paintClub(C);
+    $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');paintClub(C);
     const L=LEAGUES.find(l=>l.id===C.league);
     $('#crumbLeague').textContent=L.name+' · 2026/27';
-    const cn=$('#clubName'),up=C.name.toUpperCase();
-    $('#crest').replaceChildren(bigShirtSvg(C));cn.textContent=C.name;
-    cn.style.setProperty('--n',up.length);cn.style.setProperty('--w',Math.max(...up.split(/\s+/).map(w=>w.length)));$('#clubMeta').textContent=C.meta;
+    $('#crest').replaceChildren(bigShirtSvg(C));fitTitle($('#clubName'),C.name);$('#clubMeta').textContent=C.meta;
     $('#squadEyebrow').textContent=`${C.squadNote} · Coach: ${C.coach}`;
     state=store.get('lineup-'+id,null)||{formation:'4-2-3-1',xi:{},bench:[]};state.bench=(state.bench||[]).slice(0,9);
     renderClubTab();renderFormationSelect();renderPitch();renderOpp();$('#p-season').innerHTML='';seasonFor=null;
@@ -1927,14 +1982,21 @@ const XPAGES={
   bracket:['Bracket Simulator','Pick any 16 clubs, then simulate a Champions League-style knockout','Play'],
   fantasy:['Fantasy Draft','Süper Lig draft league: pick your 15 on the pitch, then play a full season of simulated matches','New']};
 const EURO={ucl:'Champions League',uel:'Europa League'};
+// page colours: Champions League royal blue, Europa League burnt orange, bracket night violet, fantasy Süper Lig red with gold
+const XPAL={ucl:{s1:'#1d3fd1',s2:'#dfe6ff'},uel:{s1:'#f26b0f',s2:'#141414'},bracket:{s1:'#6a3df0',s2:'#ffd200'},fantasy:{s1:'#e30a17',s2:'#ffd200'}};
+const xPaint=k=>paintClub({colors:XPAL[k]});
+const xFig=node=>$('#xFig').replaceChildren(node);
+function cupFig(){return el('div',{class:'x-cup'},trophyEl())}
+function mysteryShirt(){return bigShirtSvg({name:'',colors:{s1:'#ffffff',s2:'#ffd200'}},{name:'Champion',num:'?'})}
 function showX(name){
   C=null;CID=null;applyColors(null);closePicker(true);
-  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=false;document.body.classList.remove('on-home','on-club');
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#0f1a3f');
+  $('#home').hidden=true;$('#clubPage').hidden=true;$('#xPage').hidden=false;document.body.classList.remove('on-home','on-club');document.body.classList.add('on-x');
   document.title=XPAGES[name][0]+' · Club Hub';
-  $('#xTitle').textContent=XPAGES[name][0];$('#xSub').textContent=XPAGES[name][1];
+  fitTitle($('#xTitle'),XPAGES[name][0]);$('#xSub').textContent=XPAGES[name][1];
+  xPaint(name==='europe'?'ucl':name);
   const nav=$('#xNav');nav.innerHTML='';
   Object.entries(XPAGES).forEach(([k,[t]])=>nav.append(el('button',{class:'tab',role:'tab','aria-selected':String(k===name),text:t,onclick:()=>{location.hash=k}})));
+  requestAnimationFrame(()=>{const at=nav.querySelector('[aria-selected="true"]');if(at&&nav.scrollWidth>nav.clientWidth)nav.scrollLeft=Math.max(0,at.offsetLeft-nav.offsetLeft-16)});
   const m=$('#xMain');m.innerHTML='';
   ({europe:renderEurope,bracket:renderBracketSim,fantasy:renderFantasy})[name](m);
   window.scrollTo(0,0);
@@ -2004,6 +2066,7 @@ function orderRound(prev,cur){ // put each tie under the earlier ties its clubs 
 let euReq=0;
 function renderEurope(m){
   const comp=EURO[store.get('euComp','ucl')]?store.get('euComp','ucl'):'ucl';
+  xPaint(comp);xFig(cupFig());
   const seg=el('div',{class:'seg',role:'group','aria-label':'Competition'},...Object.entries(EURO).map(([k,n])=>el('button',{'aria-pressed':String(k===comp),text:n,onclick:()=>{store.set('euComp',k);m.innerHTML='';renderEurope(m)}})));
   const box=el('div',{class:'panel'},loadingEl('Loading the '+EURO[comp]+'…'));
   m.append(el('div',{},seg),box);
@@ -2012,7 +2075,7 @@ function renderEurope(m){
     if(my!==euReq)return;
     if(tr.status!=='fulfilled'){box.replaceChildren(liveError(()=>{m.innerHTML='';renderEurope(m)}));return}
     const t=tr.value;
-    const rows=t.rows.map(r=>({...r,zone:r.pos<=8?{text:'Round of 16',color:'#1f9d55'}:r.pos<=24?{text:'Knockout play-offs',color:'#c98a00'}:{text:'Out',color:'#8a90a8'}}));
+    const rows=t.rows.map(r=>({...r,zone:r.pos<=8?{text:'Round of 16',color:'#34c172'}:r.pos<=24?{text:'Knockout play-offs',color:'#e2a72a'}:{text:'Out',color:'#8e96b6'}}));
     const nm=r=>r?{name:r.name,sid:t.map.byId[r.id],id:r.id,seed:ordinal(r.pos)}:{name:'TBD'};
     const cup=cr.status==='fulfilled'?cr.value.rounds:null;
     let po=[],tree=null,lede,champion=null;
@@ -2029,7 +2092,7 @@ function renderEurope(m){
       lede='Projected: who would meet if the league phase ended today. The real pairings are drawn in January.';
     }
     box.replaceChildren(...[
-      el('div',{class:'card'},el('h2',{text:EURO[comp]+' · League Phase'}),
+      el('div',{class:'card'},el('h2',{text:'League Phase Table'}),
         el('p',{class:'lede',style:'margin:-6px 0 12px',text:`${t.season?'Season '+fmtS(t.season)+' · ':''}Updated ${fmtTime(t.updated)} · Top 8 go straight to the round of 16, 9th–24th play off`}),
         tableEl({...t,rows},null)),
       el('div',{},el('h2',{class:'sech',text:'Knockout Bracket'}),el('p',{class:'lede',style:'margin:0 0 12px',text:lede||'The bracket appears once the league phase has started.'})),
@@ -2093,11 +2156,12 @@ function renderBracketSim(m){
     msg.textContent=`${BS.slots.filter(Boolean).length} of 16 clubs picked. Tap any club on the bracket to change it.`+(BS.slots.some(x=>!x)?' Empty spots get a random club.':'');
     const rounds=res?res.rounds:[Array.from({length:8},(_,k)=>({a:slotTeam(2*k),b:slotTeam(2*k+1)}))];
     treeBox.replaceChildren(bracketTree(rounds,{animate:!!(res&&res.fresh),pick,champion:res?{sid:res.champ}:null}));
+    if(res){paintClub(CLUBS[res.champ]);xFig(el('div',{class:'x-champ'},bigShirtSvg(CLUBS[res.champ],{num:'1'}),trophyEl()))}
+    else{xPaint('bracket');xFig(mysteryShirt())}
     if(res){
       const c=CLUBS[res.champ],fin=res.rounds[3][0],ru=fin.win===fin.a.sid?fin.b.sid:fin.a.sid;
       const card=el('div',{class:'champ-card'+(res.fresh?' anim':'')},trophyEl(),el('div',{},el('div',{class:'eyebrow',text:'Champions'}),el('h2',{text:c.name}),
         el('p',{style:'margin:6px 0 0;opacity:.88',text:`Beat ${CLUBS[ru].name} ${Math.max(fin.sa,fin.sb)}–${Math.min(fin.sa,fin.sb)} in the final${fin.note?' ('+fin.note.toLowerCase()+')':''}.`})));
-      card.style.setProperty('--k1',c.colors.deep);card.style.setProperty('--k2',c.colors.s1);
       banner.replaceChildren(card);
     }else banner.replaceChildren();
     if(res)res.fresh=false;
@@ -2307,6 +2371,8 @@ function renderFantasy(m){fzPoolBuild();fzLoad();fzSel=null;m.append(el('div',{i
   fzLoadLive().then(ok=>{if(ok&&document.getElementById('fzRoot')&&(!FZ||FZ.stage==='draft'))fzRender()})}
 function fzRender(){
   const root=document.getElementById('fzRoot');if(!root)return;
+  const tn=(FZ?FZ.managers[fzMe()].name:store.get('fzName',''))||'Draft XI';
+  xFig(bigShirtSvg({name:tn,colors:XPAL.fantasy},{num:'11'}));
   root.replaceChildren(...(!FZ?fzSetupView():FZ.stage==='draft'?fzDraftView():FZ.stage==='lineup'?fzLineupView():fzSeasonView()));
 }
 function fzReset(){if(confirm('Start over? Your draft league will be deleted.')){clearTimeout(fzTimer);FZ=null;fzSel=null;store.set('fantasy-tur',null);fzRender()}}

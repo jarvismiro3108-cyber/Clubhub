@@ -238,8 +238,12 @@ faint diagonal or vertical stripe texture, like a mown pitch or stadium stands.
 
 ### Cards / Containers
 - **Card:** Surface, 1px Line border, 10px radius, 18px padding, uppercase title.
-- **Night panel:** Night Stand to Night Deep gradient, white text, gold accents, 14px radius (bracket, banners,
-  awards, fantasy hero).
+- **Night panel:** the page's darkest shade (`--p-page`) with a soft glow of the poster colour at the top and a faint
+  gold glow at the bottom, white text, gold accents, 20px radius (the knockout bracket).
+- **Poster tile:** the poster colour with the darker curve, white Archivo label and a giant Archivo headline
+  (bracket champion card, fantasy hero, draft clock, fantasy awards with the number in the poster accent colour).
+  "Your turn" on the draft clock is a solid gold tile with navy text; season champions get a deep gold tile
+  (#3d2c05 to #86650b) so white text stays readable.
 - **Spotlight card:** a mini poster in the club's poster colour with the darker curve, the player's own shirt tucked
   in the corner, white label and name, and the big stat in the poster accent colour.
 
@@ -248,8 +252,7 @@ League tables use a coloured left edge for zones, a bold Pts column, W/D/L form 
 on phones (`.hs` under 640px, `.hxs` under 420px). The user's own club or team row is tinted with the club colour.
 
 ### Navigation
-Europe, Bracket and Fantasy header tabs are uppercase Barlow Condensed on the dark header with a 4px accent underline
-for the active tab. Club page tabs are Archivo pills: outlined white on the poster colour, the active one solid white
+Club pages and the Europe, Bracket and Fantasy pages use Archivo pill tabs: outlined white on the poster colour, the active one solid white
 with poster-colour text and a 4px bottom edge. Site
 sections (Europe, Bracket Simulator, Fantasy Draft) are the feature tiles in the home hero; the league switcher is one
 swipeable row of pills on phones. Club tabs scroll sideways on phones with a fade at the edge.
@@ -273,7 +276,13 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Home page colour world:** below the poster the whole home page (feature tiles, league heading, club cards,
   Clubs/Table switch, live table, footer) uses the poster's darker shade as its background, with tinted panels and
   white text; it recolours with the poster on every swap. The league heading uses the poster's wide Archivo.
-  Europe, Bracket and Fantasy keep the standard light/dark themes.
+- **Europe, Bracket Simulator, Fantasy Draft:** the same poster header (giant page title, figure on the right, pill
+  tabs) and the same tinted colour world as club pages (`body.on-x`), each with its own palette (`XPAL`, run through
+  `posterPalette()`): Champions League royal blue and Europa League burnt orange (the page recolours when you switch
+  competition; the figure is a glowing gold trophy); the Bracket Simulator night violet with a white "CHAMPION ?"
+  mystery shirt until you simulate, then the whole page takes the champion's colours and the figure becomes the
+  champion's shirt (number 1) with the trophy; Fantasy Draft Süper Lig red with gold and a shirt printed with the
+  user's team name and 11.
 - **Club pages:** every club page (Club & Records, This Season, Squad Picker, Match Analysis) uses the same colour
   world, built from that club's `posterPalette()`. The header is a poster: the poster colour with the darker curve, the
   club name in giant wide Archivo (sized from the longest word with container units so words never break), and the big
@@ -290,9 +299,9 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tinted tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
 - **Scoreboard:** navy block (the poster colour on club pages), team names either side, a dark inset score box, used for every match result.
-- **Knockout tie card:** glassy dark card, club-colour stripe per row, winner row tinted gold with a gold score.
+- **Knockout tie card:** glassy card on the night panel, club-colour stripe per row, winner row tinted gold with a gold score.
 - **Pitch and shirts:** striped grass with circular two-colour shirts, name tags and a dugout bar for subs.
-- **On-the-clock banner:** broadcast-style night panel with a live dot, big name and a gold progress bar.
+- **On-the-clock banner:** poster tile with a live dot, big name and a progress bar (solid gold when it is your pick).
 
 ## Do's and Don'ts
 
