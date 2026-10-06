@@ -324,6 +324,88 @@ async function liveCup(lg) {
   }
   return { rounds, updated: new Date().toISOString() };
 }
+// ---------- one match in detail (the match centre): score, timeline, line-ups and team stats from ESPN's summary feed.
+// ESPN has no xG or player ratings, so both are estimated here from the match stats and flagged as estimates.
+const STAT_KEYS = ['possessionPct', 'totalShots', 'shotsOnTarget', 'blockedShots', 'wonCorners', 'offsides', 'foulsCommitted', 'yellowCards', 'redCards',
+  'saves', 'accuratePasses', 'totalPasses', 'passPct', 'accurateCrosses', 'totalCrosses', 'accurateLongBalls', 'totalLongBalls', 'effectiveTackles', 'totalTackles',
+  'interceptions', 'effectiveClearance', 'totalClearance', 'penaltyKickGoals', 'penaltyKickShots'];
+function estXG(st) {
+  const shots = st.totalShots, on = st.shotsOnTarget;
+  if (shots == null || on == null) return null;
+  const pk = st.penaltyKickShots || 0, blocked = st.blockedShots || 0, off = Math.max(0, shots - on - blocked);
+  return Math.round((0.76 * pk + 0.3 * Math.max(0, on - pk) + 0.07 * off + 0.04 * blocked) * 100) / 100;
+}
+function ratePlayer(p, side) { // a simple 0-10 match rating from the box score (our own estimate, not an official rating)
+  if (!p.starter && !p.subIn) return null;
+  const s = p.st, w = p.starter ? 1 : 0.6, def = p.pos === 'GK' || p.pos === 'DEF';
+  let r = 6.2 + w * (side.result * 0.35);
+  r += (s.g || 0) * (p.pos === 'FWD' ? 0.95 : 1.15) + (s.a || 0) * 0.7 + (s.sot || 0) * 0.22 + Math.max(0, (s.sh || 0) - (s.sot || 0)) * 0.05;
+  r += (s.fs || 0) * 0.05 - (s.fc || 0) * 0.06 - (s.off || 0) * 0.04 - (s.yc || 0) * 0.3 - (s.rc || 0) * 1.5 - (s.og || 0) * 1.0;
+  if (p.pos === 'GK') r += (s.sv || 0) * 0.3 - side.conceded * 0.3 + (side.conceded === 0 ? 0.7 : 0);
+  else if (def) r += -side.conceded * 0.15 + (side.conceded === 0 && p.starter ? 0.5 : 0);
+  return Math.round(Math.min(10, Math.max(3, r)) * 10) / 10;
+}
+const LINE = p => { const a = String(p || '').toUpperCase().replace(/-[LRC]$/, '');
+  if (!a || a === 'SUB') return ''; if (/^G/.test(a)) return 'GK'; if (/WB$/.test(a)) return 'DEF';
+  if (/^(DM|CDM|CM|M|RM|LM|AM|CAM|LAM|RAM)$/.test(a)) return 'MID'; if (/^(CD|CB|RB|LB|D|SW)$/.test(a)) return 'DEF';
+  if (/^(F|CF|ST|S|RW|LW|RF|LF|W)$/.test(a)) return 'FWD'; return ''; };
+async function liveMatch(lg, id) {
+  const d = await getJSON(`${espnBase(lg)}/summary?event=${id}`, 120);
+  const c = d?.header?.competitions?.[0];
+  if (!c || !Array.isArray(c.competitors)) throw new Error('no match');
+  const st = c.status?.type || {};
+  const box = new Map((d?.boxscore?.teams || []).map(t => [String(t.team?.id || ''), statMap(t.statistics)]));
+  const ros = new Map((d?.rosters || []).map(r => [String(r.team?.id || ''), r]));
+  const evs = Array.isArray(d?.keyEvents) ? d.keyEvents : [];
+  const side = x => {
+    const tid = String(x.team?.id || x.id || '').replace(/\D/g, ''), bs = box.get(tid) || {}, stats = {};
+    for (const k of STAT_KEYS) if (bs[k] != null) stats[k] = bs[k];
+    const col = c => /^[0-9a-f]{6}$/i.test(String(c || '')) ? '#' + c : '';
+    return { id: tid, name: str(x.team?.displayName || x.team?.name, 50), short: str(x.team?.abbreviation, 5), color: col(x.team?.color), alt: col(x.team?.alternateColor),
+      score: n0(x.score && typeof x.score === 'object' ? (x.score.value ?? x.score.displayValue) : x.score), pens: n0(x.shootoutScore), win: x.winner === true,
+      stats, xg: estXG(stats), formation: str(ros.get(tid)?.formation, 12), players: [] };
+  };
+  const hc = c.competitors.find(x => x.homeAway === 'home') || c.competitors[0], ac = c.competitors.find(x => x.homeAway === 'away') || c.competitors[1];
+  const home = side(hc), away = side(ac);
+  // timeline
+  const kind = e => { const t = `${e.type?.text || ''} ${e.type?.type || ''}`.toLowerCase();
+    if (e.scoringPlay || /goal|penalty - scored/.test(t) && !/disallowed|missed|saved/.test(t)) return 'goal';
+    if (/red card|second yellow/.test(t)) return 'red'; if (/yellow/.test(t)) return 'yellow'; if (/substitution/.test(t)) return 'sub'; return ''; };
+  const events = evs.map(e => {
+    const k = kind(e); if (!k) return null;
+    const ps = (e.participants || []).map(x => x?.athlete || x).filter(Boolean), txt = String(e.text || '');
+    let name = str(ps[0]?.displayName, 40), other = str(ps[1]?.displayName, 40);
+    if (k === 'sub' && !other) { const m = txt.match(/\.\s*([^.]+?) replaces ([^.]+?)\.?$/i); if (m) { name = str(m[1], 40); other = str(m[2], 40); } }
+    if (k === 'goal' && !other) { const m = txt.match(/Assisted by ([^.]+?)(?: with|\.|$)/i); if (m) other = str(m[1], 40); }
+    const t = `${e.type?.text || ''}`;
+    return { k, min: str(e.clock?.displayValue, 8), team: String(e.team?.id || ''), name, other, pid: String(ps[0]?.id || ''), pid2: String(ps[1]?.id || ''),
+      pen: /penalty/i.test(t) || /penalty/i.test(txt) && k === 'goal', og: /own goal/i.test(t) };
+  }).filter(Boolean);
+  // line-ups with simple ratings
+  for (const s of [home, away]) {
+    const r = ros.get(s.id), other = s === home ? away : home;
+    s.result = s.score == null || other.score == null ? 0 : Math.sign(s.score - other.score);
+    s.conceded = other.score ?? 0;
+    for (const x of (r?.roster || []).slice(0, 30)) {
+      const a = x.athlete || {}, sm = statMap(x.stats), g = k => sm[k] ?? null, abbr = str(x.position?.abbreviation, 6);
+      const pid = String(a.id || ''), subOn = events.find(e => e.k === 'sub' && e.team === s.id && (e.pid === pid || e.name === a.displayName));
+      const subOff = events.find(e => e.k === 'sub' && e.team === s.id && (e.pid2 === pid || e.other === a.displayName));
+      const p = { pid, name: str(a.displayName, 40), short: str(a.shortName || a.lastName || a.displayName, 24), no: n0(x.jersey), abbr, pos: LINE(abbr) || POS(x.position),
+        starter: x.starter === true, place: n0(x.formationPlace), subIn: x.subbedIn === true || (!x.starter && !!subOn), subOut: x.subbedOut === true || !!subOff,
+        inMin: !x.starter && subOn ? subOn.min : '', outMin: subOff ? subOff.min : '',
+        st: { g: g('totalGoals'), a: g('goalAssists'), sh: g('totalShots'), sot: g('shotsOnTarget'), fc: g('foulsCommitted'), fs: g('foulsSuffered'), yc: g('yellowCards'),
+          rc: g('redCards'), og: g('ownGoals'), sv: g('saves'), gc: g('goalsConceded'), off: g('offsides') } };
+      p.rating = st.completed || st.state === 'in' ? ratePlayer(p, s) : null;
+      s.players.push(p);
+    }
+    delete s.result; delete s.conceded;
+  }
+  const gi = d?.gameInfo || {};
+  return { id: String(id), date: String(c.date || d?.header?.date || ''), done: !!st.completed, state: str(st.state, 10), detail: str(st.shortDetail || st.detail, 24),
+    comp: str(d?.header?.league?.name || '', 50), venue: str(gi.venue?.fullName, 60), city: str(gi.venue?.address?.city, 40), attendance: n0(gi.attendance),
+    home, away, events, updated: new Date().toISOString() };
+}
+
 function liveJson(status, obj) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': status === 200 ? 'private, max-age=300' : 'no-store', 'X-Content-Type-Options': 'nosniff' } });
 }
@@ -378,6 +460,11 @@ async function handle(request, env) {
       if (url.pathname === '/api/live/table') return liveJson(200, await liveTable(lg));
       if (url.pathname === '/api/live/cup') return lg === 'ucl' || lg === 'uel' ? liveJson(200, await liveCup(lg)) : liveJson(400, { error: 'bad_request' });
       if (url.pathname === '/api/live/players') return DOMESTIC.has(lg) ? liveJson(200, await livePlayers(lg)) : liveJson(400, { error: 'bad_request' });
+      if (url.pathname === '/api/live/match') {
+        const ev = url.searchParams.get('id') || '';
+        if (!/^\d{1,12}$/.test(ev)) return liveJson(400, { error: 'bad_request' });
+        return liveJson(200, await liveMatch(lg, ev));
+      }
       if (url.pathname !== '/api/live/club' || !DOMESTIC.has(lg)) return liveJson(404, { error: 'not_found' });
       const id = url.searchParams.get('id') || '';
       if (!/^\d{1,7}$/.test(id)) return liveJson(400, { error: 'bad_request' });

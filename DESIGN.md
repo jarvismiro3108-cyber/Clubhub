@@ -305,6 +305,15 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   the club's colours) on a poster-colour panel, a coloured position dot (GK amber, DEF blue, MID green, FWD coral), the
   name in Big Shoulders capitals and a three-number stats row split by thin lines (zeros muted). Players without an
   appearance have a greyed shirt panel; four or more goal contributions earn a tilted yellow "On fire" sticker.
+- **Kit wall (home club list):** every club is a tall tile in its own poster colour (`posterPalette()`) with the darker
+  curve, its big shirt hanging at the top and its name in Big Shoulders capitals with the coach underneath; two columns
+  on phones. Replaces the old identical grey list cards.
+- **Match centre:** a poster scoreboard (both shirts, giant score, goalscorers, venue) in the page colours of the club
+  you came from, then pill tabs: Facts (player of the match tile, then a two-sided timeline with minutes down the
+  middle), Line-ups (both teams on one tall pitch, round number shirts in team colours, rating badges: 8+ blue
+  #1a64d8, 7+ green #17803f, 6+ orange #a8560f, under 6 red #c0352c, player of the match ringed in gold; benches
+  below) and Stats (possession split bar, then FotMob-style rows: values in pills, the better side's pill filled with
+  its team colour, a two-colour bar underneath). xG and ratings are always labelled as Club Hub estimates.
 - **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tinted tiles directly under the poster, each with its own small
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
 - **Scoreboard:** navy block (the poster colour on club pages), team names either side, a dark inset score box, used for every match result.
