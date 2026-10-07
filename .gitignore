@@ -2,3 +2,13 @@ __pycache__/
 node_modules/
 .wrangler/
 .DS_Store
+
+# Never commit secrets (keys/passwords live as Cloudflare secrets, not in the repo)
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+*.secret
+secrets.*
