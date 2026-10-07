@@ -357,8 +357,13 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   #1a64d8, 7+ green #17803f, 6+ orange #a8560f, under 6 red #c0352c, player of the match ringed in gold; benches
   below) and Stats (possession split bar, then FotMob-style rows: values in pills, the better side's pill filled with
   its team colour, a two-colour bar underneath). xG and ratings are always labelled as Club Hub estimates.
-- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tinted tiles directly under the poster, each with its own small
-  drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones.
+- **Feature tiles:** Europe, Bracket Simulator and Fantasy Draft are tiles directly under the poster, each with its own small
+  drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones. They sit in the home colour
+  world but each carries a per-competition accent (Champions blue, Bracket violet, Fantasy green) on its corner glow,
+  border and icon panel, so the three read as distinct; the icon lifts and tilts on hover.
+- **Reveal on scroll:** home sections (search, My Club, Matchday, the feature tiles, the league heading and the club grid)
+  ease up and fade in the first time they come near the viewport, once per load. A scroll/resize check guarantees nothing
+  is ever left hidden, and `prefers-reduced-motion` shows everything immediately.
 - **Scoreboard:** navy block (the poster colour on club pages), team names either side, a dark inset score box, used for every match result.
 - **Knockout tie card:** glassy card on the night panel, club-colour stripe per row, winner row tinted gold with a gold score.
 - **Pitch and shirts:** striped grass with circular two-colour shirts, name tags and a dugout bar for subs.

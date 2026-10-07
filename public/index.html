@@ -145,16 +145,22 @@ body{--p-bg:#1d2a57;--p-deep:#0f1733;--p-ink:#fff;--p-acc:#ffd200}
 @media (prefers-reduced-motion:reduce){.p-shirt,.p-shirt.in,.p-text .p-a,.p-text .p-b,.p-text .p-c,.p-kicker{animation:none}.p-shirt.out{transition:none}.poster,.p-curve,.p-swap{transition:none}}
 .plays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .plays{margin:0 0 30px}
-.play{display:grid;grid-template-columns:56px minmax(0,1fr) 16px;gap:14px;align-items:center;padding:12px 14px 12px 12px;border-radius:14px;color:#fff;text-decoration:none;
-  background:radial-gradient(90% 140% at 0% 0%,#1d3279,transparent 60%),linear-gradient(180deg,#121d47,#0a1230);border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 24px -14px rgba(10,20,50,.6);transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s,background-color .2s}
-.play:hover{transform:translateY(-2px);border-color:rgba(255,210,0,.55)}
+.play{--pc:#3f6fe6;display:grid;grid-template-columns:56px minmax(0,1fr) 16px;gap:14px;align-items:center;padding:12px 14px 12px 12px;border-radius:14px;color:#fff;text-decoration:none;
+  background:radial-gradient(100% 150% at 0% 0%,color-mix(in srgb,var(--pc) 44%,#0c1430),transparent 62%),linear-gradient(180deg,#121d47,#0a1230);border:1px solid color-mix(in srgb,var(--pc) 24%,transparent);box-shadow:0 10px 24px -14px rgba(10,20,50,.6);transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s,box-shadow .2s}
+.play:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--pc) 72%,transparent);box-shadow:0 16px 30px -16px color-mix(in srgb,var(--pc) 70%,rgba(10,20,50,.6))}
 .play:active{transform:scale(.98)}
-.play .pic{width:56px;height:56px;border-radius:11px;display:grid;place-items:center;background:radial-gradient(80% 80% at 50% 0%,#1d3279,#0b1435);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.play .pic{width:56px;height:56px;border-radius:11px;display:grid;place-items:center;background:radial-gradient(85% 85% at 50% 0%,color-mix(in srgb,var(--pc) 58%,#0b1435),#0b1435);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc) 42%,transparent);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.play:hover .pic{transform:scale(1.07) rotate(-4deg)}
 .play .pic svg{width:40px;height:40px}
+@media (prefers-reduced-motion:reduce){.play:hover .pic{transform:none}}
 .play b{display:block;font-family:var(--display);font-weight:800;font-size:24px;text-transform:uppercase;letter-spacing:.03em;line-height:1.05}
 .play small{display:block;font-size:13px;line-height:1.35;color:color-mix(in srgb,#fff 72%,transparent);margin-top:3px}
 .play .chev{width:16px;height:16px;color:rgba(255,255,255,.5);transition:transform .2s,color .2s}
-.play:hover .chev{transform:translateX(3px);color:#ffd200}
+.play:hover .chev{transform:translateX(3px);color:color-mix(in srgb,var(--pc) 70%,#fff)}
+/* reveal on scroll: sections rise in as you move down the page */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .62s cubic-bezier(.2,.8,.2,1),transform .62s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}}
 @media (max-width:820px){.plays{grid-template-columns:1fr;gap:8px}.play{grid-template-columns:48px minmax(0,1fr) 16px;padding:10px 12px 10px 10px}.play .pic{width:48px;height:48px}.play .pic svg{width:34px;height:34px}.play b{font-size:19px}}
 .leagues{display:flex;gap:6px;flex-wrap:wrap;margin-top:22px}
 @media (max-width:700px){.leagues{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;scroll-padding-inline:16px;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;
@@ -210,9 +216,9 @@ body.on-home{background:var(--p-deep);transition:background-color .5s cubic-bezi
 #home main .club.ready:hover{border-color:color-mix(in srgb,#fff 55%,var(--p-deep));box-shadow:0 12px 26px -10px rgba(0,0,0,.55)}
 #home main .club .kit{--shirt-line:rgba(255,255,255,.5);background:color-mix(in srgb,#000 22%,var(--p-deep))}
 #home main .club .chev{color:var(--muted)}
-#home main .play{background:color-mix(in srgb,#fff 9%,var(--p-deep));border-color:var(--line);box-shadow:0 12px 26px -16px rgba(0,0,0,.6)}
-#home main .play:hover{border-color:var(--p-acc)}
-#home main .play .pic{background:color-mix(in srgb,#000 28%,var(--p-deep));box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+#home main .play{--pc:#3f6fe6;background:radial-gradient(120% 150% at 0% 0%,color-mix(in srgb,var(--pc) 34%,var(--p-deep)),transparent 58%),color-mix(in srgb,#fff 8%,var(--p-deep));border:1px solid color-mix(in srgb,var(--pc) 32%,var(--line));box-shadow:0 12px 26px -16px rgba(0,0,0,.6)}
+#home main .play:hover{border-color:color-mix(in srgb,var(--pc) 78%,transparent);box-shadow:0 16px 30px -16px color-mix(in srgb,var(--pc) 52%,rgba(0,0,0,.6))}
+#home main .play .pic{background:radial-gradient(85% 85% at 50% 0%,color-mix(in srgb,var(--pc) 58%,#0b1435),color-mix(in srgb,#000 26%,var(--p-deep)));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc) 46%,transparent)}
 #home main .play small{color:var(--fg2)}
 #home main .dot{background:#fff}
 #home main .ltable td.pts,#home main .ltable td.team a{color:#fff}
@@ -1691,6 +1697,7 @@ $('#pSwap').onclick=()=>{const b=$('#pSwap');b.classList.add('spin');setTimeout(
   renderPoster(LEAGUES.find(l=>l.id===curLeague)||LEAGUES[0],true)};
 $('#pBrowse').onclick=e=>{e.preventDefault();$('#home .homehead').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})};
 const PLAY_TEXT={europe:'Champions League and Europa League tables and the knockout bracket',bracket:'Pick any 16 clubs and play out a knockout to the final',fantasy:'Draft a Süper Lig team, then play a full season of matches'};
+const PLAY_COL={europe:'#3f6fe6',bracket:'#8b5cf6',fantasy:'#22a55a'};
 let C=null, CID=null; // current club
 
 function applyColors(c){
@@ -1724,7 +1731,7 @@ function showHome(){
   $('#home').hidden=false;$('#clubPage').hidden=true;$('#xPage').hidden=true;$('#matchPage').hidden=true;$('#playerPage').hidden=true;closePicker(true);document.body.classList.remove('on-club','on-x');document.body.classList.add('on-home');
   const sn=$('#siteNav');sn.innerHTML='';
   Object.entries(XPAGES).forEach(([k,[t]])=>{const pic=el('span',{class:'pic','aria-hidden':'true'});pic.innerHTML=PLAY_ART[k];
-    sn.append(el('a',{class:'play',href:'#'+k},pic,el('span',{},el('b',{text:t}),el('small',{text:PLAY_TEXT[k]})),chevSvg()))});
+    sn.append(el('a',{class:'play',href:'#'+k,style:`--pc:${PLAY_COL[k]||'#3f6fe6'}`},pic,el('span',{},el('b',{text:t}),el('small',{text:PLAY_TEXT[k]})),chevSvg()))});
   const bar=$('#leagueBar');bar.innerHTML='';
   LEAGUES.forEach(L=>bar.append(el('button',{class:'lg','aria-pressed':String(L.id===curLeague),onclick:()=>{curLeague=L.id;store.set('league',L.id);showHome()}},L.name)));
   const on=bar.querySelector('[aria-pressed="true"]');if(on&&bar.scrollWidth>bar.clientWidth)bar.scrollLeft=Math.max(0,on.offsetLeft-bar.offsetLeft-16);
@@ -1747,7 +1754,17 @@ function showHome(){
   document.querySelectorAll('#home .seg button').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.view===view));b.onclick=()=>{store.set('homeView',b.dataset.view);showHome()}});
   g.hidden=view!=='clubs';$('#homeTable').hidden=view!=='table';
   if(view==='table')renderHomeTable(L);
+  reveal($('.srch-bar'),$('#myClub'),$('#matchday'),$('#siteNav'),$('#home main .homehead'),view==='table'?$('#homeTable'):g);
 }
+// reveal-on-scroll: sections ease up the first time they come near the viewport; a scroll/resize
+// check guarantees nothing is ever left stuck invisible (even on a fast fling past it)
+function reveal(...els){
+  const list=els.filter(e=>e&&!e.classList.contains('in'));if(!list.length)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){list.forEach(e=>e.classList.add('in'));return}
+  list.forEach((e,i)=>{e.classList.add('reveal');e.style.transitionDelay=(Math.min(i,5)*55)+'ms'});
+  const check=()=>{for(let i=list.length-1;i>=0;i--){if(list[i].getBoundingClientRect().top<innerHeight*.92){list[i].classList.add('in');list.splice(i,1)}}
+    if(!list.length){removeEventListener('scroll',check);removeEventListener('resize',check)}};
+  addEventListener('scroll',check,{passive:true});addEventListener('resize',check);requestAnimationFrame(check)}
 
 // =====================================================================
 // CLUB PAGE
