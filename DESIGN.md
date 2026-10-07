@@ -305,14 +305,24 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   the club's colours) on a poster-colour panel, a coloured position dot (GK amber, DEF blue, MID green, FWD coral), the
   name in Big Shoulders capitals and a three-number stats row split by thin lines (zeros muted). Players without an
   appearance have a greyed shirt panel; four or more goal contributions earn a tilted yellow "On fire" sticker.
+- **First-visit welcome:** a full-screen night panel (navy-to-deep gradient) shown only on a first visit with no
+  favourite club: gold "Welcome to" kicker, giant Big Shoulders "CLUB HUB", one line of what the site is, a gold primary
+  button ("Choose my club", 3D bottom edge) and a ghost "Just having a look", then three feature rows (live scores,
+  Squad Picker & Predict, History & records) each with a gold line-icon. Dismissed either way it never shows again.
 - **My club card (home):** a wide poster tile in the favourite club's colours (shirt on the left, giant name, "Change"
-  link) with three dark inset tiles: Table, Last match (W/D/L badge + score) and Next match; links open the season tab
-  or the match centre. Without a favourite it is a dashed "Choose your club" button. Club pages have a small star pill in
-  the header (white when it is your club).
-- **Matchday list (home):** day pills (Yesterday to five days ahead, same style as the league pills), then one card per
-  competition: a header button (name, red live dot, match count, chevron; folded unless live, your league or one of
-  the first two) and rows of time/status, home name, score box and away name. Live rows show a red dot with the
-  minute and a red ring around the score.
+  and "Share" links) with three dark inset tiles: Table, Last match (W/D/L badge + score) and Next match; links open the
+  season tab or the match centre. A full-width **storyline chip** (gold pennant icon) sits under the tiles with one
+  sentence a fan would say, read from the data — a winning/unbeaten/winless run, top of the league, a European place, a
+  relegation scrap, or the last result. "Share" draws a poster share card. Without a favourite it is a dashed "Choose
+  your club" button. Club pages have a small star pill in the header (white when it is your club).
+- **Storyline chip:** a small inset row (spark/pennant icon in the accent colour, one sentence) that turns numbers into
+  context. Used under the My club card and on the match preview's prediction card (recent head-to-head record, or the
+  table gap between the sides). Only shown when the data says something worth saying.
+- **Matchday list (home):** a round refresh button (kept clear of the fixed menu button on phones) sits by the heading;
+  day pills (Yesterday to five days ahead, same style as the league pills), then one card per competition: a header
+  button (name, red live dot, match count, chevron; folded unless live, your league or one of the first two) and rows of
+  time/status, home name, score box and away name. Live rows show a red dot with the minute and a red ring around the
+  score, and a score that changes on refresh bumps up and flashes gold.
 - **Pitch shirts (Squad Picker, Predict, Fantasy):** round numbered shirts split in the club's first colour and a
   slightly darker half, ringed in the second colour, number in black or white for contrast (same family as the match
   centre's line-up chips).

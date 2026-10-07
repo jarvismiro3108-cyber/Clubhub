@@ -854,7 +854,7 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 .mc-star{font-size:28px;line-height:1;color:var(--p-acc)}
 .mc-pick b{display:block;font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em;line-height:1}
 .mc-pick small{display:block;font-size:13.5px;margin-top:3px;color:var(--fg2)}
-.mc-card{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"shirt head" "shirt tiles";column-gap:22px;row-gap:12px;align-items:center;
+.mc-card{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"shirt head" "shirt tiles" "story story";column-gap:22px;row-gap:12px;align-items:center;
   padding:18px 20px;border-radius:20px;background:var(--k-bg);color:#fff;box-shadow:0 14px 30px -18px rgba(0,0,0,.7)}
 .mc-card::before{content:"";position:absolute;z-index:-1;width:120%;aspect-ratio:1;border-radius:50%;left:30%;top:40%;background:color-mix(in srgb,var(--k-deep) 65%,var(--k-bg))}
 .mc-shirt{grid-area:shirt;width:clamp(90px,14vw,150px);transform:rotate(-5deg);filter:drop-shadow(0 12px 14px rgba(0,0,0,.35))}.mc-shirt svg{display:block;width:100%;height:auto}
@@ -873,8 +873,51 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 .mc-res.fW{background:var(--res-w)}.mc-res.fD{background:var(--res-d)}.mc-res.fL{background:var(--res-l)}
 .mc-wait{margin:0;font-size:14px;color:var(--fg2)}
 .mc-card .mc-wait{color:#fff}
-@media (max-width:600px){.mc-card{grid-template-columns:84px minmax(0,1fr);grid-template-areas:"shirt head" "tiles tiles";padding:16px;column-gap:14px}.mc-shirt{width:84px}
+@media (max-width:600px){.mc-card{grid-template-columns:84px minmax(0,1fr);grid-template-areas:"shirt head" "tiles tiles" "story story";padding:16px;column-gap:14px}.mc-shirt{width:84px}
   .mc-tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.mc-tile{padding:8px 9px}.mc-tile .k{font-size:13px}.mc-tile b{font-size:19px}.mc-tile small{font-size:11.5px;white-space:normal}.mc-res{width:20px;height:20px;font-size:11.5px}}
+/* first-visit welcome: "who do you support?" */
+.welcome{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:28px 22px;background:linear-gradient(180deg,#0c1640,#050a1e);color:#fff;overflow:auto;animation:wFade .35s ease}
+@keyframes wFade{from{opacity:0}to{opacity:1}}
+.welcome-in{width:100%;max-width:440px;margin:auto;text-align:center}
+.welcome .wk{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.09em;text-transform:uppercase;color:#ffd200}
+.welcome h1{font-family:var(--display);font-weight:900;font-size:clamp(50px,15vw,88px);line-height:.84;margin:8px 0 14px;text-transform:uppercase}
+.welcome .wlede{color:color-mix(in srgb,#fff 82%,#0c1640);font-size:15.5px;line-height:1.5;margin:0 auto 22px;max-width:34ch}
+.wbtns{display:grid;gap:10px}
+.wbtn{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:15px 18px;font-family:var(--display);font-weight:900;font-size:23px;letter-spacing:.02em;text-transform:uppercase;transition:transform .14s}
+.wbtn.primary{background:#ffd200;color:#141414;box-shadow:0 5px 0 #b38d00}
+.wbtn.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #b38d00}
+.wbtn.ghost{background:color-mix(in srgb,#fff 9%,transparent);color:#fff;border:1.5px solid color-mix(in srgb,#fff 32%,transparent);font-size:15px;letter-spacing:.03em;padding:12px 18px}
+.wfeat{display:grid;gap:10px;margin:26px 0 0;text-align:left}
+.wfeat>div{display:flex;gap:13px;align-items:center;font-size:13.5px;line-height:1.35;color:color-mix(in srgb,#fff 84%,#0c1640)}
+.wfeat b{color:#fff;font-weight:700}
+.wfeat i{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:color-mix(in srgb,#fff 9%,transparent)}
+.wfeat svg{width:22px;height:22px}
+@media (prefers-reduced-motion:reduce){.welcome{animation:none}.wbtn,.wbtn.primary:active{transition:none;transform:none}}
+/* storyline chip: a sentence from the numbers */
+.story{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-radius:12px;background:color-mix(in srgb,#000 22%,var(--k-bg,var(--surface)));color:var(--fg);font-size:13.5px;line-height:1.42}
+body:is(.on-club,.on-x) .story{color:#fff}
+.story svg{flex:none;width:16px;height:17px;margin-top:1px;color:var(--k-acc,#ffd200)}
+.mc-card .story{grid-area:story;color:#fff;background:color-mix(in srgb,#000 30%,var(--k-bg))}
+.mc-card .story svg{color:var(--k-acc,#ffd200)}
+/* press feedback on non-button tap targets */
+.kw,.mc-tile,.md-row,.play,.srch-bar{transition:transform .13s cubic-bezier(.2,.8,.2,1),background-color .15s,border-color .15s,box-shadow .2s}
+.kw:active,.play:active,.srch-bar:active{transform:scale(.985)}
+.mc-tile:active,.md-row:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){.kw:active,.mc-tile:active,.md-row:active,.play:active,.srch-bar:active{transform:none}}
+/* live score bump when it changes on refresh */
+@keyframes scoreBump{0%{transform:scale(1)}28%{transform:scale(1.25)}100%{transform:scale(1)}}
+.md-sc.bump{animation:scoreBump .75s cubic-bezier(.2,.8,.2,1);box-shadow:inset 0 0 0 2px #ffd200}
+@media (prefers-reduced-motion:reduce){.md-sc.bump{animation:none}}
+/* share + refresh controls */
+.mc-share{background:none;border:0;color:#fff;font:inherit;font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px 0}
+.md-refresh{margin-left:auto;display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg2);cursor:pointer;flex:none;align-self:center}
+.md-refresh:hover{color:var(--fg)}
+.md-refresh svg{width:17px;height:17px}
+.md-refresh.spin svg{animation:spin .6s ease}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.md-refresh.spin svg{animation:none}}
+/* keep the refresh clear of the fixed menu button on phones */
+@media (max-width:620px){#matchday .homehead{padding-right:52px}}
 /* home: matchday */
 #matchday{margin-bottom:30px}
 .md-days{margin:0 0 14px}
@@ -1547,12 +1590,14 @@ function renderMyClub(){
     el('span',{},el('b',{text:'Choose your club'}),el('small',{text:'Its next match, latest result and table position, right here every time.'}))));return}
   const c=CLUBS[id],pal=posterPalette(c),L=LEAGUES.find(l=>l.id===c.league);
   const tile=(k,v,sub,href)=>el(href?'a':'div',{class:'mc-tile',...(href?{href}:{})},el('span',{class:'k',text:k}),el('b',{},...[].concat(v)),sub?el('small',{text:sub}):null);
-  const info=el('div',{class:'mc-tiles'},el('p',{class:'mc-wait',text:'Loading the latest…'}));
-  box.replaceChildren(el('div',{class:'mc-card',style:`--k-bg:${pal.bg};--k-deep:${pal.deep};--k-acc:${pal.acc}`},
+  const info=el('div',{class:'mc-tiles'},el('p',{class:'mc-wait',text:'Checking the latest scores…'}));
+  const shareBtn=el('button',{class:'mc-share',type:'button',text:'Share',hidden:true});
+  const card=el('div',{class:'mc-card',style:`--k-bg:${pal.bg};--k-deep:${pal.deep};--k-acc:${pal.acc}`},
     el('span',{class:'mc-shirt','aria-hidden':'true'},bigShirtSvg(c)),
-    el('div',{class:'mc-head'},el('span',{class:'k',text:'My club'}),el('a',{class:'mc-name',href:'#'+id,text:c.name}),el('button',{class:'mc-change',type:'button',text:'Change',onclick:pick})),info));
+    el('div',{class:'mc-head'},el('span',{class:'k',text:'My club'}),el('a',{class:'mc-name',href:'#'+id,text:c.name}),el('button',{class:'mc-change',type:'button',text:'Change',onclick:pick}),shareBtn),info);
+  box.replaceChildren(card);
   liveTable(c.league).then(t=>{
-    const row=t.map.bySlug[id];if(!row){info.replaceChildren(el('p',{class:'mc-wait',text:'No live data for this club right now.'}));return}
+    const row=t.map.bySlug[id];if(!row){info.replaceChildren(el('p',{class:'mc-wait',text:'No live match data for them just now — check back on matchday.'}));return}
     const nm=s=>clubLabel(t.map.byId[s.id],s.name);
     info.replaceChildren(tile('Table',ordinal(row.pos),`${row.pts} pts from ${row.p} games`,'#'+id+'season'));
     return liveClubData(c.league,row.id).then(d=>{
@@ -1561,21 +1606,26 @@ function renderMyClub(){
         tiles.push(tile('Last match',[el('span',{class:'mc-res f'+r,text:r}),` ${us.score}–${them.score}`],`${home?'vs':'at'} ${nm(them)}, ${fmtDate(new Date(last.date))}`,/^\d+$/.test(last.id)?`#match-${c.league}-${last.id}`:null))}
       if(next){const home=next.home.id===row.id,them=home?next.away:next.home,d0=new Date(next.date);
         tiles.push(tile('Next match',nm(them),`${home?'Home':'Away'}, ${fmtDate(d0)}, ${d0.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`,/^\d+$/.test(next.id)?`#match-${c.league}-${next.id}`:null))}
+      else tiles.push(tile('Next match','—','No fixture scheduled yet'));
       info.replaceChildren(...tiles);
+      const st=clubStory(c,t,row,d);if(st)card.append(storyEl(st));
+      shareBtn.hidden=false;shareBtn.onclick=()=>shareClub(c,row,d);
     });
-  }).catch(()=>info.replaceChildren(el('p',{class:'mc-wait',text:'Live data is not available right now.'})));
+  }).catch(()=>info.replaceChildren(el('p',{class:'mc-wait',text:"Couldn't reach the live scores — try again in a bit."})));
 }
 // ----- Matchday: every match on a day in the six leagues and Europe; live scores refresh every minute
-let mdOff=0,mdTimer=null,mdReq=0;
+let mdOff=0,mdTimer=null,mdReq=0,mdPrev={};
 const ymdLocal=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
 const MD_ORDER=['tur','eng','esp','ita','ger','fra','ucl','uel'];
 const lgName=lg=>(LEAGUES.find(l=>l.id===lg)||{}).name||EURO[lg]||lg;
 function renderMatchday(){
-  const box=$('#matchday');if(!box)return;clearTimeout(mdTimer);
+  const box=$('#matchday');if(!box)return;clearTimeout(mdTimer);mdPrev={};
   const days=[-1,0,1,2,3,4,5].map(o=>{const d=new Date();d.setDate(d.getDate()+o);
     return el('button',{class:'lg','aria-pressed':String(o===mdOff),type:'button',onclick:()=>{mdOff=o;renderMatchday()}},o===0?'Today':o===-1?'Yesterday':o===1?'Tomorrow':d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}))});
-  const list=el('div',{class:'md-list'},el('p',{class:'mc-wait',text:'Loading matches…'}));
-  box.replaceChildren(el('div',{class:'homehead'},el('div',{},el('h2',{text:'Matchday'}),el('span',{text:'The six leagues and Europe. Tap a match for the details.'}))),
+  const list=el('div',{class:'md-list'},el('p',{class:'mc-wait',text:'Loading the fixtures…'}));
+  const refresh=el('button',{class:'md-refresh',type:'button','aria-label':'Refresh scores',title:'Refresh scores',onclick:()=>{refresh.classList.add('spin');setTimeout(()=>refresh.classList.remove('spin'),650);loadMatchday(list)}});
+  refresh.innerHTML=REFRESH_SVG;
+  box.replaceChildren(el('div',{class:'homehead'},el('div',{},el('h2',{text:'Matchday'}),el('span',{text:'The six leagues and Europe. Tap a match for the details.'})),refresh),
     el('div',{class:'leagues md-days',role:'group','aria-label':'Day'},...days),list);
   const bar=box.querySelector('.md-days'),on=bar.querySelector('[aria-pressed="true"]');if(on&&bar.scrollWidth>bar.clientWidth)bar.scrollLeft=Math.max(0,on.offsetLeft-bar.offsetLeft-16);
   loadMatchday(list);
@@ -1588,17 +1638,18 @@ function loadMatchday(list){
       if($('#home').hidden||!document.contains(list))return;
       if(document.visibilityState!=='visible'){mdTimer=setTimeout(tick,15000);return}
       loadMatchday(list)},60000);
-  }).catch(()=>{if(my===mdReq)list.replaceChildren(el('p',{class:'mc-wait',text:'Matches could not be loaded right now. Try again in a minute.'}))});
+  }).catch(()=>{if(my===mdReq)list.replaceChildren(el('p',{class:'mc-wait',text:"Couldn't load the fixtures just now. Give it a minute and try again."}))});
 }
 function drawMatchday(list,d){
-  if(!d.leagues.length){list.replaceChildren(el('p',{class:'mc-wait',text:'No matches in the six leagues or Europe on this day.'}));return}
+  if(!d.leagues.length){list.replaceChildren(el('p',{class:'mc-wait',text:'Nothing on in the big leagues or Europe here. A quiet one.'}));return}
   const map=matchGlobal(d.leagues.flatMap(L=>L.events.flatMap(e=>[e.home,e.away])).filter((t,i,a)=>a.findIndex(x=>x.id===t.id)===i)),mine=myClub();
   const myLg=mine?CLUBS[mine].league:null,live=L=>L.events.some(e=>e.state==='in');
   const order=[...d.leagues].sort((a,b)=>(live(b)-live(a))||((b.lg===myLg)-(a.lg===myLg))||MD_ORDER.indexOf(a.lg)-MD_ORDER.indexOf(b.lg));
   const row=(L,e)=>{
     const st=e.state==='in'?el('span',{class:'md-st live'},el('i',{class:'live-dot','aria-hidden':'true'}),e.detail||'Live'):el('span',{class:'md-st',text:e.state==='post'?'FT':new Date(e.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})});
     const side=(t,cls)=>{const sid=map.byId[t.id],c=sid&&CLUBS[sid];return el('span',{class:'md-t '+cls+(sid&&sid===mine?' me':'')},mini(sid),el('b',{text:c?c.name:t.name}))};
-    const sc=e.state==='pre'?el('span',{class:'md-sc pre',text:'–'}):el('span',{class:'md-sc num',text:`${e.home.score??0} – ${e.away.score??0}`});
+    const cur=`${e.home.score??0}-${e.away.score??0}`,changed=e.state!=='pre'&&mdPrev[e.id]!==undefined&&mdPrev[e.id]!==cur;mdPrev[e.id]=cur;
+    const sc=e.state==='pre'?el('span',{class:'md-sc pre',text:'–'}):el('span',{class:'md-sc num'+(changed?' bump':''),text:`${e.home.score??0} – ${e.away.score??0}`});
     const label=`${(map.byId[e.home.id]&&CLUBS[map.byId[e.home.id]].name)||e.home.name} against ${(map.byId[e.away.id]&&CLUBS[map.byId[e.away.id]].name)||e.away.name}`;
     return el('a',{class:'md-row'+(e.state==='in'?' is-live':''),href:`#match-${L.lg}-${e.id}`,'aria-label':label},st,side(e.home,'h'),sc,side(e.away,'a'))};
   list.replaceChildren(...order.map((L,i)=>{ // live leagues, my league and the first two start open; the rest fold to one line
@@ -3397,7 +3448,10 @@ function matchPreview(d,H,A){
         el('span',{style:`flex:${o.w} 1 0;background:${H.col};color:${textOn(H.col)}`,text:r(o.w)+'%'}),el('span',{style:`flex:${o.d} 1 0;background:#5b6178;color:#fff`,text:r(o.d)+'%'}),el('span',{style:`flex:${o.l} 1 0;background:${A.col};color:${textOn(A.col)}`,text:r(o.l)+'%'})),
       el('div',{class:'pv-key'},el('span',{text:H.name+' win'}),el('span',{text:'Draw'}),el('span',{text:A.name+' win'})),
       el('p',{class:'lede',style:'margin-top:12px',text:`Most likely score ${o.best[0]}–${o.best[1]} (${r(o.best[2]*100)}%). Expected goals ${o.lf.toFixed(1)} to ${o.la.toFixed(1)}. Based on the last three seasons, league strength and home advantage.`}),
-      el('a',{class:'btn',href:'#'+H.sid+'match',style:'margin-top:4px;display:inline-block',text:'Play it out in Predict'})))}
+      (()=>{const s=previewStory(d,H,A);return s?el('div',{class:'story',style:'margin-top:12px'},sparkSvg(),el('span',{text:s})):null})(),
+      el('div',{style:'display:flex;gap:8px;flex-wrap:wrap;margin-top:12px'},
+        el('a',{class:'btn',href:'#'+H.sid+'match',text:'Play it out in Predict'}),
+        el('button',{class:'btn sm',type:'button',text:'Share this',onclick:()=>sharePreview(d,H,A,o)})))) }
   if(tb){const rw=id=>tb.rows.find(x=>x.id===id),side=(T,t)=>{const x=rw(t.id);return x?el('div',{class:'pv-team'},el('b',{text:T.name}),
       el('div',{class:'pv-pos'},el('span',{class:'num',text:ordinal(x.pos)}),el('small',{text:`${x.pts} pts from ${x.p}`})),x.form?formEl(x.form):null):null};
     const a=side(H,d.home),b=side(A,d.away);if(a||b)out.push(el('div',{class:'card'},el('h2',{text:'Form and Table'}),el('div',{class:'pv-teams'},a,b),el('p',{class:'note',text:'Form: last five league matches, newest on the right.'})))}
@@ -3443,8 +3497,85 @@ document.addEventListener('click',e=>{if(e.target.closest('#menu [data-search]')
 window.addEventListener('hashchange',()=>closeMenu(true));
 
 
+// =====================================================================
+// STORYLINES — turn the numbers into a sentence a fan would say
+// =====================================================================
+const sparkSvg=()=>{const w=el('span');w.innerHTML='<svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18V3h9l-2.4 3.1L14 9.4H5"/></svg>';return w.firstChild};
+const storyEl=txt=>el('div',{class:'story'},sparkSvg(),el('span',{text:txt}));
+const formRun=(f,test)=>{let n=0;for(const ch of String(f||'')){if(test(ch))n++;else break}return n};
+function clubStory(c,t,row,data){
+  if(!row)return '';
+  const f=String(row.form||''),wins=formRun(f,ch=>ch==='W'),losses=formRun(f,ch=>ch==='L'),unb=formRun(f,ch=>ch!=='L'),winless=formRun(f,ch=>ch!=='W'),N=(t&&t.rows.length)||0,lg=lgName(c.league);
+  if(wins>=3)return `On a ${wins}-game winning run — up to ${ordinal(row.pos)} in ${lg}.`;
+  if(losses>=3)return `${losses} defeats on the bounce. ${ordinal(row.pos)} in the table now.`;
+  if(unb>=5&&f.includes('W'))return `Unbeaten in their last ${unb} league games.`;
+  if(winless>=4&&f.includes('L'))return `Still searching for a win — ${winless} without one.`;
+  if(row.pos===1)return `Top of ${lg} after ${row.p} games.`;
+  if(row.pos<=4)return `${ordinal(row.pos)} in ${lg} — right in the European mix.`;
+  if(N&&row.pos>=N-2)return `${ordinal(row.pos)} of ${N}. It's a relegation fight.`;
+  const last=data&&(data.results||[])[0];
+  if(last){const home=last.home.id===row.id,us=home?last.home:last.away,th=home?last.away:last.home;
+    if(us.score>th.score)return `Coming off a ${us.score}–${th.score} win. ${ordinal(row.pos)} in ${lg}.`}
+  return '';
+}
+function previewStory(d,H,A){
+  const h2h=d.h2h||[],tot=h2h.length;
+  if(tot>=3){let hw=0,dw=0,aw=0;h2h.forEach(m=>{const w=m.hs>m.as?m.home:m.hs<m.as?m.away:null;if(!w)dw++;else if(w===d.home.id)hw++;else if(w===d.away.id)aw++});
+    if(hw>aw&&hw>=Math.ceil(tot*.6))return `${H.name} have had the upper hand lately — ${hw} wins in the last ${tot} meetings.`;
+    if(aw>hw&&aw>=Math.ceil(tot*.6))return `${A.name} have had the upper hand lately — ${aw} wins in the last ${tot} meetings.`;
+    if(hw===aw)return `Honours even in recent years: ${hw}–${dw}–${aw} across the last ${tot} meetings.`}
+  const tb=mCtx&&mCtx.tb;
+  if(tb){const hr=tb.rows.find(x=>x.id===d.home.id),ar=tb.rows.find(x=>x.id===d.away.id);
+    if(hr&&ar){const gap=Math.abs(hr.pos-ar.pos);
+      if(gap>=7){const up=hr.pos<ar.pos?H:A,dn=hr.pos<ar.pos?A:H;return `${gap} places split them — ${up.name} come in well above ${dn.name}.`}
+      return `Little between them on paper: ${ordinal(hr.pos)} against ${ordinal(ar.pos)}.`}}
+  return '';
+}
+// share cards from more places
+function shareClub(c,row,data){
+  const stats=[];if(row){stats.push([ordinal(row.pos),'In the table'],[row.pts,'Points']);
+    const last=data&&(data.results||[])[0];
+    if(last){const home=last.home.id===row.id,us=home?last.home:last.away,th=home?last.away:last.home;stats.push([`${us.score}–${th.score}`,'Last match'])}}
+  openShare({c,kicker:'My club',title:c.name,sub:row?`${ordinal(row.pos)} in ${lgName(c.league)}, ${row.pts} points`:'Following on Club Hub',
+    stats,shirts:[{c,name:c.name,num:'26'}],foot:'My club on Club Hub'},'My club');
+}
+function sharePreview(d,H,A,o){
+  const r=v=>Math.round(v);
+  openShare({c:(H.sid?CLUBS[H.sid]:A.sid?CLUBS[A.sid]:{colors:XPAL.ucl}),when:fmtDate(new Date(d.date)),kicker:'Prediction',
+    title:`${H.name} v ${A.name}`,sub:`Most likely ${o.best[0]}–${o.best[1]}`,
+    stats:[[r(o.w)+'%',H.name+' win'],[r(o.d)+'%','Draw'],[r(o.l)+'%',A.name+' win']],
+    shirts:[{c:H.c,name:H.name,num:''},{c:A.c,name:A.name,num:''}],foot:shortFoot},'Match prediction');
+}
+// =====================================================================
+// FIRST-VISIT WELCOME — pick a club, and the home page becomes theirs
+// =====================================================================
+const REFRESH_SVG='<svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 9a6 6 0 1 0-1.6 4.1M16 5v4h-4"/></svg>';
+function closeWelcome(){const w=$('#welcome');if(w)w.remove();store.set('seenWelcome',1)}
+function showWelcome(){
+  if($('#welcome'))return;
+  const feat=(svg,title,rest)=>{const i=el('i');i.innerHTML=svg;return el('div',{},i,el('span',{},el('b',{text:title}),' '+rest))};
+  const pick=()=>{closeWelcome();openClubPicker('Choose your club',[],null,v=>{setMyClub(v);showHome()})};
+  const ico=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="#ffd200" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+  const wrap=el('div',{id:'welcome',class:'welcome',role:'dialog','aria-modal':'true','aria-label':'Welcome to Club Hub'},
+    el('div',{class:'welcome-in'},
+      el('div',{class:'wk',text:'Welcome to'}),
+      el('h1',{text:'Club Hub'}),
+      el('p',{class:'wlede',text:"114 clubs across Europe's top leagues and the Süper Lig. Pick your club and the home page opens on them every time — next match, last result and where they sit."}),
+      el('div',{class:'wbtns'},
+        el('button',{class:'wbtn primary',type:'button',text:'Choose my club',onclick:pick}),
+        el('button',{class:'wbtn ghost',type:'button',text:'Just having a look',onclick:closeWelcome})),
+      el('div',{class:'wfeat'},
+        feat(ico('<circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/>'),'Live scores','every match in the six leagues and Europe, as it happens.'),
+        feat(ico('<path d="M8.5 4 5.5 6 7 9l1.5-1v11h7V8L17 9l1.5-3-3-2a3 3 0 0 1-7 0Z"/>'),'Squad Picker & Predict','build your XI, then play the next game out.'),
+        feat(ico('<path d="M7 4h10v5a5 5 0 0 1-10 0ZM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M10 19h4M9 21h6"/>'),'History & records','every season, title and squad for all 114.'))));
+  document.body.append(wrap);
+  wrap.querySelector('.wbtn.primary').focus();
+}
+function maybeWelcome(){if(!myClub()&&!store.get('seenWelcome',0)&&(location.hash===''||location.hash==='#home'))showWelcome()}
+
 // boot
 route();
+maybeWelcome();
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',drawChart);
 new MutationObserver(drawChart).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 </script>
