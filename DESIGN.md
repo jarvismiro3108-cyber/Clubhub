@@ -254,8 +254,10 @@ faint diagonal or vertical stripe texture, like a mown pitch or stadium stands.
   in the corner, white label and name, and the big stat in the poster accent colour.
 
 ### Tables
-League tables use a coloured left edge for zones, a bold Pts column, W/D/L form squares, and hide secondary columns
-on phones (`.hs` under 640px, `.hxs` under 420px). The user's own club or team row is tinted with the club colour.
+League tables use Big Shoulders uppercase column headers, tabular figures, 1px row separators with a subtle hover tint,
+a coloured left edge for zones, a big Big Shoulders Pts column, W/D/L form squares, and hide secondary columns
+on phones (`.hs` under 640px, `.hxs` under 420px). The user's own club or team row is tinted with the club colour and
+carries a white left accent bar (also highlighted in the home league table, not only on club pages).
 
 ### Navigation
 Club pages and the Europe, Bracket and Fantasy pages use Big Shoulders pill tabs: outlined white on the poster colour, the active one solid white
@@ -364,7 +366,11 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   drawn picture (trophy, bracket, pitch); three across on desktop, a stacked list on phones. They sit in the home colour
   world but each carries a per-competition accent (Champions blue, Bracket violet, Fantasy green) on its corner glow,
   border and icon panel, so the three read as distinct; the icon lifts and tilts on hover.
-- **Reveal on scroll:** home sections (search, My Club, Matchday, the feature tiles, the league heading and the club grid)
+- **Skeleton loaders:** while live data loads, surfaces show a shimmer skeleton in the shape of what's coming (My Club
+  tiles, Matchday league cards, club/season/match/player cards, the live table) instead of a spinner or blank — tinted
+  from the current text colour so it works in every colour world; the shimmer stops under `prefers-reduced-motion`.
+- **Reveal on scroll:** home sections (search, My Club, Matchday, the feature tiles, the league heading and the club grid),
+  and the club-page tab panels, match centre and player page,
   ease up and fade in the first time they come near the viewport, once per load. A scroll/resize check guarantees nothing
   is ever left hidden, and `prefers-reduced-motion` shows everything immediately.
 - **Scoreboard:** navy block (the poster colour on club pages), team names either side, a dark inset score box, used for every match result.

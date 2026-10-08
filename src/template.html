@@ -214,7 +214,8 @@ body.on-home{background:var(--p-deep);transition:background-color .5s cubic-bezi
 #home main .play small{color:var(--fg2)}
 #home main .dot{background:#fff}
 #home main .ltable td.pts,#home main .ltable td.team a{color:#fff}
-#home main .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-deep))}
+#home main .ltable tr.me td{background:color-mix(in srgb,#fff 20%,var(--p-deep))}
+#home main .ltable tr.me td.pos{border-left-color:#fff}
 body.on-home #scrim{color-scheme:dark;--bg:var(--p-deep);--fg:#ffffff;--fg2:color-mix(in srgb,#fff 84%,var(--p-deep));--muted:color-mix(in srgb,#fff 72%,var(--p-deep));
   --surface:color-mix(in srgb,#fff 9%,var(--p-deep));--surface2:color-mix(in srgb,#fff 15%,var(--p-deep));--line:color-mix(in srgb,#fff 18%,var(--p-deep));--c-hi:#ffffff;--c-hi-ink:var(--p-deep)}
 body.on-home .sheet{background:var(--p-deep)}body.on-home .sheet-head{background:var(--p-bg)}
@@ -246,6 +247,7 @@ body:is(.on-club,.on-x) .btn:not(.primary){border-radius:999px}
 body:is(.on-club,.on-x) .btn:hover{filter:brightness(1.12)}
 body:is(.on-club,.on-x) .tablewrap,body:is(.on-club,.on-x) .ltwrap{border-radius:12px}
 body:is(.on-club,.on-x) .ltable tr.me td{background:color-mix(in srgb,#fff 18%,var(--p-page))}
+body:is(.on-club,.on-x) .ltable tr.me td.pos{border-left-color:#fff}
 body:is(.on-club,.on-x) .sheet-head{background:var(--p-bg)}
 body:is(.on-club,.on-x) .scrim{background:color-mix(in srgb,#000 55%,transparent)}
 body:is(.on-club,.on-x) .tip{background:#fff;color:var(--p-page)}
@@ -706,17 +708,24 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 .seg{display:inline-flex;background:var(--surface2);border-radius:999px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;color:var(--fg2);font-weight:700;font-size:13.5px;padding:6px 16px;border-radius:999px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(10,20,50,.15)}
-.ltable{font-size:14px}
-.ltable td,.ltable th{padding:8px 8px}
-.ltable td.pos{width:34px;text-align:center;font-weight:700;border-left:4px solid transparent;color:var(--fg2)}
+.ltable{font-size:14px;width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.ltable th{font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:center}
+.ltable thead tr{border-bottom:1.5px solid var(--line)}
+.ltable td,.ltable th{padding:10px 8px}
+.ltable tbody tr+tr{border-top:1px solid var(--line)}
+.ltable tbody tr{transition:background-color .12s}
+@media (hover:hover){.ltable tbody tr:hover td{background:color-mix(in srgb,currentColor 6%,transparent)}}
+.ltable td.pos{width:36px;text-align:center;font-weight:700;border-left:4px solid transparent;color:var(--muted)}
 .ltable th.pos{text-align:center}
 .ltable td.team{text-align:left;width:100%;min-width:150px}
-.ltable td.team a,.ltable td.team span.t{display:inline-flex;align-items:center;gap:9px;color:var(--fg);text-decoration:none;font-weight:600}
+.ltable td.team a,.ltable td.team span.t{display:inline-flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:600}
 .ltable td.team a:hover b{text-decoration:underline}
-.ltable td.pts{font-weight:800;color:var(--fg)}
-.ltable tr.me td{background:color-mix(in srgb,var(--c-hi) 20%,var(--surface))}
-.mini{width:20px;height:20px;border-radius:50%;flex:none;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line);background:var(--surface2)}
-.ltwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.ltable td.pts{font-family:var(--display);font-weight:900;font-size:19px;color:var(--fg)}
+.ltable tr.me td{background:color-mix(in srgb,var(--c-hi) 18%,var(--surface))}
+.ltable tr.me td.pos{border-left-color:var(--c-hi)}
+.ltable tr.me td.team b{font-weight:800}
+.mini{width:22px;height:22px;border-radius:50%;flex:none;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line);background:var(--surface2)}
+.ltwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
 .ltwrap th{position:static}
 .form5{display:inline-flex;gap:3px;vertical-align:middle}
 .form5 span{width:18px;height:18px;border-radius:4px;display:grid;place-items:center;font-size:10.5px;font-weight:800;color:#fff}
@@ -726,6 +735,14 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 @media (max-width:640px){.ltable .hs{display:none}}
 @media (max-width:420px){.ltable .hxs{display:none}.ltable td.team{min-width:120px}}
 .loading{display:flex;align-items:center;gap:10px;color:var(--fg2);padding:18px 0}
+/* skeleton shimmer loaders: a block in the shape of what's coming, tinted from the current text colour so it works in every colour world */
+.sk{display:block;position:relative;overflow:hidden;background:color-mix(in srgb,currentColor 12%,transparent);border-radius:8px}
+.sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,currentColor 16%,transparent),transparent);animation:shimmer 1.35s infinite}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+.sk-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sk-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+.sk-stack{display:grid;gap:10px}
+@media (prefers-reduced-motion:reduce){.sk::after{animation:none}}
 .fixtures{display:grid;gap:6px}
 .fx{display:grid;grid-template-columns:96px minmax(0,1fr) auto minmax(0,1fr) 28px;grid-template-areas:"d h s a r" "d g g g r";column-gap:12px;align-items:center;padding:10px 12px;border-radius:8px;background:var(--surface2)}
 .fx .d{grid-area:d;font-size:12.5px;color:var(--fg2);line-height:1.3}.fx .d b{display:block;color:var(--fg);font-size:13.5px}
@@ -742,7 +759,9 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
   .fx .d{display:flex;gap:8px;align-items:baseline}.fx .d b{display:inline;font-size:12.5px}.fx .h,.fx .a{font-size:14px}.fx .s{font-size:19px;min-width:54px;padding:1px 8px}}
 .pstats td.l a{color:var(--fg)}
 .pstats th{cursor:pointer;user-select:none}.pstats th[aria-sort]{color:var(--fg)}
-.pstats th[aria-sort="descending"]::after{content:" ▾"}.pstats th[aria-sort="ascending"]::after{content:" ▴"}
+.pstats th[aria-sort]::after{content:"";display:inline-block;margin-left:5px;border:4px solid transparent;vertical-align:middle}
+.pstats th[aria-sort="descending"]::after{border-top-color:currentColor;border-bottom:0}
+.pstats th[aria-sort="ascending"]::after{border-bottom-color:currentColor;border-top:0}
 .pstats td.big{font-weight:800;color:var(--fg)}
 .pstats td.zero{color:var(--muted)}
 .pstats .no{color:var(--muted);width:30px}
@@ -857,7 +876,7 @@ details.fulltable{margin-top:16px}details.fulltable summary{cursor:pointer;font-
 #myClub{margin-bottom:26px}
 .mc-pick{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:#fff;cursor:pointer;padding:14px 16px;border-radius:16px;border:1.5px dashed color-mix(in srgb,#fff 40%,var(--p-deep));background:color-mix(in srgb,#fff 6%,var(--p-deep))}
 .mc-pick:hover{border-color:#fff}
-.mc-star{font-size:28px;line-height:1;color:var(--p-acc)}
+.mc-star{color:var(--p-acc);display:grid;place-items:center}.mc-star svg{width:26px;height:26px}
 .mc-pick b{display:block;font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em;line-height:1}
 .mc-pick small{display:block;font-size:13.5px;margin-top:3px;color:var(--fg2)}
 .mc-card{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"shirt head" "shirt tiles" "story story";column-gap:22px;row-gap:12px;align-items:center;
@@ -965,7 +984,8 @@ body:is(.on-club,.on-x) .story{color:#fff}
 @media (max-width:520px){.md-row{grid-template-columns:44px minmax(0,1fr) 58px minmax(0,1fr);gap:7px;padding:9px 10px}.md-t b{font-size:13px}.md-t .mini{display:none}.md-sc{font-size:19px;min-width:52px;padding:1px 6px}.md-st{font-size:12px}}
 /* club page: my club star */
 .crumb .back{white-space:nowrap}
-.mystar{margin-left:auto;background:color-mix(in srgb,#000 22%,transparent);border:1.5px solid color-mix(in srgb,#fff 55%,transparent);color:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.mystar{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,#000 22%,transparent);border:1.5px solid color-mix(in srgb,#fff 55%,transparent);color:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.mystar svg{width:14px;height:14px;flex:none}
 .mystar[aria-pressed="true"]{background:#fff;color:var(--p-bg);border-color:#fff}
 
 /* search */
@@ -1524,6 +1544,7 @@ function shirtSvg(c){
   return w.firstChild;
 }
 const chevSvg=()=>{const w=document.createElement('span');w.innerHTML='<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';return w.firstChild};
+const starSvg=filled=>{const w=document.createElement('span');w.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true" fill="${filled?'currentColor':'none'}" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.1l2.55 5.65 6.15.6-4.62 4.13 1.37 6.02L12 16.9l-5.45 2.6 1.37-6.02L3.3 9.35l6.15-.6Z"/></svg>`;return w.firstChild};
 const PLAY_ART={
   europe:'<svg viewBox="0 0 40 40"><defs><linearGradient id="pg1" x1="0" x2="1"><stop offset="0" stop-color="#b8860b"/><stop offset=".5" stop-color="#ffe9a8"/><stop offset="1" stop-color="#d4a017"/></linearGradient></defs><path d="M12 6h16v8c0 6-3.5 10-8 11-4.5-1-8-5-8-11z" fill="url(#pg1)"/><path d="M12 9H7c0 5 2 8 5.5 8.5M28 9h5c0 5-2 8-5.5 8.5" fill="none" stroke="url(#pg1)" stroke-width="2.2" stroke-linecap="round"/><path d="M18 25h4v6h-4z" fill="url(#pg1)"/><path d="M13 31h14l1.5 4h-17z" fill="url(#pg1)"/></svg>',
   bracket:'<svg viewBox="0 0 40 40" fill="none" stroke="#9fb2ee" stroke-width="2" stroke-linecap="round"><path d="M4 7h7v6H4M4 27h7v6H4M11 10h4v20h-4M15 20h5"/><path d="M36 7h-7v6h7M36 27h-7v6h7M29 10h-4v20h4M25 20h-5"/><circle cx="20" cy="20" r="3.4" fill="#ffd200" stroke="none"/></svg>',
@@ -1553,9 +1574,9 @@ function posterPalette(c,opt={}){
   const cands=[];
   const base=chroma(s1)&&!(yellowish(s1)&&s1.L>.7)?s1:chroma(s2)&&!yellowish(s2)?s2:null;
   if(base){const L=base===s1?(s1.L>=.55?Math.min(.44,s1.L-.24):Math.min(.56,s1.L+.2)):(s1.L>=.55?.4:.5);
-    cands.push({L:Math.min(.56,Math.max(.27,L)),C:Math.min(base.C*1.05,.2),h:base.h})}
-  if(chroma(s2)&&!yellowish(s2)&&hueGap(s1,s2)>30)cands.push({L:.46,C:Math.min(s2.C*1.05,.2),h:s2.h});
-  if(chroma(s1))cands.push({L:Math.max(.17,Math.min(.3,s1.L-.2)),C:Math.min(s1.C,.16),h:s1.h});
+    cands.push({L:Math.min(.56,Math.max(.27,L)),C:Math.min(base.C*1.22,.27),h:base.h})}
+  if(chroma(s2)&&!yellowish(s2)&&hueGap(s1,s2)>30)cands.push({L:.46,C:Math.min(s2.C*1.22,.27),h:s2.h});
+  if(chroma(s1))cands.push({L:Math.max(.17,Math.min(.3,s1.L-.2)),C:Math.min(s1.C*1.1,.22),h:s1.h});
   cands.push(chroma(s1)||chroma(s2)?{L:.34,C:.11,h:262}:{L:.33,C:.025,h:255},{L:.22,C:.03,h:262});
   let pick=null,best=null;
   for(const cd of cands){const f=fit(cd),sep=okl.contrast(shirt,f.hex);if(!best||sep>best.sep)best={...f,sep};if(sep>=1.6){pick={...f,sep};break}}
@@ -1605,11 +1626,11 @@ function setMyClub(id){store.set('myclub',id);if(id){const c=CLUBS[id];curLeague
 function renderMyClub(){
   const box=$('#myClub');if(!box)return;const id=myClub();
   const pick=()=>openClubPicker('Choose your club',[],id,v=>{setMyClub(v);showHome()});
-  if(!id){box.replaceChildren(el('button',{class:'mc-pick',type:'button',onclick:pick},el('span',{class:'mc-star','aria-hidden':'true',text:'☆'}),
+  if(!id){box.replaceChildren(el('button',{class:'mc-pick',type:'button',onclick:pick},el('span',{class:'mc-star','aria-hidden':'true'},starSvg(false)),
     el('span',{},el('b',{text:'Choose your club'}),el('small',{text:'Its next match, latest result and table position, right here every time.'}))));return}
   const c=CLUBS[id],pal=posterPalette(c),L=LEAGUES.find(l=>l.id===c.league);
   const tile=(k,v,sub,href)=>el(href?'a':'div',{class:'mc-tile',...(href?{href}:{})},el('span',{class:'k',text:k}),el('b',{},...[].concat(v)),sub?el('small',{text:sub}):null);
-  const info=el('div',{class:'mc-tiles'},el('p',{class:'mc-wait',text:'Checking the latest scores…'}));
+  const info=el('div',{class:'mc-tiles'},...skelTiles3());
   const shareBtn=el('button',{class:'mc-share',type:'button',text:'Share',hidden:true});
   const card=el('div',{class:'mc-card',style:`--k-bg:${pal.bg};--k-deep:${pal.deep};--k-acc:${pal.acc}`},
     el('span',{class:'mc-shirt','aria-hidden':'true'},bigShirtSvg(c)),
@@ -1641,7 +1662,7 @@ function renderMatchday(){
   const box=$('#matchday');if(!box)return;clearTimeout(mdTimer);mdPrev={};
   const days=[-1,0,1,2,3,4,5].map(o=>{const d=new Date();d.setDate(d.getDate()+o);
     return el('button',{class:'lg','aria-pressed':String(o===mdOff),type:'button',onclick:()=>{mdOff=o;renderMatchday()}},o===0?'Today':o===-1?'Yesterday':o===1?'Tomorrow':d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}))});
-  const list=el('div',{class:'md-list'},el('p',{class:'mc-wait',text:'Loading the fixtures…'}));
+  const list=el('div',{class:'md-list'},...skelMatchday());
   const refresh=el('button',{class:'md-refresh',type:'button','aria-label':'Refresh scores',title:'Refresh scores',onclick:()=>{refresh.classList.add('spin');setTimeout(()=>refresh.classList.remove('spin'),650);loadMatchday(list)}});
   refresh.innerHTML=REFRESH_SVG;
   box.replaceChildren(el('div',{class:'homehead'},el('div',{},el('h2',{text:'Matchday'}),el('span',{text:'The six leagues and Europe. Tap a match for the details.'})),refresh),
@@ -1780,7 +1801,7 @@ function clubHeader(c){
   const L=LEAGUES.find(l=>l.id===c.league);
   $('#crumbLeague').textContent=L.name+' 2026/27';
   $('#crest').replaceChildren(bigShirtSvg(c));fitTitle($('#clubName'),c.name);$('#clubMeta').replaceChildren(...c.meta.split(' · ').map(t=>el('span',{text:t})));
-  const id=Object.keys(CLUBS).find(k=>CLUBS[k]===c),b=$('#myBtn'),draw=()=>{const on=myClub()===id;b.setAttribute('aria-pressed',String(on));b.textContent=on?'★ My club':'☆ My club';b.title=on?'Your club. Tap to remove.':'Make this my club'};
+  const id=Object.keys(CLUBS).find(k=>CLUBS[k]===c),b=$('#myBtn'),draw=()=>{const on=myClub()===id;b.setAttribute('aria-pressed',String(on));b.replaceChildren(starSvg(on),el('span',{text:'My club'}));b.title=on?'Your club. Tap to remove.':'Make this my club'};
   draw();b.onclick=()=>{setMyClub(myClub()===id?null:id);draw()};
 }
 function openClub(id,tab){
@@ -1789,7 +1810,7 @@ function openClub(id,tab){
     $('#home').hidden=true;$('#clubPage').hidden=false;$('#xPage').hidden=true;$('#matchPage').hidden=true;$('#playerPage').hidden=true;document.body.classList.remove('on-home','on-x');document.body.classList.add('on-club');
     paintClub(CLUBS[id]);clubHeader(CLUBS[id]);window.scrollTo(0,0);
     ['club','season','squad','match'].forEach(n=>$('#p-'+n).hidden=true);
-    const ld=$('#clubLoading');ld.hidden=false;ld.replaceChildren(loadingEl('Loading the club…'));
+    const ld=$('#clubLoading');ld.hidden=false;ld.replaceChildren(skelPage(3));
     ensureLeague(CLUBS[id].league).then(()=>{if(location.hash.slice(1).startsWith(id)){ld.hidden=true;openClub(id,tab)}})
       .catch(()=>ld.replaceChildren(liveError(()=>openClub(id,tab),'The club could not be loaded. Check your connection and try again.')));
     return;
@@ -1819,6 +1840,7 @@ function showTab(name){
   if(name==='match')renderXISummary();
   if(name==='season')renderSeason();
   if(CID)store.set('tab-'+CID,name);
+  const pp=$('#p-'+name);if(pp)reveal(...pp.children);
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;history.replaceState(null,'','#'+CID+(t==='club'?'':t));showTab(t)});
 $('#backBtn').onclick=()=>{location.hash='home'};
@@ -1944,6 +1966,16 @@ function mini(sid,short){
 }
 const formEl=f=>el('span',{class:'form5',title:'Last 5 league games, newest on the right'},...[...String(f||'')].reverse().map(c=>el('span',{class:'f'+c,text:c})));
 const loadingEl=t=>el('div',{class:'card'},el('div',{class:'loading'},el('span',{class:'dot'}),t));
+// skeleton shimmer loaders — a block the shape of what's loading, so pages don't flash empty
+const sk=(w,h='14px',r='7px')=>el('span',{class:'sk',style:`width:${w};height:${h};border-radius:${r}`});
+const skelCard=(lines=3)=>el('div',{class:'card'},el('div',{class:'sk-stack'},sk('42%','24px','8px'),...Array.from({length:lines},()=>sk('100%','13px','6px')),sk('68%','13px','6px')));
+const skelTiles3=()=>[0,1,2].map(()=>el('div',{class:'mc-tile'},sk('54%','12px','6px'),sk('78%','24px','7px'),sk('60%','11px','6px')));
+const skelMatchday=()=>[0,1].map(()=>el('div',{class:'md-league'},
+  el('div',{class:'md-lh'},sk('42%','18px','6px')),
+  el('div',{class:'md-body'},el('div',{class:'md-rows'},...[0,1,2].map(()=>el('div',{class:'sk-row'},sk('48px','13px','6px'),sk('34%','13px','6px'),el('span',{style:'flex:1'}),sk('46px','22px','8px'),sk('34%','13px','6px')))))));
+const skelTable=(rows=10)=>el('div',{class:'card',style:'padding:0;overflow:hidden'},el('div',{class:'sk-stack',style:'gap:0'},
+  ...Array.from({length:rows},()=>el('div',{class:'sk-row'},sk('18px','18px','5px'),sk('38%','14px','6px'),el('span',{style:'flex:1'}),sk('26px','16px','6px')))));
+const skelPage=(cards=3)=>el('div',{class:'sk-stack',style:'gap:16px'},...Array.from({length:cards},(_,i)=>skelCard(i===0?2:3)));
 function liveError(retry,msg){
   return el('div',{class:'card'},el('div',{class:'warn'},msg||'The live data could not be loaded right now. Please try again in a minute.'),
     retry?el('button',{class:'btn',style:'margin-top:10px',text:'Try again',onclick:retry}):null);
@@ -1970,11 +2002,11 @@ function tableEl(t,me){
 let homeTableReq=0;
 function renderHomeTable(L){
   const box=$('#homeTable'),my=++homeTableReq;
-  box.replaceChildren(loadingEl('Loading the latest table…'));
+  box.replaceChildren(skelTable());
   liveTable(L.id).then(t=>{
     if(my!==homeTableReq)return;
     box.replaceChildren(el('div',{class:'card'},el('h2',{text:L.name+' Table'}),
-      el('p',{class:'lede',style:'margin:-6px 0 12px',text:`${t.season?'Season '+fmtS(t.season)+', updated ':'Updated '}${fmtTime(t.updated)}. Tap a club to open it.`}),tableEl(t,null)));
+      el('p',{class:'lede',style:'margin:-6px 0 12px',text:`${t.season?'Season '+fmtS(t.season)+', updated ':'Updated '}${fmtTime(t.updated)}. Tap a club to open it.`}),tableEl(t,myClub())));
   }).catch(()=>{if(my===homeTableReq)box.replaceChildren(liveError(()=>renderHomeTable(L)))});
 }
 
@@ -1984,7 +2016,7 @@ async function renderSeason(force){
   if(!C||(seasonFor===CID&&!force))return;
   const cid=CID,club=C,L=LEAGUES.find(l=>l.id===club.league);seasonFor=cid;
   const box=$('#p-season');
-  box.replaceChildren(loadingEl('Loading this season’s table, results and player stats…'));
+  box.replaceChildren(skelPage(3));
   try{
     const t=await liveTable(L.id);if(CID!==cid)return;
     const row=t.map.bySlug[cid];
@@ -2606,7 +2638,7 @@ function renderEurope(m){
   const comp=EURO[store.get('euComp','ucl')]?store.get('euComp','ucl'):'ucl';
   xPaint(comp);xFig(cupFig());
   const seg=el('div',{class:'seg',role:'group','aria-label':'Competition'},...Object.entries(EURO).map(([k,n])=>el('button',{'aria-pressed':String(k===comp),text:n,onclick:()=>{store.set('euComp',k);m.innerHTML='';renderEurope(m)}})));
-  const box=el('div',{class:'panel'},loadingEl('Loading the '+EURO[comp]+'…'));
+  const box=el('div',{class:'panel'},skelTable(12));
   m.append(el('div',{},seg),box);
   const my=++euReq;
   Promise.allSettled([liveTable(comp),getLive('/api/live/cup?league='+comp)]).then(([tr,cr])=>{
@@ -3071,7 +3103,7 @@ async function showMatch(lg,id,refresh){
   const head=$('#mHead'),main=$('#mMain'),my=++mReq;
   const backBtn=el('button',{class:'back',text:'← Back',onclick:()=>{if(from)location.hash=from+'season';else if(history.length>1)history.back();else location.hash='home'}});
   if(!refresh){head.replaceChildren(el('div',{class:'crumb'},backBtn,el('span',{text:'Match centre'}),searchBtn(true)));
-    main.replaceChildren(loadingEl('Loading the match…'));window.scrollTo(0,0);document.title='Match | Club Hub'}
+    main.replaceChildren(skelPage(2));window.scrollTo(0,0);document.title='Match | Club Hub'}
   try{
     const [d,tb]=await Promise.all([getLive(`/api/live/match?league=${lg}&id=${id}`),liveTable(lg).catch(()=>null)]);
     if(my!==mReq)return;
@@ -3113,6 +3145,7 @@ function matchTabs(d,H,A,main){
 function renderMatchTab(d,H,A,main){
   const v=mTab==='lineups'?matchLineups(d,H,A):mTab==='stats'?matchStats(d,H,A):mTab==='preview'?matchPreview(d,H,A):matchFacts(d,H,A);
   main.replaceChildren(...v,el('p',{class:'note',style:'margin:0',text:'Live data from ESPN. Player ratings and xG are Club Hub estimates worked out from the match stats, not official figures.'}));
+  reveal(...main.children);
 }
 const ratingClass=r=>r==null?'':r>=8?'r-top':r>=7?'r-good':r>=6?'r-ok':'r-low';
 const ratingEl=(r,motm)=>r==null?null:el('span',{class:'rt '+ratingClass(r)+(motm?' motm':''),title:motm?'Player of the match':'Rating',text:r.toFixed(1)});
@@ -3267,7 +3300,7 @@ async function showPlayer(cid,ps){
   const head=$('#plHead'),main=$('#plMain'),my=++plReq,L=LEAGUES.find(l=>l.id===c.league)||{};
   const back=el('button',{class:'back',text:'← '+c.name,onclick:()=>{if(from)location.hash=from+store.get('tab-'+from,'club').replace('club','');else location.hash=cid}});
   head.replaceChildren(el('div',{class:'crumb'},back,el('span',{text:L.name||''}),searchBtn(true)));
-  main.replaceChildren(loadingEl('Loading the player…'));window.scrollTo(0,0);
+  main.replaceChildren(skelPage(3));window.scrollTo(0,0);
   try{await ensureLeague(c.league)}catch(e){if(my===plReq)main.replaceChildren(liveError(()=>showPlayer(cid,ps)));return}
   if(my!==plReq)return;
   const sp=c.squad.find(p=>slug(p.name)===ps)||c.squad.find(p=>pnorm(p.name).join('')===ps);
@@ -3346,7 +3379,7 @@ async function showPlayer(cid,ps){
     (()=>{const mates=c.squad.filter(p=>p.grp===grp&&p.name!==name);return mates.length?el('div',{class:'card'},el('h2',{text:`Other ${(POS_NAME[grp]||'player').toLowerCase()}s`}),
       el('div',{class:'mates'},...mates.map(p=>{const m=el('a',{class:'mate',href:`#player-${cid}-${slug(p.name)}`},el('span',{class:'lp-shirt sm num',style:`--a:${okHex(c.colors.s1)};--b:${okHex(c.colors.s2)};color:${textOn(okHex(c.colors.s1))}`,text:p.no??''}),el('span',{text:p.name}));return m}))):null})()));
   out.push(el('p',{class:'note',style:'margin:0',text:`Sources: ${['Club Hub 2026/27 squad lists',...(prof?.source||[])].join(', ')}.`}));
-  main.replaceChildren(...out);
+  main.replaceChildren(...out);reveal(...main.children);
 }
 // half-pitch shot map (Understat X = towards goal 0..1, Y = across 0..1)
 function shotMapCard(shots,title){
