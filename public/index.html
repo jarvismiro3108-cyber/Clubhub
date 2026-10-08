@@ -3514,8 +3514,6 @@ function openMenu(){
   m.replaceChildren(...[
     el('div',{class:'dm-head'},el('b',{class:'dm-logo',text:'Club Hub'}),close),
     el('button',{class:'srch-bar dm-search',type:'button','data-search':''},(()=>{const w=el('span');w.innerHTML=SEARCH_SVG;return w.firstChild})(),'Search clubs and players'),
-    mine?el('a',{class:'dm-my',href:'#'+mine,onclick:()=>closeMenu(true),style:`--k-bg:${posterPalette(CLUBS[mine]).bg}`},el('span',{class:'dm-my-shirt','aria-hidden':'true'},bigShirtSvg(CLUBS[mine])),el('span',{},el('small',{text:'My club'}),el('b',{text:CLUBS[mine].name})))
-      :el('button',{class:'dm-link dm-pick',type:'button',onclick:()=>{closeMenu(true);openClubPicker('Choose your club',[],null,v=>{setMyClub(v);showHome()})}},el('span',{},el('b',{text:'Choose your club'}),el('small',{text:'Star a club to see its games first'})),chevSvg()),
     el('div',{class:'dm-sec'},el('h3',{text:'Go to'}),
       link('#home','Home','Clubs and the poster',()=>{closeMenu(true);if(location.hash==='#home'||location.hash==='')window.scrollTo({top:0,behavior:'smooth'});else location.hash='home'}),
       link('#home','Matchday','Live scores and fixtures',goMatchday),
