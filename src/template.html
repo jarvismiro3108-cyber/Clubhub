@@ -455,8 +455,8 @@ body:is(.on-club,.on-x) .sheet-head h3{font-family:var(--display);font-weight:90
 @media (max-width:480px){.score{gap:8px;padding:14px 10px}.score .big{font-size:38px;padding:4px 10px}.score .teams{font-size:13px;letter-spacing:0}}
 .score .teams small{display:block;font-family:var(--body);font-size:13px;font-weight:500;text-transform:none;opacity:.85;margin-top:4px}
 .score .cap{grid-column:1/-1;font-family:var(--display);font-size:17px;letter-spacing:.05em;text-transform:uppercase;font-weight:800}
-.oppwrap{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start;margin-top:4px}
-@media (max-width:760px){.oppwrap{grid-template-columns:1fr}}
+.oppwrap{max-width:420px;margin:4px auto 0}
+.opp-status{text-align:center;margin:12px 0 0}
 .pitch.opp .shirt{background:linear-gradient(90deg,var(--o1) 0 50%,color-mix(in srgb,var(--o1) 82%,#000) 50%);border-color:var(--o2);color:var(--o-ink,#fff)}
 .pitch.opp{--o1:#c9ccd6;--o2:#3a4058}
 .opp-info{display:grid;gap:10px;align-content:start}
@@ -1012,6 +1012,10 @@ a.plg:hover{background:color-mix(in srgb,#fff 8%,var(--surface2))}
 @media (max-width:520px){.plg{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"b sc" "d m"}.plg b{grid-area:b}.plg .sc{grid-area:sc}.plg .d{grid-area:d}.plg .m{grid-area:m}}
 .pl-dl{display:grid;grid-template-columns:max-content 1fr;gap:8px 20px;margin:0}
 .pl-dl dt{color:var(--fg2);font-size:14px}.pl-dl dd{margin:0;font-weight:600}
+.pl-more{display:grid;gap:16px;margin-top:16px}
+.pl-more-btn{width:100%;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.03em;text-transform:uppercase;padding:13px}
+.pl-more-btn::after{content:"";width:9px;height:9px;border:2px solid currentColor;border-left:0;border-top:0;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.pl-more-btn[aria-expanded="true"]::after{transform:rotate(-135deg) translateY(-2px)}
 .pl-chip{text-decoration:none;color:var(--fg)}.pl-chip:hover{background:color-mix(in srgb,#fff 22%,var(--p-page))}
 a.pc{color:inherit;text-decoration:none;transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s}
 a.pc:hover{transform:translateY(-3px);border-color:color-mix(in srgb,#fff 45%,var(--p-page))}
@@ -1093,6 +1097,25 @@ body.menu-open .menu-btn span:nth-child(1){transform:translateY(6.5px) rotate(45
 .sm-wrap{max-width:440px;margin:0 auto;border-radius:12px;background:color-mix(in srgb,#000 22%,var(--surface));padding:8px}
 .sm-wrap.wide{max-width:none}
 .shotmap{display:block;width:100%;height:auto}
+/* interactive shot map: tappable shots + a detail popup with minute stepping */
+.sm-shot{cursor:pointer}.sm-shot:focus{outline:none}
+.sm-ring{opacity:0;transition:opacity .15s}
+.sm-shot.on .sm-ring,.sm-shot:focus-visible .sm-ring{opacity:1}
+.sm-pop{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:color-mix(in srgb,#000 14%,var(--surface))}
+.sm-pop-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.sm-pop-count{font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--fg2);font-variant-numeric:tabular-nums}
+.sm-nav{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.sm-nav:disabled{opacity:.35;cursor:default}
+.sm-nav svg{width:16px;height:16px}.sm-nav .sm-flip{transform:scaleX(-1)}
+.sm-pop-main{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.sm-pop-dot{width:13px;height:13px;border-radius:50%;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+.sm-pop-id b{display:block;font-family:var(--display);font-weight:900;font-size:22px;text-transform:uppercase;line-height:1}
+.sm-pop-id span{font-size:13px;color:var(--fg2)}
+.sm-pop-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sm-pop-stat{background:color-mix(in srgb,#000 18%,var(--surface));border-radius:10px;padding:9px 11px;min-width:0}
+.sm-pop-stat b{display:block;font-family:var(--display);font-weight:900;font-size:19px;line-height:1.05;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sm-pop-stat span{font-size:11px;color:var(--fg2);text-transform:uppercase;letter-spacing:.03em}
+.sm-pop-as{margin:10px 0 0;font-size:13px;color:var(--fg2)}
 .sh{stroke-width:.55}.sh-g{fill:var(--p-acc);stroke:#fff}.sh-s{fill:rgba(143,179,255,.25);stroke:#8fb3ff}.sh-m{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.7)}.sh-b{fill:rgba(255,255,255,.12);stroke:rgba(255,255,255,.4);stroke-dasharray:.6 .5}
 .sm-key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--fg2);margin-top:10px;justify-content:center}
 .sh-k{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid;margin-right:6px;vertical-align:-1px}
@@ -1298,7 +1321,7 @@ a.pv-h2h{color:var(--fg);text-decoration:none}a.pv-h2h:hover{background:var(--su
           </g>
         </svg>
       </div>
-      <div class="opp-info"><div class="eyebrow">Picked so far</div><div class="chips" id="oppChips"></div><p class="note" id="oppStatus" style="margin:0"></p></div>
+      <p class="note opp-status" id="oppStatus"></p>
     </div>
   </div>
   <div id="out"></div>
@@ -2313,11 +2336,8 @@ function renderOppPitch(){
   const pitch=$('#oppPitch');
   if(oc){pitch.style.setProperty('--o1',oc.colors.s1);pitch.style.setProperty('--o2',oc.colors.s2);pitch.style.setProperty('--o-ink',textOn(okHex(oc.colors.s1)))}else{pitch.style.removeProperty('--o1');pitch.style.removeProperty('--o2');pitch.style.removeProperty('--o-ink')}
   drawSlots(pitch,ost.formation,oppPlayer,(i,role)=>openPicker({kind:'opp',index:i,role}));
-  const chips=$('#oppChips');chips.innerHTML='';
   const filled=FORMATIONS[ost.formation].map((s,i)=>[s[0],oppPlayer(i)]).filter(x=>x[1]);
-  if(!filled.length)chips.append(el('span',{class:'note',style:'margin:0',text:`No players picked for ${n} yet.`}));
-  filled.forEach(([r,p])=>chips.append(el('span',{class:'chip',text:`${r} ${p.name}`})));
-  $('#oppStatus').textContent=filled.length?`${filled.length} of 11 picked.`:'';
+  $('#oppStatus').textContent=filled.length?`${filled.length} of 11 picked. Tap a shirt to change it.`:`Tap a shirt to pick ${n}'s XI, or leave it empty.`;
 }
 function openOppPicker(t,body){
   const oc=oppClub();const current=ost.xi[t.index];
@@ -2356,7 +2376,7 @@ $('#oppUsual').onclick=()=>{const oc=oppClub();if(!oc){$('#oppStatus').textConte
   const xi={};const used=new Set();const slots=FORMATIONS[ost.formation];
   slots.forEach((s,i)=>{const p=(oc.pref[s[0]]||[]).map(n=>oc.squad.find(p=>p.id===n)).find(p=>p&&!used.has(p.id))||oc.squad.find(p=>!used.has(p.id)&&fits(p,s[0]));if(p){xi[i]=p.id;used.add(p.id)}});
   slots.forEach((s,i)=>{if(xi[i])return;const p=oc.squad.find(p=>!used.has(p.id)&&near(p,s[0]));if(p){xi[i]=p.id;used.add(p.id)}});
-  ost.xi=xi;saveOpp();renderOppPitch();$('#oppStatus').textContent+=' Filled with their usual starters. Tap any shirt to change it.'};
+  ost.xi=xi;saveOpp();renderOppPitch();$('#oppStatus').textContent='Filled with their usual starters. Tap any shirt to change it.'};
 $('#oppClear').onclick=()=>{ost.xi={};saveOpp();renderOppPitch()};
 $('#oppSuggest').onclick=async()=>{
   const n=oppName();if(!n){$('#oppStatus').textContent='Type the opponent\'s name first.';return}
@@ -2399,9 +2419,9 @@ function renderXISummary(){
   if(filled<11){box.append(el('div',{class:'warn'},`Your starting XI has ${filled} of 11 players. `,
     el('button',{class:'btn',text:'Go to Squad Picker',onclick:()=>document.querySelector('[data-tab="squad"]').click()}),' ',
     el('button',{class:'btn',text:'Auto-pick and continue',onclick:()=>{$('#autofill').click();renderXISummary()}})));return}
-  box.append(el('span',{class:'chip gold',text:state.formation}));
-  FORMATIONS[state.formation].forEach((s,i)=>box.append(el('span',{class:'chip',text:`${s[0]} ${byId(state.xi[i]).name}`})));
+  box.append(el('span',{class:'chip gold',text:state.formation}),el('span',{class:'chip',text:'Your XI is set'}));
   if(state.bench.length)box.append(el('span',{class:'chip',text:`Bench: ${state.bench.length}`}));
+  box.append(el('button',{class:'linkbtn',style:'margin-left:4px',text:'Edit in Squad Picker',onclick:()=>document.querySelector('[data-tab="squad"]').click()}));
 }
 function sampleNotice(){if(sampleReady)$('#analyze').disabled=false}
 // ---- match simulation: score, chances and goalscorers with minutes (no AI needed) ----
@@ -3336,19 +3356,20 @@ async function showPlayer(cid,ps){
     !us&&es&&es.apps>0&&!gk?el('div',{class:'pl-rates'},...[['Goals per game',(es.goals||0)/es.apps],['Shots per game',es.shots!=null?es.shots/es.apps:null],
       ['Shot accuracy',es.shots?Math.round((es.sot||0)/es.shots*100)+'%':null],['Goals per shot',es.shots?(es.goals||0)/es.shots:null],['Assists per game',(es.assists||0)/es.apps]]
       .filter(([,v])=>v!=null).map(([l,v])=>el('div',{},el('b',{class:'num',text:typeof v==='number'?v.toFixed(2):v}),el('span',{text:l})))):null));
+  const more=[];
   // 2. percentile bars vs league peers
   const bars=(us&&us.per90&&us.per90.some(x=>x.pct!=null))?{rows:us.per90.filter(x=>x.pct!=null),unit:'per 90',n:us.peersN,src:'Understat'}:(prof?.espnPct?.length?{rows:prof.espnPct,unit:'per game',n:prof.peersN,src:'ESPN'}:null);
   const pcol=q=>q>=80?'#1a64d8':q>=60?'#17803f':q>=40?'#a8560f':'#c0352c';
-  if(bars)out.push(el('div',{class:'card'},el('h2',{text:'Compared With the League'}),
+  if(bars)more.push(el('div',{class:'card'},el('h2',{text:'Compared With the League'}),
     el('p',{class:'lede',style:'margin:-6px 0 14px',text:`Percentile rank against ${bars.n} ${(POS_NAME[grp]||'player').toLowerCase()}s in the ${L.name||'league'} this season (${bars.unit}). 90 means better than 90% of them.`}),
     el('div',{class:'pctl'},...bars.rows.map(r=>el('div',{class:'pct-row'},el('span',{class:'pct-l',text:r.label}),el('span',{class:'pct-v num',text:fx(r.v)}),
       el('span',{class:'pct-bar','aria-hidden':'true'},el('i',{style:`width:${Math.max(3,r.pct)}%;background:${pcol(r.pct)}`})),el('span',{class:'pct-n num',style:`background:${pcol(r.pct)}`,'aria-label':`${r.pct}th percentile`,text:r.pct})))),
     el('p',{class:'note',text:`Source: ${bars.src}.`})));
   // 3. shot map (Understat)
-  if(us&&us.shots&&us.shots.length)out.push(shotMapCard(us.shots));
+  if(us&&us.shots&&us.shots.length)more.push(shotMapCard(us.shots));
   // 4. match by match
   if(us&&us.matches&&us.matches.length){
-    out.push(el('div',{class:'card'},el('h2',{text:'Match by Match'}),el('div',{class:'tablewrap',style:'max-height:none'},el('table',{class:'pl-log'},
+    more.push(el('div',{class:'card'},el('h2',{text:'Match by Match'}),el('div',{class:'tablewrap',style:'max-height:none'},el('table',{class:'pl-log'},
       el('thead',{},el('tr',{},...['Date','Match','Min','G','A','xG','xA','Shots'].map((h,k)=>el('th',{class:k<2?'l':'',text:h})))),
       el('tbody',{},...us.matches.map(m=>el('tr',{},el('td',{class:'l',text:new Date(m.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}),
         el('td',{class:'l'},`${m.h} ${m.hg}–${m.ag} ${m.a}`),el('td',{text:n(m.min)}),el('td',{class:m.g?'big':'',text:n(m.g)}),el('td',{class:m.as?'big':'',text:n(m.as)}),el('td',{text:fx(m.xg)}),el('td',{text:fx(m.xa)}),el('td',{text:n(m.sh)})))))),
@@ -3356,14 +3377,14 @@ async function showPlayer(cid,ps){
   else if(live&&row){
     const goals=(live.results||[]).flatMap(e=>e.goals.filter(g=>g.team===row.id&&!g.og&&g.name&&sameName(g.name,name)).map(g=>({e,g})));
     if(goals.length){const byMatch=new Map();goals.forEach(({e,g})=>{if(!byMatch.has(e.id))byMatch.set(e.id,{e,m:[]});byMatch.get(e.id).m.push(g.min+(g.pen?' (pen)':''))});
-      out.push(el('div',{class:'card'},el('h2',{text:`Goals This Season (${goals.length})`}),el('div',{class:'plgoals'},...[...byMatch.values()].map(({e,m})=>{
+      more.push(el('div',{class:'card'},el('h2',{text:`Goals This Season (${goals.length})`}),el('div',{class:'plgoals'},...[...byMatch.values()].map(({e,m})=>{
         const home=e.home.id===row.id,them=home?e.away:e.home,us2=home?e.home:e.away;
         return el(/^\d+$/.test(e.id)?'a':'div',{class:'plg',...(/^\d+$/.test(e.id)?{href:`#match-${c.league}-${e.id}`}:{})},el('span',{class:'d',text:fmtDate(new Date(e.date))}),
           el('b',{text:`${home?'vs':'at'} ${clubLabel(t.map.byId[them.id],them.name)}`}),el('span',{class:'sc num',text:`${us2.score}–${them.score}`}),el('span',{class:'m',text:m.join(', ')}))}))))}
   }
   // 5. career (Understat seasons)
   if(us&&us.seasons&&us.seasons.length>1){const mx=Math.max(1,...us.seasons.map(s=>Math.max(s.goals||0,s.xg||0)));
-    out.push(el('div',{class:'card'},el('h2',{text:'Season by Season'}),el('div',{class:'career'},...us.seasons.map(s=>el('div',{class:'cr-row'},
+    more.push(el('div',{class:'card'},el('h2',{text:'Season by Season'}),el('div',{class:'career'},...us.seasons.map(s=>el('div',{class:'cr-row'},
       el('span',{class:'cr-s num',text:`${s.season}/${String(+s.season+1).slice(2)}`}),el('span',{class:'cr-t',text:s.team}),
       el('span',{class:'cr-bars','aria-label':`${s.goals} goals, ${s.xg} xG`},el('i',{class:'g',style:`width:${(s.goals||0)/mx*100}%`}),el('i',{class:'x',style:`width:${(s.xg||0)/mx*100}%`})),
       el('span',{class:'cr-n num'},el('b',{text:n(s.goals)}),' G  ',el('b',{text:n(s.assists)}),' A'),el('span',{class:'cr-m num',text:`${n(s.games)} apps, ${fx(s.xg,1)} xG`})))),
@@ -3375,9 +3396,15 @@ async function showPlayer(cid,ps){
     ['Age',age],['Nationality',bio.nat||sp?.nat],['Height',bio.height],['Weight',bio.weight],['Position',POS_NAME[grp]||bio.pos],
     ['Plays as',sp&&sp.roles&&sp.roles.length?sp.roles.map(r=>ROLE_NAMES[r]||r).join(', '):null],['Shirt number',no!==''?no:null],
     ['Discipline',es&&(es.yc!=null||es.rc!=null)?`${es.yc||0} yellow, ${es.rc||0} red`:null],['In the usual XI',sp?(reg?'Yes, a regular starter':'Squad player'):null]].filter(([,v])=>v!=null&&v!=='');
-  out.push(el('div',{class:'two'},el('div',{class:'card'},el('h2',{text:'Player Details'}),el('dl',{class:'pl-dl'},...det.flatMap(([k,v])=>[el('dt',{text:k}),el('dd',{text:String(v)})]))),
+  more.push(el('div',{class:'two'},el('div',{class:'card'},el('h2',{text:'Player Details'}),el('dl',{class:'pl-dl'},...det.flatMap(([k,v])=>[el('dt',{text:k}),el('dd',{text:String(v)})]))),
     (()=>{const mates=c.squad.filter(p=>p.grp===grp&&p.name!==name);return mates.length?el('div',{class:'card'},el('h2',{text:`Other ${(POS_NAME[grp]||'player').toLowerCase()}s`}),
       el('div',{class:'mates'},...mates.map(p=>{const m=el('a',{class:'mate',href:`#player-${cid}-${slug(p.name)}`},el('span',{class:'lp-shirt sm num',style:`--a:${okHex(c.colors.s1)};--b:${okHex(c.colors.s2)};color:${textOn(okHex(c.colors.s1))}`,text:p.no??''}),el('span',{text:p.name}));return m}))):null})()));
+  if(more.length){
+    const mbox=el('div',{class:'pl-more'},...more);mbox.hidden=true;
+    const openT='Full stats & profile',closeT='Hide full stats';
+    const mbtn=el('button',{class:'btn pl-more-btn',type:'button','aria-expanded':'false',text:openT,onclick:()=>{const show=mbox.hidden;mbox.hidden=!show;mbtn.setAttribute('aria-expanded',String(show));mbtn.textContent=show?closeT:openT;if(show)reveal(...mbox.children)}});
+    out.push(mbtn,mbox);
+  }
   out.push(el('p',{class:'note',style:'margin:0',text:`Sources: ${['Club Hub 2026/27 squad lists',...(prof?.source||[])].join(', ')}.`}));
   main.replaceChildren(...out);reveal(...main.children);
 }
@@ -3479,19 +3506,40 @@ function h2hCard(d,H,A){
     el('div',{class:'h2h-bar','aria-hidden':'true'},el('i',{style:`flex:${hw/tot} 1 0;background:${H.col}`}),el('i',{style:`flex:${dw/tot} 1 0;background:#5b6178`}),el('i',{style:`flex:${aw/tot} 1 0;background:${A.col}`})),
     el('div',{class:'pv-list'},...rows),el('p',{class:'note',text:`Last ${h2h.length} meeting${h2h.length===1?'':'s'} (league matches from the last five seasons and the meetings ESPN lists). Source: ESPN.`}));
 }
-function matchShotMap(d,H,A){ // both teams on one pitch: home shoots right, away left
+function matchShotMap(d,H,A){ // both teams on one pitch (home shoots right); tap a shot for details, step minute by minute
   const NS='http://www.w3.org/2000/svg',mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e};
-  const svg=mk('svg',{viewBox:'-2 -2 109 72',class:'shotmap wide',role:'img','aria-label':'Shot map for both teams'});
+  const shots=[...d.us.shots].sort((a,b)=>(a.min-b.min)||((a.res==='Goal')-(b.res==='Goal')));
+  const svg=mk('svg',{viewBox:'-2 -2 109 72',class:'shotmap wide',role:'img','aria-label':'Shot map — tap a shot for details'});
   const ln={fill:'none',stroke:'rgba(255,255,255,.35)','stroke-width':'.35'};
   [['rect',{x:0,y:0,width:105,height:68}],['line',{x1:52.5,y1:0,x2:52.5,y2:68}],['circle',{cx:52.5,cy:34,r:9.15}],['rect',{x:0,y:13.84,width:16.5,height:40.32}],['rect',{x:88.5,y:13.84,width:16.5,height:40.32}],
    ['rect',{x:0,y:24.84,width:5.5,height:18.32}],['rect',{x:99.5,y:24.84,width:5.5,height:18.32}]].forEach(([t,a])=>svg.append(mk(t,{...a,...ln})));
-  for(const sh of [...d.us.shots].sort((a,b)=>(a.res==='Goal')-(b.res==='Goal'))){const home=sh.t==='h',col=home?H.col:A.col,goal=sh.res==='Goal';
-    const c=mk('circle',{cx:(home?sh.x*105:(1-sh.x)*105).toFixed(2),cy:(home?(1-sh.y)*68:sh.y*68).toFixed(2),r:(1+Math.sqrt(sh.xg)*3.8).toFixed(2),
-      fill:goal?col:'transparent',stroke:goal?'#fff':col,'stroke-width':goal?'.6':'.7','fill-opacity':goal?1:0});
-    const tt=mk('title',{});tt.textContent=`${sh.p}, ${sh.min}', ${sh.res.replace(/([a-z])([A-Z])/g,'$1 $2')}, xG ${sh.xg.toFixed(2)}${sh.as?', assist '+sh.as:''}`;c.append(tt);svg.append(c)}
-  const side=(t,T)=>{const S=d.us.shots.filter(x=>x.t===t);return el('div',{class:'sm-team'},el('i',{style:`background:${T.col}`}),el('b',{text:T.name}),el('span',{text:`${S.length} shots, ${S.reduce((a,x)=>a+x.xg,0).toFixed(2)} xG`}))};
-  return el('div',{class:'card'},el('h2',{text:'Shot Map'}),el('div',{class:'sm-teams'},side('h',H),side('a',A)),el('div',{class:'sm-wrap wide'},svg),
-    el('p',{class:'note',text:'Filled circles are goals; bigger circles are better chances (higher xG). Tap or hover a circle for the details. Source: Understat.'}));
+  const marks=[];
+  shots.forEach((sh,i)=>{const home=sh.t==='h',col=home?H.col:A.col,goal=sh.res==='Goal';
+    const cx=(home?sh.x*105:(1-sh.x)*105),cy=(home?(1-sh.y)*68:sh.y*68),r=(0.85+Math.sqrt(sh.xg)*2.5);
+    const g=mk('g',{class:'sm-shot',tabindex:'0',role:'button','aria-label':`${sh.p}, ${sh.min} minutes, ${sh.res}`});
+    const ring=mk('circle',{cx:cx.toFixed(2),cy:cy.toFixed(2),r:(r+1.7).toFixed(2),class:'sm-ring',fill:'none',stroke:'#ffd200','stroke-width':'.8'});
+    const c=mk('circle',{cx:cx.toFixed(2),cy:cy.toFixed(2),r:r.toFixed(2),fill:goal?col:'transparent',stroke:goal?'#fff':col,'stroke-width':goal?'.5':'.65','fill-opacity':goal?1:0});
+    const hit=mk('circle',{cx:cx.toFixed(2),cy:cy.toFixed(2),r:Math.max(2.8,r+1.6).toFixed(2),fill:'transparent'});
+    g.append(ring,c,hit);g.addEventListener('click',()=>sel(i));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sel(i)}});
+    svg.append(g);marks.push(g)});
+  const arrow=cls=>{const w=el('span');w.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';const e=w.firstChild;if(cls)e.setAttribute('class',cls);return e};
+  const stat=(v,l)=>el('div',{class:'sm-pop-stat'},el('b',{text:v}),el('span',{text:l}));
+  const pop=el('div',{class:'sm-pop'});
+  const sel=i=>{if(i<0||i>=shots.length)return;marks.forEach((g,k)=>g.classList.toggle('on',k===i));
+    const sh=shots[i],home=sh.t==='h',T=home?H:A,loc=sh.x>=0.84?'Inside box':sh.x>=0.68?'Edge of box':'Outside box';
+    pop.replaceChildren(
+      el('div',{class:'sm-pop-top'},
+        el('button',{class:'sm-nav',type:'button','aria-label':'Previous shot',...(i<=0?{disabled:''}:{}),onclick:()=>sel(i-1)},arrow('sm-flip')),
+        el('span',{class:'sm-pop-count',text:`Shot ${i+1} of ${shots.length} · ${sh.min}'`}),
+        el('button',{class:'sm-nav',type:'button','aria-label':'Next shot',...(i>=shots.length-1?{disabled:''}:{}),onclick:()=>sel(i+1)},arrow())),
+      el('div',{class:'sm-pop-main'},el('span',{class:'sm-pop-dot',style:`background:${T.col}`}),el('div',{class:'sm-pop-id'},el('b',{text:sh.p}),el('span',{text:T.name}))),
+      el('div',{class:'sm-pop-stats'},stat(sh.res.replace(/([a-z])([A-Z])/g,'$1 $2'),'Result'),stat(sh.xg.toFixed(2),'xG'),stat(loc,'Where')),
+      sh.as?el('p',{class:'sm-pop-as',text:`Assisted by ${sh.as}`}):null)};
+  const side=(t,T)=>{const S=shots.filter(x=>x.t===t);return el('div',{class:'sm-team'},el('i',{style:`background:${T.col}`}),el('b',{text:T.name}),el('span',{text:`${S.length} shots, ${S.reduce((a,x)=>a+x.xg,0).toFixed(2)} xG`}))};
+  const card=el('div',{class:'card'},el('h2',{text:'Shot Map'}),el('div',{class:'sm-teams'},side('h',H),side('a',A)),el('div',{class:'sm-wrap wide'},svg),pop,
+    el('p',{class:'note',text:'Filled circles are goals; bigger circles are better chances (higher xG). Tap a shot, or step through them minute by minute. Source: Understat.'}));
+  sel(0);
+  return card;
 }
 function matchXgPlayers(d,H,A){
   const all=[...d.us.players.h.map(p=>({...p,T:H})),...d.us.players.a.map(p=>({...p,T:A}))].filter(p=>p.xg+p.xa>0).sort((a,b)=>(b.xg+b.xa)-(a.xg+a.xa)).slice(0,8);

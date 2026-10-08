@@ -327,7 +327,9 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   score, and a score that changes on refresh bumps up and flashes gold.
 - **Pitch shirts (Squad Picker, Predict, Fantasy):** round numbered shirts split in the club's first colour and a
   slightly darker half, ringed in the second colour, number in black or white for contrast (same family as the match
-  centre's line-up chips).
+  centre's line-up chips). On Predict the opponent pitch is centred on its own (no repeated list of picked names
+  beside it, just a one-line status under it), and the home team is shown as a compact "formation · XI set · bench"
+  summary rather than a list of all eleven names.
 - **Menu:** a round 46px button fixed top right in the poster colour with a white ring and a 4px bottom edge (three bars
   that turn into a cross); it opens a right-hand drawer in the page's dark shade: Club Hub wordmark, search bar, a my-club
   tile in its colours, big Big Shoulders links (Home, Matchday, Europe, Bracket Simulator, Fantasy Draft), league pills,
@@ -335,13 +337,18 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Confirm dialog:** destructive actions (e.g. Fantasy "New draft") use an on-brand centred dialog over a blurred
   scrim — Big Shoulders title, a plain-language warning, a secondary "keep it" button and a white primary pill — never
   the browser's native `confirm()`. Keyboard-accessible (Escape closes, focus trapped) and themed from the current page.
-- **Player page (detailed):** poster header; a "This Season" poster panel with big accent-coloured numbers (apps,
-  minutes, goals, assists, xG, xA) and a row of per-90 rates; percentile bars against league players in the same
-  position (blue 80+, green 60+, orange 40+, red below, number in a matching badge); a half-pitch shot map (goals
-  filled in the accent colour, saved blue, missed white outline, blocked dashed; size = xG); match-by-match table;
-  season-by-season rows with goals vs xG bars; details list and teammates.
-- **Match shot map / dangerous players:** both teams on one pitch in their colours (home shoots right), and a list of
-  the players with the most xG + xA in the match.
+- **Player page (detailed):** poster header and a "This Season" poster panel with big accent-coloured numbers (apps,
+  minutes, goals, assists, xG, xA) and a row of per-90 rates shown by default; everything else (percentile bars, the
+  shot map, match-by-match, season-by-season, the details list and teammates) is folded behind a full-width
+  "Full stats & profile" toggle so the page opens clean. Percentile bars rank against league players in the same
+  position (blue 80+, green 60+, orange 40+, red below, number in a matching badge); the half-pitch shot map has goals
+  filled in the accent colour, saved blue, missed white outline, blocked dashed, size = xG; season-by-season rows carry
+  goals vs xG bars.
+- **Match shot map (interactive):** both teams on one pitch in their colours (home shoots right); shots are small
+  tappable circles (size = xG, goals filled). Tapping one rings it gold and opens a detail panel below the pitch —
+  player, team, minute, result, xG and where the shot came from (inside / edge / outside the box), plus the assist —
+  with prev/next arrows that step through every shot in the match minute by minute. Below it, the list of players with
+  the most xG + xA.
 - **Search:** a full-width pill bar on the home page and a round magnifier button in every poster header; results open
   in the bottom sheet, which takes the page colours (home included): clubs first, then players with a numbered shirt
   circle in their club colours and a Club/Player tag.
