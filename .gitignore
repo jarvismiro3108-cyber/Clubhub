@@ -12,3 +12,6 @@ node_modules/
 *.key
 *.secret
 secrets.*
+
+# stray test scripts (kept in the scratchpad, never the repo)
+*.mjs
