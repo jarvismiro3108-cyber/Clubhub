@@ -513,16 +513,16 @@ body:is(.on-club,.on-x) .sheet-head h3{font-family:var(--display);font-weight:90
 .bcol{display:flex;flex-direction:column;min-width:0}
 .bcol h4,.bgh{margin:0 0 10px;text-align:center;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#a5b6ef}
 .bgh{text-align:left}
-.bbody{flex:1;display:flex;flex-direction:column}
+.bbody{flex:1;width:100%;display:flex;flex-direction:column}
 .bpair{flex:1;display:flex;flex-direction:column;position:relative}
 .bcell{flex:1;display:flex;align-items:center;padding:5px 0;position:relative;z-index:1}
 .bcell>.btie{width:100%}
-.lt .bpair:not(.single)::after,.rt .bpair:not(.single)::after{content:"";position:absolute;top:25%;bottom:25%;width:calc(var(--gap)/2);border:2px solid var(--ln)}
-.lt .bpair:not(.single)::after{right:calc(var(--gap)/-2);border-left:0;border-radius:0 8px 8px 0}
-.rt .bpair:not(.single)::after{left:calc(var(--gap)/-2);border-right:0;border-radius:8px 0 0 8px}
-.lt .bpair::before,.rt .bpair::before{content:"";position:absolute;top:50%;width:calc(var(--gap)/2);border-top:2px solid var(--ln)}
-.lt .bpair::before{right:calc(var(--gap)*-1)}.rt .bpair::before{left:calc(var(--gap)*-1)}
-.lt .bpair.single::before,.rt .bpair.single::before{width:var(--gap)}
+.btl .bpair:not(.single)::after,.btr .bpair:not(.single)::after{content:"";position:absolute;top:25%;bottom:25%;width:calc(var(--gap)/2);border:2px solid var(--ln)}
+.btl .bpair:not(.single)::after{right:calc(var(--gap)/-2);border-left:0;border-radius:0 8px 8px 0}
+.btr .bpair:not(.single)::after{left:calc(var(--gap)/-2);border-right:0;border-radius:8px 0 0 8px}
+.btl .bpair::before,.btr .bpair::before{content:"";position:absolute;top:50%;width:calc(var(--gap)/2);border-top:2px solid var(--ln)}
+.btl .bpair::before{right:calc(var(--gap)*-1)}.btr .bpair::before{left:calc(var(--gap)*-1)}
+.btl .bpair.single::before,.btr .bpair.single::before{width:var(--gap)}
 .btie{background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.15);border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.35)}
 .btie.ph{opacity:.5;border-style:dashed;box-shadow:none}
 .bt{display:grid;grid-template-columns:6px minmax(0,1fr) auto;align-items:center;gap:9px;width:100%;padding:7px 10px 7px 0;font:inherit;font-size:13.5px;font-weight:600;color:#e9edfb;background:none;border:0;text-align:left;min-height:34px}
@@ -553,12 +553,12 @@ button.bt{cursor:pointer}button.bt:hover{background:rgba(255,255,255,.09)}button
 .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px}
 @media (max-width:760px){
   .btree{display:flex;flex-direction:column;min-width:0;min-height:0;gap:4px}
-  .bcol{order:var(--o)}.bcol.rt h4{display:none}.bcol h4{text-align:left;margin:10px 0 8px}
+  .bcol{order:var(--o)}.bcol.btr h4{display:none}.bcol h4{text-align:left;margin:10px 0 8px}
   .bpair{display:contents}.bpair::before,.bpair::after{display:none!important}
   .bbody{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px}
   .bcell{padding:0}
   .fin .bbody{display:block}.bfinal{grid-template-rows:auto auto auto;margin-top:6px}.bchamp{margin-top:10px}
-  .bcol.rt .bbody{margin-top:8px}
+  .bcol.btr .bbody{margin-top:8px}
 }
 .champ-card{border-radius:14px;padding:18px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;color:#fff;position:relative;overflow:hidden;
   background:radial-gradient(80% 120% at 0% 0%,color-mix(in srgb,var(--k2,#1d2a57) 55%,transparent),transparent 70%),linear-gradient(135deg,var(--k1,#0b1640),#050a1e)}
@@ -907,6 +907,19 @@ a.mc-tile:hover{background:color-mix(in srgb,#000 34%,var(--k-bg))}
 .wfeat i{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:color-mix(in srgb,#fff 9%,transparent)}
 .wfeat svg{width:22px;height:22px}
 @media (prefers-reduced-motion:reduce){.welcome{animation:none}.wbtn,.wbtn.primary:active{transition:none;transform:none}}
+/* styled confirm dialog (replaces the browser's native confirm) */
+.cfm-scrim{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:24px;background:rgba(4,8,20,.62);animation:wFade .22s ease}
+@supports (backdrop-filter:blur(2px)){.cfm-scrim{backdrop-filter:blur(3px)}}
+.cfm{width:100%;max-width:380px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px;box-shadow:0 24px 60px rgba(0,0,0,.5);animation:bIn .3s cubic-bezier(.2,.8,.2,1) both}
+.cfm h3{font-family:var(--display);font-weight:900;font-size:26px;text-transform:uppercase;letter-spacing:.01em;line-height:1;margin:0 0 8px}
+.cfm p{margin:0 0 18px;font-size:14.5px;line-height:1.45;color:var(--fg2)}
+.cfm-row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.cfm-btn{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:11px 18px;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.02em;text-transform:uppercase;transition:transform .12s,filter .15s}
+.cfm-btn:active{transform:scale(.97)}
+.cfm-cancel{background:var(--surface2);color:var(--fg)}
+.cfm-ok{background:var(--c-hi);color:var(--c-hi-ink);box-shadow:0 3px 0 color-mix(in srgb,#000 30%,var(--c-hi))}
+.cfm-ok:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,#000 30%,var(--c-hi))}
+@media (prefers-reduced-motion:reduce){.cfm-scrim,.cfm{animation:none}.cfm-btn:active,.cfm-ok:active{transform:none}}
 /* storyline chip: a sentence from the numbers */
 .story{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-radius:12px;background:color-mix(in srgb,#000 22%,var(--k-bg,var(--surface)));color:var(--fg);font-size:13.5px;line-height:1.42}
 body:is(.on-club,.on-x) .story{color:#fff}
@@ -1027,7 +1040,7 @@ body.menu-open .menu-btn span:nth-child(1){transform:translateY(6.5px) rotate(45
 .dm-x{display:none}
 .dm-search{margin:0;border-color:color-mix(in srgb,#fff 25%,var(--p-deep));background:color-mix(in srgb,#fff 8%,var(--p-deep));color:#fff}
 .dm-my{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--k-bg);color:#fff;text-decoration:none}
-.dm-my-shirt{width:54px;flex:none;transform:rotate(-6deg)}.dm-my-shirt svg{display:block;width:100%;height:auto}
+.dm-my-shirt{width:54px;height:60px;flex:none;transform:rotate(-6deg)}.dm-my-shirt svg{display:block;width:100%;height:100%}
 .dm-my small{display:block;font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.05em;text-transform:uppercase}
 .dm-my b{display:block;font-family:var(--display);font-weight:900;font-size:28px;line-height:.95;text-transform:uppercase}
 .dm-sec h3{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:.05em;text-transform:uppercase;color:color-mix(in srgb,#fff 78%,var(--p-deep));margin:0 0 6px}
@@ -2580,7 +2593,7 @@ function bracketTree(rounds,{animate=false,pick=null,champion=null}={}){
     const card=k=>{const idx=side*n+k,pk=pick&&ri===0?[()=>pick(idx*2),()=>pick(idx*2+1)]:[];return el('div',{class:'bcell'},tieCard(R[ri][idx],delay(ri,idx),...pk))};
     if(n>1)for(let k=0;k<n;k+=2)body.append(el('div',{class:'bpair'},card(k),card(k+1)));
     else body.append(el('div',{class:'bpair single'},card(0)));
-    return el('div',{class:'bcol '+(side?'rt':'lt'),style:`--o:${ri*2+side}`},el('h4',{text:names[ri]}),body);
+    return el('div',{class:'bcol '+(side?'btr':'btl'),style:`--o:${ri*2+side}`},el('h4',{text:names[ri]}),body);
   };
   const fin=R[3][0],cname=champion&&(CLUBS[champion.sid]?.name||champion.name);
   const finalCol=el('div',{class:'bcol fin',style:'--o:7'},el('h4',{text:'Final'}),el('div',{class:'bbody'},el('div',{class:'bfinal'},trophyEl(),
@@ -2924,7 +2937,7 @@ function fzRender(){
   fzPaint();
   root.replaceChildren(...(!FZ?fzSetupView():FZ.stage==='draft'?fzDraftView():FZ.stage==='lineup'?fzLineupView():fzSeasonView()));
 }
-function fzReset(){if(confirm('Start over? Your draft league will be deleted.')){clearTimeout(fzTimer);FZ=null;fzSel=null;store.set('fantasy-tur',null);fzRender()}}
+function fzReset(){confirmDialog({title:'Start over?',message:'This deletes your current draft league — the table, results and awards all go. This can’t be undone.',okText:'Start over',cancelText:'Keep it',onConfirm:()=>{clearTimeout(fzTimer);FZ=null;fzSel=null;store.set('fantasy-tur',null);fzRender()}})}
 const pline=p=>`${CLUBS[p.cid].name}, ${p.pos}${p.stats?`, ${p.stats.goals} G, ${p.stats.assists} A this season`:''}`;
 const prow=(p,right)=>el('div',{class:'prow'},mini(p.cid),el('span',{style:'min-width:0'},el('b',{text:p.name}),el('small',{text:pline(p)})),el('span',{class:'ps',text:p.pos}),el('span'),right||el('span'));
 function fzHowCard(){
@@ -3602,6 +3615,20 @@ function showWelcome(){
   document.addEventListener('keydown',onKey);
 }
 function maybeWelcome(){if(!myClub()&&!store.get('seenWelcome',0)&&(location.hash===''||location.hash==='#home'))showWelcome()}
+// styled confirm dialog — on-brand, keyboard-accessible; replaces the browser's native confirm()
+function confirmDialog({title='Are you sure?',message='',okText='OK',cancelText='Cancel',onConfirm}={}){
+  const prev=document.activeElement;
+  const close=()=>{sc.remove();document.removeEventListener('keydown',onKey);prev&&prev.focus&&prev.focus()};
+  const ok=el('button',{class:'cfm-btn cfm-ok',type:'button',text:okText,onclick:()=>{close();onConfirm&&onConfirm()}});
+  const cancel=el('button',{class:'cfm-btn cfm-cancel',type:'button',text:cancelText,onclick:close});
+  const box=el('div',{class:'cfm',role:'dialog','aria-modal':'true','aria-label':title},
+    el('h3',{text:title}),message?el('p',{text:message}):null,el('div',{class:'cfm-row'},cancel,ok));
+  const sc=el('div',{class:'cfm-scrim',onclick:e=>{if(e.target===sc)close()}},box);
+  const onKey=e=>{if(e.key==='Escape'){e.preventDefault();close()}
+    else if(e.key==='Tab'){const f=[cancel,ok],a=f[0],z=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}};
+  document.body.append(sc);document.addEventListener('keydown',onKey);ok.focus();
+}
 
 // boot
 route();

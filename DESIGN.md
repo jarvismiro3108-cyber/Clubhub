@@ -330,6 +330,9 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   that turn into a cross); it opens a right-hand drawer in the page's dark shade: Club Hub wordmark, search bar, a my-club
   tile in its colours, big Big Shoulders links (Home, Matchday, Europe, Bracket Simulator, Fantasy Draft), league pills,
   recently viewed clubs and small legal links.
+- **Confirm dialog:** destructive actions (e.g. Fantasy "New draft") use an on-brand centred dialog over a blurred
+  scrim — Big Shoulders title, a plain-language warning, a secondary "keep it" button and a white primary pill — never
+  the browser's native `confirm()`. Keyboard-accessible (Escape closes, focus trapped) and themed from the current page.
 - **Player page (detailed):** poster header; a "This Season" poster panel with big accent-coloured numbers (apps,
   minutes, goals, assists, xG, xA) and a row of per-90 rates; percentile bars against league players in the same
   position (blue 80+, green 60+, orange 40+, red below, number in a matching badge); a half-pitch shot map (goals
