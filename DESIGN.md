@@ -321,10 +321,13 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   context. Used under the My club card and on the match preview's prediction card (recent head-to-head record, or the
   table gap between the sides). Only shown when the data says something worth saying.
 - **Matchday list (home):** a round refresh button (kept clear of the fixed menu button on phones) sits by the heading;
-  day pills (Yesterday to five days ahead, same style as the league pills), then one card per competition: a header
-  button (name, red live dot, match count, chevron; folded unless live, your league or one of the first two) and rows of
-  time/status, home name, score box and away name. Live rows show a red dot with the minute and a red ring around the
-  score, and a score that changes on refresh bumps up and flashes gold.
+  day pills (Yesterday to five days ahead, same style as the league pills). Each competition is a labelled section — a
+  header button (accent tick, Big Shoulders name, red live dot, match count, chevron; folded unless live, your league or
+  one of the first two) — above its matches, which are **framed fixture cards** rather than table rows: a bordered,
+  rounded panel with a soft top-light gradient and a lift on hover. Each card stacks a small centred status strip
+  (KICK-OFF / FULL TIME / live minute) over a scoreboard row — home badge+name at the far left, away name+badge at the far
+  right, a Big Shoulders score chip centred between them (kick-off time in the chip's place before the match). Live cards
+  gain a red frame and red score chip; a score that changes on refresh bumps up and flashes gold.
 - **Pitch shirts (Squad Picker, Predict, Fantasy):** round numbered shirts split in the club's first colour and a
   slightly darker half, ringed in the second colour, number in black or white for contrast (same family as the match
   centre's line-up chips). On Predict the opponent pitch is centred on its own (no repeated list of picked names
@@ -349,9 +352,10 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
   player, team, minute, result, xG and where the shot came from (inside / edge / outside the box), plus the assist —
   with prev/next arrows that step through every shot in the match minute by minute. Below it, the list of players with
   the most xG + xA.
-- **Search:** a full-width pill bar on the home page and a round magnifier button in every poster header; results open
-  in the bottom sheet, which takes the page colours (home included): clubs first, then players with a numbered shirt
-  circle in their club colours and a Club/Player tag.
+- **Search:** a round magnifier button fixed at the top of the home page, sitting left of the menu button and matching
+  it (poster-filled circle, white ring), plus a round magnifier button in every poster header; results open in the bottom
+  sheet, which takes the page colours (home included): clubs first, then players with a numbered shirt circle in their
+  club colours and a Club/Player tag.
 - **Player page:** the club page's poster header with the player's name as the giant title and his own shirt (surname
   and number); stat tiles (apps, goals, assists or saves/clean sheets), goals match by match, a profile list and
   teammates as chips.
@@ -376,7 +380,7 @@ swipeable row of pills on phones. Club tabs scroll sideways on phones with a fad
 - **Skeleton loaders:** while live data loads, surfaces show a shimmer skeleton in the shape of what's coming (My Club
   tiles, Matchday league cards, club/season/match/player cards, the live table) instead of a spinner or blank — tinted
   from the current text colour so it works in every colour world; the shimmer stops under `prefers-reduced-motion`.
-- **Reveal on scroll:** home sections (search, My Club, Matchday, the feature tiles, the league heading and the club grid),
+- **Reveal on scroll:** home sections (My Club, Matchday, the feature tiles, the league heading and the club grid),
   and the club-page tab panels, match centre and player page,
   ease up and fade in the first time they come near the viewport, once per load. A scroll/resize check guarantees nothing
   is ever left hidden, and `prefers-reduced-motion` shows everything immediately.

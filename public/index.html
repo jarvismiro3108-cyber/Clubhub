@@ -967,29 +967,44 @@ body:is(.on-club,.on-x) .story{color:#fff}
 /* home: matchday */
 #matchday{margin-bottom:30px}
 .md-days{margin:0 0 14px}
-.md-list{display:grid;gap:12px}
-.md-league{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.md-lh{display:flex;align-items:center;gap:10px;padding:10px 14px 9px;width:100%;background:none;border:0;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
-.md-count{margin-left:auto;font-size:13px;color:var(--fg2)}
-.md-lh .chev{width:16px;height:16px;color:var(--fg2);transform:rotate(90deg);transition:transform .2s}
+.md-list{display:grid;gap:20px}
+/* league group: a labelled section, not a nested card — the cards are the matches */
+.md-lh{display:flex;align-items:center;gap:10px;padding:0 2px 10px;width:100%;background:none;border:0;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.md-lh::before{content:"";width:4px;align-self:stretch;border-radius:3px;background:var(--p-acc);flex:none}
+.md-count{margin-left:auto;font-size:13px;color:var(--fg2);font-weight:600}
+.md-lh .chev{width:18px;height:18px;color:var(--fg2);transform:rotate(90deg);transition:transform .2s}
 .md-lh[aria-expanded="false"] .chev{transform:none}
-.md-lh b{font-family:var(--display);font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:.03em}
-.md-livetag{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:#fff}
-.md-row{display:grid;grid-template-columns:58px minmax(0,1fr) 70px minmax(0,1fr);align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line);color:var(--fg);text-decoration:none;transition:background-color .15s}
-.md-row:hover{background:var(--surface2)}
-.md-row:focus-visible{outline-offset:-3px}
-.md-st{font-size:13px;font-weight:600;color:var(--fg2);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
-.md-st.live{color:#fff;font-weight:800}
-.md-t{display:flex;align-items:center;gap:8px;min-width:0}
-.md-t.h{flex-direction:row-reverse;text-align:right}
-.md-t b{font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.md-t.me b{font-weight:800}
-.md-t .mini{width:16px;height:16px}
-.md-sc{justify-self:center;font-family:var(--display);font-weight:900;font-size:22px;white-space:nowrap;background:color-mix(in srgb,#000 22%,var(--surface));border-radius:8px;padding:1px 10px;min-width:64px;text-align:center}
-.md-sc.pre{background:none;color:var(--muted);font-size:18px}
-.md-row.is-live .md-sc{box-shadow:inset 0 0 0 1.5px #ff4d4d}
-.md-more{padding:8px 14px 12px}
-@media (max-width:520px){.md-row{grid-template-columns:44px minmax(0,1fr) 58px minmax(0,1fr);gap:7px;padding:9px 10px}.md-t b{font-size:13px}.md-t .mini{display:none}.md-sc{font-size:19px;min-width:52px;padding:1px 6px}.md-st{font-size:12px}}
+.md-lh b{font-family:var(--display);font-weight:900;font-size:21px;text-transform:uppercase;letter-spacing:.03em;line-height:1}
+.md-livetag{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#ff5b5b}
+.md-rows{display:grid;gap:10px}
+/* fixture card — the "frame" */
+.md-row{display:grid;gap:9px;padding:12px 15px 13px;border-radius:15px;border:1px solid var(--line);color:var(--fg);text-decoration:none;
+  background:linear-gradient(180deg,color-mix(in srgb,#fff 6%,var(--surface)) 0,var(--surface) 70%);
+  box-shadow:0 1px 0 color-mix(in srgb,#000 32%,transparent),0 6px 16px -14px rgba(0,0,0,.8);
+  transition:transform .13s cubic-bezier(.2,.8,.2,1),border-color .15s,box-shadow .2s}
+.md-row:hover{transform:translateY(-2px);border-color:color-mix(in srgb,#fff 42%,var(--line));box-shadow:0 10px 24px -14px rgba(0,0,0,.85)}
+.md-row:active{transform:translateY(0)}
+.md-row:focus-visible{outline-offset:2px}
+.md-row.is-live{border-color:color-mix(in srgb,#ff4d4d 62%,var(--line));box-shadow:0 0 0 1px color-mix(in srgb,#ff4d4d 42%,transparent),0 10px 26px -14px rgba(255,64,64,.55)}
+.md-status{display:flex;align-items:center;justify-content:center;gap:6px;min-height:13px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg2);font-variant-numeric:tabular-nums}
+.md-status.live{color:#ff5b5b}
+.md-fix{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px}
+.md-t{display:flex;align-items:center;gap:9px;min-width:0}
+.md-t.h{justify-content:flex-start;text-align:left}
+.md-t.a{justify-content:flex-start;flex-direction:row-reverse;text-align:right}
+.md-t b{font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.md-t.me b{font-weight:900}
+.md-t .mini{width:27px;height:27px}
+.md-sc{font-family:var(--display);font-weight:900;font-size:26px;line-height:1;white-space:nowrap;letter-spacing:.01em;text-align:center;
+  background:color-mix(in srgb,#000 30%,var(--surface));border-radius:10px;padding:5px 13px;min-width:78px}
+.md-sc.pre{background:none;color:var(--fg2);font-size:21px;padding:5px 2px;min-width:auto}
+.md-row.is-live .md-sc{background:color-mix(in srgb,#ff4d4d 20%,var(--surface));color:#fff}
+.md-more{margin-top:1px;padding:4px 2px}
+@media (max-width:520px){
+  .md-fix{gap:7px}.md-t{gap:7px}.md-t b{font-size:13.5px}.md-t .mini{width:23px;height:23px}
+  .md-sc{font-size:22px;min-width:66px;padding:4px 9px}.md-sc.pre{font-size:18px;min-width:auto}
+  .md-row{padding:11px 12px 12px}
+}
 /* club page: my club star */
 .crumb .back{white-space:nowrap}
 .mystar{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,#000 22%,transparent);border:1.5px solid color-mix(in srgb,#fff 55%,transparent);color:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
@@ -1048,6 +1063,9 @@ a.lp{color:inherit;text-decoration:none}
 .menu-btn span{display:block;width:18px;height:2.5px;border-radius:2px;background:#fff;transition:transform .25s cubic-bezier(.2,.8,.2,1),opacity .2s}
 .menu-btn:hover{transform:scale(1.05)}
 .menu-btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.search-btn{display:none;right:calc(max(14px,env(safe-area-inset-right)) + 54px);color:#fff}
+.search-btn svg{width:20px;height:20px}
+body.on-home .search-btn{display:grid}
 body.menu-open .menu-btn span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}body.menu-open .menu-btn span:nth-child(2){opacity:0}body.menu-open .menu-btn span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 .top-in .crumb{padding-right:58px;min-width:0}
 .crumb>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1155,6 +1173,7 @@ a.pv-h2h{color:var(--fg);text-decoration:none}a.pv-h2h:hover{background:var(--su
 </style>
 
 <a class="skip" href="#" id="skipLink">Skip to content</a>
+<button class="menu-btn search-btn" id="searchBtn" type="button" aria-label="Search clubs and players" data-search><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 <div class="menu-scrim" id="menuScrim" hidden></div>
 <nav class="drawer" id="menu" aria-label="Site menu" hidden></nav>
@@ -1185,7 +1204,6 @@ a.pv-h2h{color:var(--fg);text-decoration:none}a.pv-h2h:hover{background:var(--su
     </div>
   </header>
   <main>
-    <button class="srch-bar" type="button" data-search><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13 13 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search clubs and players</button>
     <section id="myClub" aria-label="My club"></section>
     <section id="matchday" aria-label="Matchday"></section>
     <nav class="plays" id="siteNav" aria-label="Games and competitions"></nav>
@@ -1717,12 +1735,15 @@ function drawMatchday(list,d){
   const myLg=mine?CLUBS[mine].league:null,live=L=>L.events.some(e=>e.state==='in');
   const order=[...d.leagues].sort((a,b)=>(live(b)-live(a))||((b.lg===myLg)-(a.lg===myLg))||MD_ORDER.indexOf(a.lg)-MD_ORDER.indexOf(b.lg));
   const row=(L,e)=>{
-    const st=e.state==='in'?el('span',{class:'md-st live'},el('i',{class:'live-dot','aria-hidden':'true'}),e.detail||'Live'):el('span',{class:'md-st',text:e.state==='post'?'FT':new Date(e.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})});
+    const status=e.state==='in'?el('span',{class:'md-status live'},el('i',{class:'live-dot','aria-hidden':'true'}),e.detail||'Live')
+      :el('span',{class:'md-status',text:e.state==='post'?'Full time':'Kick-off'});
     const side=(t,cls)=>{const sid=map.byId[t.id],c=sid&&CLUBS[sid];return el('span',{class:'md-t '+cls+(sid&&sid===mine?' me':'')},mini(sid),el('b',{text:c?c.name:t.name}))};
     const cur=`${e.home.score??0}-${e.away.score??0}`,changed=e.state!=='pre'&&mdPrev[e.id]!==undefined&&mdPrev[e.id]!==cur;mdPrev[e.id]=cur;
-    const sc=e.state==='pre'?el('span',{class:'md-sc pre',text:'–'}):el('span',{class:'md-sc num'+(changed?' bump':''),text:`${e.home.score??0} – ${e.away.score??0}`});
+    const sc=e.state==='pre'?el('span',{class:'md-sc pre',text:new Date(e.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})})
+      :el('span',{class:'md-sc num'+(changed?' bump':''),text:`${e.home.score??0} – ${e.away.score??0}`});
     const label=`${(map.byId[e.home.id]&&CLUBS[map.byId[e.home.id]].name)||e.home.name} against ${(map.byId[e.away.id]&&CLUBS[map.byId[e.away.id]].name)||e.away.name}`;
-    return el('a',{class:'md-row'+(e.state==='in'?' is-live':''),href:`#match-${L.lg}-${e.id}`,'aria-label':label},st,side(e.home,'h'),sc,side(e.away,'a'))};
+    return el('a',{class:'md-row'+(e.state==='in'?' is-live':''),href:`#match-${L.lg}-${e.id}`,'aria-label':label},
+      status,el('div',{class:'md-fix'},side(e.home,'h'),sc,side(e.away,'a')))};
   list.replaceChildren(...order.map((L,i)=>{ // live leagues, my league and the first two start open; the rest fold to one line
     const many=L.events.length>6,body=el('div',{class:'md-rows'},...L.events.slice(0,many?5:99).map(e=>row(L,e)));
     const more=many?el('button',{class:'linkbtn md-more',type:'button',text:`Show all ${L.events.length} matches`,onclick:()=>{body.replaceChildren(...L.events.map(e=>row(L,e)));more.remove()}}):null;
@@ -1731,7 +1752,7 @@ function drawMatchday(list,d){
       el('b',{text:lgName(L.lg)}),live(L)?el('span',{class:'md-livetag'},el('i',{class:'live-dot','aria-hidden':'true'}),'Live'):null,
       el('span',{class:'md-count',text:`${L.events.length} match${L.events.length===1?'':'es'}`}),chevSvg());
     return el('div',{class:'md-league'},head,wrap);
-  }),d.partial?el('p',{class:'note',text:'Some competitions could not be loaded right now.'}):null);
+  }),...(d.partial?[el('p',{class:'note',text:'Some competitions could not be loaded right now.'})]:[]));
 }
 function renderPoster(L,swap){
   const P=$('#poster');
@@ -1811,7 +1832,7 @@ function showHome(){
   document.querySelectorAll('#home .seg button').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.view===view));b.onclick=()=>{store.set('homeView',b.dataset.view);showHome()}});
   g.hidden=view!=='clubs';$('#homeTable').hidden=view!=='table';
   if(view==='table')renderHomeTable(L);
-  reveal($('.srch-bar'),$('#myClub'),$('#matchday'),$('#siteNav'),$('#home main .homehead'),view==='table'?$('#homeTable'):g);
+  reveal($('#myClub'),$('#matchday'),$('#siteNav'),$('#home main .homehead'),view==='table'?$('#homeTable'):g);
 }
 // reveal-on-scroll: sections ease up the first time they come near the viewport; a scroll/resize
 // check guarantees nothing is ever left stuck invisible (even on a fast fling past it)
