@@ -586,7 +586,35 @@ async function authorized(request, env) {
 const LOCKED = () => new Response('Club Hub is private. Enter the password to continue.', { status: 401,
   headers: { 'WWW-Authenticate': 'Basic realm="Club Hub (private)", charset="UTF-8"', 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' } });
 
+// ---------- master shutdown switch
+// Set CLOSED = true to take Club Hub offline: every page shows a plain "closed" notice and every /api/* call is
+// refused, all BEFORE any password check or any outside request — so ESPN, Understat and Gemini are never called and
+// the AI key is never used. Set it back to false to bring the site straight back.
+const CLOSED = true;
+const CLOSED_PAGE = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Club Hub</title><style>
+:root{color-scheme:dark}
+html,body{height:100%}
+body{margin:0;display:grid;place-items:center;padding:28px;background:#0f1733;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-align:center}
+.box{max-width:30rem}
+h1{font-size:clamp(34px,10vw,64px);letter-spacing:.02em;margin:0 0 .3em;text-transform:uppercase;font-weight:800}
+p{margin:.4em 0;font-size:16px;line-height:1.55;color:#cdd4ee}
+</style></head><body><div class="box">
+<h1>Club Hub is closed</h1>
+<p>This site is no longer running.</p>
+<p>Thanks to everyone who visited.</p>
+</div></body></html>`;
+function closedResponse(request) {
+  const url = new URL(request.url);
+  if (url.pathname.startsWith('/api/')) return json(503, { closed: true, error: 'closed' });
+  return new Response(CLOSED_PAGE, { status: 200, headers: {
+    'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' } });
+}
+
 async function handle(request, env) {
+  if (CLOSED) return closedResponse(request);
   if (!(await authorized(request, env))) return LOCKED();
   if (!env.GEMINI_API_KEY) { const k = Object.keys(env).find(k => /gemini/i.test(k) && typeof env[k] === 'string'); if (k) env = { ...env, GEMINI_API_KEY: env[k].trim() }; }
   const url = new URL(request.url);
