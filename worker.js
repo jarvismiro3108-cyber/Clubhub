@@ -593,19 +593,13 @@ const LOCKED = () => new Response('Club Hub is private. Enter the password to co
 const CLOSED = true;
 const CLOSED_PAGE = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
-<title>Club Hub</title><style>
+<title>Closed</title><style>
 :root{color-scheme:dark}
 html,body{height:100%}
 body{margin:0;display:grid;place-items:center;padding:28px;background:#0f1733;color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-align:center}
-.box{max-width:30rem}
-h1{font-size:clamp(34px,10vw,64px);letter-spacing:.02em;margin:0 0 .3em;text-transform:uppercase;font-weight:800}
-p{margin:.4em 0;font-size:16px;line-height:1.55;color:#cdd4ee}
-</style></head><body><div class="box">
-<h1>Club Hub is closed</h1>
-<p>This site is no longer running.</p>
-<p>Thanks to everyone who visited.</p>
-</div></body></html>`;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+h1{font-size:clamp(44px,16vw,120px);letter-spacing:.03em;margin:0;text-transform:uppercase;font-weight:800}
+</style></head><body><h1>Closed</h1></body></html>`;
 function closedResponse(request) {
   const url = new URL(request.url);
   if (url.pathname.startsWith('/api/')) return json(503, { closed: true, error: 'closed' });
